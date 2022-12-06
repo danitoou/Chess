@@ -115,7 +115,7 @@ public class Chess extends JFrame{
         greenDot.setIcon(new ImageIcon(greenDotPicture.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH)));
         
 
-        
+        // az sam dani
         frame.repaint();
         JLabel[][] dots = new JLabel[8][8];
         
