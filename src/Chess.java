@@ -147,7 +147,7 @@ public class Chess extends JFrame{
                 currentPiece.move(curX/128, curY/128);
                 currentPiece = null; 
             }
-
+            //zdr kp
             @Override
             public void mouseEntered(MouseEvent e) {
             }
