@@ -92,23 +92,23 @@ public class Chess extends JFrame{
         pieces[7][7].draw();
 
 // board
-        JPanel[][] panel_board = new JPanel[8][8];
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                JPanel panel = new JPanel();
-                panel.setBounds(128*x, 128*y, 128, 128);
-                if(theme == "Chesscom") {
-                    if((x+y) % 2 == 0) panel.setBackground(new Color(125, 148, 93, 255));
-                    else panel.setBackground(new Color(238, 238, 213, 255));
-                } else {
-                    if((x+y) % 2 == 0) panel.setBackground(new Color(125, 148, 93, 255));
-                    else panel.setBackground(new Color(238, 238, 213, 255));
-                }
-                // frame.add(panel);
-                panel_board[x][y] = panel;
+        // JPanel[][] panel_board = new JPanel[8][8];
+        // for(int x = 0; x < 8; x++) {
+        //     for(int y = 0; y < 8; y++) {
+        //         JPanel panel = new JPanel();
+        //         panel.setBounds(128*x, 128*y, 128, 128);
+        //         if(theme == "Chesscom") {
+        //             if((x+y) % 2 == 0) panel.setBackground(new Color(125, 148, 93, 255));
+        //             else panel.setBackground(new Color(238, 238, 213, 255));
+        //         } else {
+        //             if((x+y) % 2 == 0) panel.setBackground(new Color(125, 148, 93, 255));
+        //             else panel.setBackground(new Color(238, 238, 213, 255));
+        //         }
+        //         frame.add(panel);
+        //         panel_board[x][y] = panel;
                 
-            }
-        }
+        //     }
+        // }
 
         ImageIcon greenDotPicture = new ImageIcon("src\\images\\Green_Dot.png");
         JLabel greenDot = new JLabel();

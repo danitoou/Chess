@@ -3,6 +3,14 @@ import javax.swing.ImageIcon;
 public class King extends Piece {
     private boolean canCastle = true;
 
+    public void setCanCastle(boolean canCastle) {
+        this.canCastle = canCastle;
+    }
+
+    public boolean getCanCastle() {
+        return this.canCastle;
+    }
+
     public King(int column, int row, boolean isWhite, ImageIcon image) {
         super(column, row, isWhite, "King", image);
     }

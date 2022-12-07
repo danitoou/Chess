@@ -154,7 +154,9 @@ public class Piece {
         this.labelImage = this.getImageWithLabel();
         this.draw();
         Chess.pieces[column][row] = this;
-        if(this.getName() == "Pawn") ((Pawn)this).setFirstMove(false);
+        if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false);
+        if(this.getName() == "King" && ((King)this).getCanCastle() == true) ((King)this).setCanCastle(false);
+        if(this.getName() == "Rook" && ((Rook)this).getCanCastle() == true) ((Rook)this).setCanCastle(false);
     }
 
     public void movePixel(int x, int y) {
