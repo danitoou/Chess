@@ -154,6 +154,7 @@ public class Piece {
         this.labelImage = this.getImageWithLabel();
         this.draw();
         Chess.pieces[column][row] = this;
+        if(this.getName() == "Pawn") ((Pawn)this).setFirstMove(false);
     }
 
     public void movePixel(int x, int y) {

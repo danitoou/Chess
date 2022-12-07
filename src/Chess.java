@@ -142,10 +142,6 @@ public class Chess extends JFrame{
                 int curY = e.getY();
                 if(Chess.pieces[curX/128][curY/128] != null && Chess.pieces[curX/128][curY/128].isWhite() == currentPiece.isWhite()) {
                     currentPiece.move(copyPiece.getColumn(), copyPiece.getRow());
-                    // currentPiece.remove();
-                    // currentPiece = copyPiece;
-                    // currentPiece.draw();
-                    // frame.repaint();
                     return;
                 } 
                 currentPiece.move(curX/128, curY/128);

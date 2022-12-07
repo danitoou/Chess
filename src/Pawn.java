@@ -3,6 +3,14 @@ import javax.swing.ImageIcon;
 public class Pawn extends Piece {
     private boolean firstMove = true;
 
+    public void setFirstMove(boolean firstMove) {
+        this.firstMove = firstMove;
+    }
+
+    public boolean getFirstMove() {
+        return firstMove;
+    }
+
     public Pawn(int column, int row, boolean isWhite, ImageIcon image) {
         super(column, row, isWhite, "Pawn", image);
     }
