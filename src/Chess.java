@@ -62,10 +62,10 @@ public class Chess extends JFrame{
         pieces[1][0].draw();
         pieces[2][0] = Bishop.make(2, 0, false);
         pieces[2][0].draw();
-        pieces[3][0] = King.make(3, 0, false);
-        pieces[3][0].draw();
-        pieces[4][0] = Queen.make(4, 0, false);
+        pieces[4][0] = King.make(4, 0, false);
         pieces[4][0].draw();
+        pieces[3][0] = Queen.make(3, 0, false);
+        pieces[3][0].draw();
         pieces[5][0] = Bishop.make(5, 0, false);
         pieces[5][0].draw();
         pieces[6][0] = Knight.make(6, 0, false);
@@ -80,10 +80,10 @@ public class Chess extends JFrame{
         pieces[1][7].draw();
         pieces[2][7] = Bishop.make(2, 7, true);
         pieces[2][7].draw();
-        pieces[3][7] = King.make(3, 7, true);
-        pieces[3][7].draw();
-        pieces[4][7] = Queen.make(4, 7, true);
+        pieces[4][7] = King.make(4, 7, true);
         pieces[4][7].draw();
+        pieces[3][7] = Queen.make(3, 7, true);
+        pieces[3][7].draw();
         pieces[5][7] = Bishop.make(5, 7, true);
         pieces[5][7].draw();
         pieces[6][7] = Knight.make(6, 7, true);
@@ -140,7 +140,7 @@ public class Chess extends JFrame{
                 if(currentPiece == null) return;
                 int curX = e.getX();
                 int curY = e.getY();
-                if(Chess.pieces[curX/128][curY/128] != null && Chess.pieces[curX/128][curY/128].isWhite() == currentPiece.isWhite()) {
+                if(Chess.pieces[curX/128][curY/128] != null && Chess.pieces[curX/128][curY/128].isWhite() == currentPiece.isWhite() && Chess.pieces[curX/128][curY/128].getName() != "Rook") {
                     currentPiece.move(copyPiece.getColumn(), copyPiece.getRow());
                     return;
                 } 

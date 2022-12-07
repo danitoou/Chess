@@ -103,4 +103,20 @@ public class Rook extends Piece {
         return arr;
     }
 
+    public void castle(boolean shortCastle) {
+        this.remove();
+        if(shortCastle) {
+            this.setColumn(5);
+            Chess.pieces[7][this.getRow()] = null;
+            Chess.pieces[5][this.getRow()] = this;
+        }
+        else {
+            this.setColumn(3);
+            Chess.pieces[0][this.getRow()] = null;
+            Chess.pieces[3][this.getRow()] = this;
+        }
+        this.setCanCastle(false);
+        this.draw();
+    }
+
 }

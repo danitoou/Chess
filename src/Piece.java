@@ -127,6 +127,7 @@ public class Piece {
                 }
                 break;
             case "King":
+                
                 if(!((King)this).validMove(column, row)) {
                     this.remove();
                     this.column = Chess.copyPiece.column;
@@ -135,6 +136,18 @@ public class Piece {
                     this.draw();
                     return;
                 }
+                if(Chess.pieces[column][row].getName() == "Rook" && ((King)this).validMove(column, row)) {
+                    if(column > this.column) {
+                        ((King)this).castle(true);
+                        ((Rook)Chess.pieces[column][row]).castle(true);
+                    }
+                    if(column < this.column) {
+                        ((King)this).castle(false);
+                        ((Rook)Chess.pieces[column][row]).castle(false);
+                    }
+                    Chess.frame.repaint();
+                    return;
+                } 
                 break;
         }
         if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) Chess.pieces[column][row].remove();
@@ -155,8 +168,6 @@ public class Piece {
         this.draw();
         Chess.pieces[column][row] = this;
         if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false);
-        if(this.getName() == "King" && ((King)this).getCanCastle() == true) ((King)this).setCanCastle(false);
-        if(this.getName() == "Rook" && ((Rook)this).getCanCastle() == true) ((Rook)this).setCanCastle(false);
     }
 
     public void movePixel(int x, int y) {
