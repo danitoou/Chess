@@ -47,6 +47,7 @@ public class King extends Piece {
         int output = 0;
         //short castle
         if(Chess.pieces[5][curRow] == null && Chess.pieces[6][curRow] == null && this.canCastle && ((Rook)Chess.pieces[7][curRow]).getCanCastle()) output += 1;
+        //long castle
         if(Chess.pieces[1][curRow] == null && Chess.pieces[2][curRow] == null && Chess.pieces[3][curRow] == null && this.canCastle && ((Rook)Chess.pieces[0][curRow]).getCanCastle()) output += 2;
         return output;
     }
@@ -64,7 +65,9 @@ public class King extends Piece {
             Chess.pieces[4][this.getRow()] = null;
             Chess.pieces[2][this.getRow()] = this;
         }
-        // this.draw();
+        this.remove();
+        this.setImage(this.getImage());
+        this.draw();
     }
 
     
