@@ -20,7 +20,7 @@ public class Pawn extends Piece {
         if(!isWhite) image = new ImageIcon("src\\images\\" + Chess.theme + "Black_Pawn.png");
         return (Pawn)new Pawn(column, row, isWhite, image);
     }
-//
+
     public boolean validMove(int column, int row) {
         int curColumn = this.getColumn();
         int curRow = this.getRow();

@@ -23,7 +23,7 @@ public class Knight extends Piece {
         if(curRow+2 == row) {
             if(curColumn-1 == column || curColumn+1 == column) return true;
         }
-//
+
         if(curColumn-2 == column) {
             if(curRow-1 == row || curRow+1 == row) return true;
         }

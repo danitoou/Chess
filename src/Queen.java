@@ -11,7 +11,7 @@ public class Queen extends Piece {
         if(!isWhite) image = new ImageIcon("src\\images\\" + Chess.theme + "Black_Queen.png");
         return new Queen(column, row, isWhite, image);
     }
-//
+
     public boolean validMove(int column, int row) {
         Bishop copyBishop = Bishop.make(this.getColumn(), this.getRow(), this.isWhite());
         Rook copyRook = Rook.make(this.getColumn(), this.getRow(), this.isWhite());

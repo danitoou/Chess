@@ -62,7 +62,7 @@ public class Bishop extends Piece {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
         if((curColumn + curRow) % 2 != (column + row) % 2) return false;
-//        
+        
         // Down-Up Diagonal (/)
         if(curColumn + curRow == column + row) {
             // Down Left
