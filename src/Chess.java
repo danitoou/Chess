@@ -134,7 +134,7 @@ public class Chess extends JFrame{
             @Override
             public void mouseMoved(MouseEvent e) {                
             }
-//
+
             @Override
             public void mouseReleased(MouseEvent e) {
                 if(currentPiece == null) return;

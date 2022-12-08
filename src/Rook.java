@@ -10,7 +10,7 @@ public class Rook extends Piece {
     public boolean getCanCastle() {
         return this.canCastle;
     }
-
+//
     public Rook(int column, int row, boolean isWhite, ImageIcon image) {
         super(column, row, isWhite, "Rook", image);
     }
