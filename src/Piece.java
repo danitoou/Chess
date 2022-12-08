@@ -43,6 +43,9 @@ public class Piece {
     public JLabel getLabelImage() {
         return labelImage;
     }
+    public void setLabelImage(JLabel picture) {
+        this.labelImage = picture;
+    }
     public void setImage(ImageIcon image) {
         this.image = image;
     }
@@ -136,18 +139,34 @@ public class Piece {
                     this.draw();
                     return;
                 }
-                if(Chess.pieces[column][row].getName() == "Rook" && ((King)this).validMove(column, row)) {
+
+                if(!((King)this).getCanCastle()) break;
+
+                if((((King)this).validMove(column+1, row) && Chess.pieces[column][row] == null) && column != 3) {
                     if(column > this.column) {
                         ((King)this).castle(true);
-                        ((Rook)Chess.pieces[column][row]).castle(true);
+                        ((Rook)Chess.pieces[7][row]).castle(true);
                     }
                     if(column < this.column) {
                         ((King)this).castle(false);
-                        ((Rook)Chess.pieces[column][row]).castle(false);
+                        ((Rook)Chess.pieces[0][row]).castle(false);
                     }
                     Chess.frame.repaint();
                     return;
-                } 
+                }
+
+                if((Chess.pieces[column][row].getName() == "Rook" && ((King)this).validMove(column, row))) {
+                    if(column > this.column) {
+                        ((King)this).castle(true);
+                        ((Rook)Chess.pieces[7][row]).castle(true);
+                    }
+                    if(column < this.column) {
+                        ((King)this).castle(false);
+                        ((Rook)Chess.pieces[0][row]).castle(false);
+                    }
+                    Chess.frame.repaint();
+                    return;
+                }
                 break;
         }
         if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) Chess.pieces[column][row].remove();
