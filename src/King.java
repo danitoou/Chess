@@ -28,7 +28,12 @@ public class King extends Piece {
         int curRow = this.getRow();
         if(Math.abs(curColumn-column) <= 1 && Math.abs(curRow-row) <= 1) return true;
         if(this.legalCastle() > 0) return true;
-        // if(this.legalCastle() > 1 && curColumn > column) return true;
+        return false;
+    }
+
+    public boolean validCastle(boolean shortCastle) {
+        if(this.legalCastle() > 1 && !shortCastle) return true;
+        if((this.legalCastle() == 1 || this.legalCastle() == 3) && shortCastle) return true;
         return false;
     }
 

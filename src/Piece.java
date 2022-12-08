@@ -130,7 +130,6 @@ public class Piece {
                 }
                 break;
             case "King":
-                
                 if(!((King)this).validMove(column, row)) {
                     this.remove();
                     this.column = Chess.copyPiece.column;
@@ -141,8 +140,16 @@ public class Piece {
                 }
 
                 if(!((King)this).getCanCastle()) break;
+                if(!((King)this).validCastle(true) && !((King)this).validCastle(false)) {
+                    this.remove();
+                    this.column = Chess.copyPiece.column;
+                    this.row = Chess.copyPiece.row;
+                    this.labelImage = this.getImageWithLabel();
+                    this.draw();
+                    return;
+                }
 
-                if((((King)this).validMove(column+1, row) && Chess.pieces[column][row] == null) && column != 3) {
+                if((((King)this).validMove(column+1, row) && Chess.pieces[column][row] == null) && column == 2) {
                     if(column > this.column) {
                         ((King)this).castle(true);
                         ((Rook)Chess.pieces[7][row]).castle(true);
@@ -153,6 +160,11 @@ public class Piece {
                     }
                     Chess.frame.repaint();
                     return;
+                }
+
+                if(Chess.pieces[column][row] == null) {
+                    ((King)this).setCanCastle(false);
+                    break;
                 }
 
                 if((Chess.pieces[column][row].getName() == "Rook" && ((King)this).validMove(column, row))) {

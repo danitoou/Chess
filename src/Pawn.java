@@ -26,7 +26,7 @@ public class Pawn extends Piece {
         int curRow = this.getRow();
         if(this.isWhite()) {
             if(curRow-1 == row && curColumn == column && Chess.pieces[column][row] == null) return true;
-            if(curRow-2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row-1] == null && this.firstMove) return true;
+            if(curRow-2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row+1] == null && this.firstMove) return true;
             else if(curRow-1 == row) {
                 if(curColumn-1 == column && Chess.pieces[column][row] != null) return true;
                 if(curColumn+1 == column && Chess.pieces[column][row] != null) return true;
@@ -34,7 +34,7 @@ public class Pawn extends Piece {
         }
         if(!this.isWhite()) {
             if(curRow+1 == row && curColumn == column && Chess.pieces[column][row] == null) return true;
-            if(curRow+2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row+1] == null && this.firstMove) return true;
+            if(curRow+2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row-1] == null && this.firstMove) return true;
             else if(curRow+1 == row) {
                 if(curColumn-1 == column && Chess.pieces[column][row] != null) return true;
                 if(curColumn+1 == column && Chess.pieces[column][row] != null) return true;
