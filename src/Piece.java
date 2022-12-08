@@ -130,31 +130,19 @@ public class Piece {
                 }
                 break;
             case "King":
-                if(!((King)this).validMove(column, row)) {
-                    this.remove();
-                    this.column = Chess.copyPiece.column;
-                    this.row = Chess.copyPiece.row;
-                    this.labelImage = this.getImageWithLabel();
-                    this.draw();
-                    return;
-                }
+                // if(!((King)this).getCanCastle()) break;
+                // if(!((King)this).validCastle(true) && !((King)this).validCastle(false)) {
+                //     this.remove();
+                //     this.column = Chess.copyPiece.column;
+                //     this.row = Chess.copyPiece.row;
+                //     this.labelImage = this.getImageWithLabel();
+                //     this.draw();
+                //     return;
+                // }
 
-                if(!((King)this).getCanCastle()) break;
-                if(!((King)this).validCastle(true) && !((King)this).validCastle(false)) {
-                    this.remove();
-                    this.column = Chess.copyPiece.column;
-                    this.row = Chess.copyPiece.row;
-                    this.labelImage = this.getImageWithLabel();
-                    this.draw();
-                    return;
-                }
-
-                if((((King)this).validMove(column+1, row) && Chess.pieces[column][row] == null) && column == 2) {
-                    if(column > this.column) {
-                        ((King)this).castle(true);
-                        ((Rook)Chess.pieces[7][row]).castle(true);
-                    }
-                    if(column < this.column) {
+                //long castling on empty square
+                if(((King)this).validCastle(false) && column == 2 && row == this.row) {
+                    if(((King)this).legalCastle() > 1) {
                         ((King)this).castle(false);
                         ((Rook)Chess.pieces[0][row]).castle(false);
                     }
@@ -162,23 +150,58 @@ public class Piece {
                     return;
                 }
 
+                //short castling on empty square
+                if(((King)this).validCastle(true) && column == 6 && row == this.row) {
+                    if(((King)this).legalCastle() == 1 || ((King)this).legalCastle() == 3) {
+                        ((King)this).castle(true);
+                        ((Rook)Chess.pieces[7][row]).castle(true);
+                    }
+                    Chess.frame.repaint();
+                    return;
+                }
+
+                //castling on rook
                 if(Chess.pieces[column][row] == null) {
-                    ((King)this).setCanCastle(false);
-                    break;
+                    if(!((King)this).validMove(column, row)) {
+                        this.remove();
+                        this.column = Chess.copyPiece.column;
+                        this.row = Chess.copyPiece.row;
+                        this.labelImage = this.getImageWithLabel();
+                        this.draw();
+                        return;
+                    } else {
+                        ((King)this).setCanCastle(false);
+                        break;
+                    }
+                } else { //castling on rook
+                    if((Chess.pieces[column][row].getName() == "Rook" && ((King)this).legalCastle() > 0)) {
+                        //short castle
+                        if(column > this.column && (((King)this).legalCastle() == 1 || ((King)this).legalCastle() == 3)) {
+                            ((King)this).castle(true);
+                            ((Rook)Chess.pieces[7][row]).castle(true);
+                        }
+                        //long castle
+                        if(column < this.column && ((King)this).legalCastle() > 1) {
+                            ((King)this).castle(false);
+                            ((Rook)Chess.pieces[0][row]).castle(false);
+                        }
+                        Chess.frame.repaint();
+                        return;
+                    }
                 }
 
-                if((Chess.pieces[column][row].getName() == "Rook" && ((King)this).validMove(column, row))) {
-                    if(column > this.column) {
-                        ((King)this).castle(true);
-                        ((Rook)Chess.pieces[7][row]).castle(true);
-                    }
-                    if(column < this.column) {
-                        ((King)this).castle(false);
-                        ((Rook)Chess.pieces[0][row]).castle(false);
-                    }
-                    Chess.frame.repaint();
-                    return;
-                }
+                // if(Chess.pieces[column][row] == null) {
+                //     ((King)this).setCanCastle(false);
+                // }
+
+                // if(!((King)this).validMove(column, row)) {
+                //     this.remove();
+                //     this.column = Chess.copyPiece.column;
+                //     this.row = Chess.copyPiece.row;
+                //     this.labelImage = this.getImageWithLabel();
+                //     this.draw();
+                //     return;
+                // }
                 break;
         }
         if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) Chess.pieces[column][row].remove();
