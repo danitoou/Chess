@@ -74,72 +74,50 @@ public class Piece {
         this.column = column;
     }
 
+    private void resetPiece() {
+        this.remove();
+        this.column = Chess.copyPiece.column;
+        this.row = Chess.copyPiece.row;
+        this.labelImage = this.getImageWithLabel();
+        this.draw();
+    }
+
 
     public void move(int column, int row) {
         switch(this.getName()) {
             case "Pawn":
                 if(!((Pawn)this).validMove(column, row)) {
-                    this.remove();
-                    this.column = Chess.copyPiece.column;
-                    this.row = Chess.copyPiece.row;
-                    this.labelImage = this.getImageWithLabel();
-                    this.draw();
+                    this.resetPiece();
                     return;
                 }
                 break;
             
             case "Knight":
                 if(!((Knight)this).validMove(column, row)) {
-                    this.remove();
-                    this.column = Chess.copyPiece.column;
-                    this.row = Chess.copyPiece.row;
-                    this.labelImage = this.getImageWithLabel();
-                    this.draw();
+                    this.resetPiece();
                     return;
                 }
                 break;
             
             case "Bishop":
                 if(!((Bishop)this).validMove(column, row)) {
-                    this.remove();
-                    this.column = Chess.copyPiece.column;
-                    this.row = Chess.copyPiece.row;
-                    this.labelImage = this.getImageWithLabel();
-                    this.draw();
+                    this.resetPiece();
                     return;
                 }
                 break;
             case "Rook":
                 if(!((Rook)this).validMove(column, row)) {
-                    this.remove();
-                    this.column = Chess.copyPiece.column;
-                    this.row = Chess.copyPiece.row;
-                    this.labelImage = this.getImageWithLabel();
-                    this.draw();
+                    this.resetPiece();
                     return;
                 }
                 break;
             case "Queen":
                 if(!((Queen)this).validMove(column, row)) {
-                    this.remove();
-                    this.column = Chess.copyPiece.column;
-                    this.row = Chess.copyPiece.row;
-                    this.labelImage = this.getImageWithLabel();
-                    this.draw();
+                    this.resetPiece();
                     return;
                 }
                 break;
             case "King":
-                // if(!((King)this).getCanCastle()) break;
-                // if(!((King)this).validCastle(true) && !((King)this).validCastle(false)) {
-                //     this.remove();
-                //     this.column = Chess.copyPiece.column;
-                //     this.row = Chess.copyPiece.row;
-                //     this.labelImage = this.getImageWithLabel();
-                //     this.draw();
-                //     return;
-                // }
-
                 //long castling on empty square
                 if(((King)this).validCastle(false) && column == 2 && row == this.row) {
                     if(((King)this).legalCastle() > 1) {
@@ -163,11 +141,7 @@ public class Piece {
                 //castling on rook
                 if(Chess.pieces[column][row] == null) {
                     if(!((King)this).validMove(column, row)) {
-                        this.remove();
-                        this.column = Chess.copyPiece.column;
-                        this.row = Chess.copyPiece.row;
-                        this.labelImage = this.getImageWithLabel();
-                        this.draw();
+                        this.resetPiece();
                         return;
                     } else {
                         ((King)this).setCanCastle(false);
@@ -189,31 +163,14 @@ public class Piece {
                         return;
                     }
                 }
-
-                // if(Chess.pieces[column][row] == null) {
-                //     ((King)this).setCanCastle(false);
-                // }
-
-                // if(!((King)this).validMove(column, row)) {
-                //     this.remove();
-                //     this.column = Chess.copyPiece.column;
-                //     this.row = Chess.copyPiece.row;
-                //     this.labelImage = this.getImageWithLabel();
-                //     this.draw();
-                //     return;
-                // }
                 break;
         }
-        if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) Chess.pieces[column][row].remove();
-        else if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() == this.isWhite()) {
-// moves piece where it was
-            this.remove();
-            this.column = Chess.copyPiece.column;
-            this.row = Chess.copyPiece.row;
-            this.labelImage = this.getImageWithLabel();
-            this.draw();
+        if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) Chess.pieces[column][row].remove(); //take
+        else if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() == this.isWhite()) { //same color
+            this.resetPiece();
             return;
         }
+// changes piece variables and redraws the correct image
         Chess.pieces[this.column][this.row] = null;
         this.remove();
         this.column = column;
@@ -221,7 +178,7 @@ public class Piece {
         this.labelImage = this.getImageWithLabel();
         this.draw();
         Chess.pieces[column][row] = this;
-        if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false);
+        if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false); // sets pawn firstmove after its first move
     }
 
     public void movePixel(int x, int y) {
