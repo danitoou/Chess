@@ -71,7 +71,7 @@ public class Piece {
         this.column = column;
     }
 
-//
+
     public void move(int column, int row) {
         switch(this.getName()) {
             case "Pawn":
