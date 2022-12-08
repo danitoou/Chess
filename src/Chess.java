@@ -116,7 +116,7 @@ public class Chess extends JFrame{
         
 
         frame.repaint();
-        JLabel[][] dots = new JLabel[8][8];
+        // JLabel[][] dots = new JLabel[8][8];
         
         frame.addMouseListener(new MouseInputListener(){
             @Override
@@ -147,7 +147,7 @@ public class Chess extends JFrame{
                 currentPiece.move(curX/128, curY/128);
                 currentPiece = null; 
             }
-            //zdr kp
+            
             @Override
             public void mouseEntered(MouseEvent e) {
             }

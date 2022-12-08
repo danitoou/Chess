@@ -28,7 +28,12 @@ public class King extends Piece {
         int curRow = this.getRow();
         if(Math.abs(curColumn-column) <= 1 && Math.abs(curRow-row) <= 1) return true;
         if(this.legalCastle() > 0) return true;
-        // if(this.legalCastle() > 1 && curColumn > column) return true;
+        return false;
+    }
+
+    public boolean validCastle(boolean shortCastle) {
+        if(this.legalCastle() > 1 && !shortCastle) return true;
+        if((this.legalCastle() == 1 || this.legalCastle() == 3) && shortCastle) return true;
         return false;
     }
 
@@ -47,13 +52,12 @@ public class King extends Piece {
         int output = 0;
         //short castle
         if(Chess.pieces[5][curRow] == null && Chess.pieces[6][curRow] == null && this.canCastle && ((Rook)Chess.pieces[7][curRow]).getCanCastle()) output += 1;
+        //long castle
         if(Chess.pieces[1][curRow] == null && Chess.pieces[2][curRow] == null && Chess.pieces[3][curRow] == null && this.canCastle && ((Rook)Chess.pieces[0][curRow]).getCanCastle()) output += 2;
         return output;
     }
 
     public void castle(boolean shortCastle) {
-        this.remove();
-        this.setCanCastle(false);
         if(shortCastle) {
             this.setColumn(6);
             Chess.pieces[4][this.getRow()] = null;
@@ -64,6 +68,9 @@ public class King extends Piece {
             Chess.pieces[4][this.getRow()] = null;
             Chess.pieces[2][this.getRow()] = this;
         }
+        this.setCanCastle(false);
+        this.remove();
+        this.setLabelImage(this.getImageWithLabel());
         this.draw();
     }
 

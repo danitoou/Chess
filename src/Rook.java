@@ -104,7 +104,6 @@ public class Rook extends Piece {
     }
 
     public void castle(boolean shortCastle) {
-        this.remove();
         if(shortCastle) {
             this.setColumn(5);
             Chess.pieces[7][this.getRow()] = null;
@@ -116,6 +115,8 @@ public class Rook extends Piece {
             Chess.pieces[3][this.getRow()] = this;
         }
         this.setCanCastle(false);
+        this.remove();
+        this.setLabelImage(this.getImageWithLabel());
         this.draw();
     }
 
