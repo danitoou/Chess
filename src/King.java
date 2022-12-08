@@ -52,7 +52,7 @@ public class King extends Piece {
     }
 
     public void castle(boolean shortCastle) {
-        this.remove();
+        // this.remove();
         this.setCanCastle(false);
         if(shortCastle) {
             this.setColumn(6);
@@ -64,7 +64,7 @@ public class King extends Piece {
             Chess.pieces[4][this.getRow()] = null;
             Chess.pieces[2][this.getRow()] = this;
         }
-        this.draw();
+        // this.draw();
     }
 
     
