@@ -54,5 +54,12 @@ public class Pawn extends Piece {
         return arr;
     }
 
+    public void promote(int piece) {
+        // 0 - knight
+        // 1 - bishop
+        // 2 - rook
+        // 3 - queen
+    }
+
     
 }

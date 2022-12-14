@@ -105,22 +105,27 @@ public class Piece {
                     return;
                 }
                 break;
+
             case "Rook":
                 if(!((Rook)this).validMove(column, row)) {
                     this.resetPiece();
                     return;
                 }
                 break;
+
             case "Queen":
                 if(!((Queen)this).validMove(column, row)) {
                     this.resetPiece();
                     return;
                 }
                 break;
+    
             case "King":
+                int legalCastle = ((King)this).legalCastle();
+
                 //long castling on empty square
                 if(((King)this).validCastle(false) && column == 2 && row == this.row) {
-                    if(((King)this).legalCastle() > 1) {
+                    if(legalCastle > 1) {
                         ((King)this).castle(false);
                         ((Rook)Chess.pieces[0][row]).castle(false);
                     }
@@ -130,7 +135,7 @@ public class Piece {
 
                 //short castling on empty square
                 if(((King)this).validCastle(true) && column == 6 && row == this.row) {
-                    if(((King)this).legalCastle() == 1 || ((King)this).legalCastle() == 3) {
+                    if(legalCastle == 1 || legalCastle == 3) {
                         ((King)this).castle(true);
                         ((Rook)Chess.pieces[7][row]).castle(true);
                     }
@@ -148,28 +153,31 @@ public class Piece {
                         break;
                     }
                 } else { //castling on rook
-                    if((Chess.pieces[column][row].getName() == "Rook" && ((King)this).legalCastle() > 0)) {
+                    if((Chess.pieces[column][row].getName() == "Rook" && legalCastle > 0)) {
                         //short castle
-                        if(column > this.column && (((King)this).legalCastle() == 1 || ((King)this).legalCastle() == 3)) {
+                        if(column > this.column && (legalCastle == 1 || legalCastle == 3)) {
                             ((King)this).castle(true);
                             ((Rook)Chess.pieces[7][row]).castle(true);
+                            return;
                         }
                         //long castle
-                        if(column < this.column && ((King)this).legalCastle() > 1) {
+                        if(column < this.column && legalCastle > 1) {
                             ((King)this).castle(false);
                             ((Rook)Chess.pieces[0][row]).castle(false);
+                            return;
                         }
-                        Chess.frame.repaint();
-                        return;
                     }
                 }
                 break;
         }
+
+
         if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) Chess.pieces[column][row].remove(); //take
         else if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() == this.isWhite()) { //same color
             this.resetPiece();
             return;
         }
+
 // changes piece variables and redraws the correct image
         Chess.pieces[this.column][this.row] = null;
         this.remove();
@@ -178,6 +186,8 @@ public class Piece {
         this.labelImage = this.getImageWithLabel();
         this.draw();
         Chess.pieces[column][row] = this;
+
+
         if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false); // sets pawn firstmove after its first move
     }
 
