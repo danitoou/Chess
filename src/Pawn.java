@@ -54,11 +54,43 @@ public class Pawn extends Piece {
         return arr;
     }
 
+    public boolean canPromote() {
+        if(this.isWhite()) {
+            if(this.getRow() == 1) return true;
+        }
+        if(!this.isWhite()) {
+            if(this.getRow() == 6) return true;
+        }
+        return false;
+    }
+
     public void promote(int piece) {
         // 0 - knight
         // 1 - bishop
         // 2 - rook
         // 3 - queen
+        switch(piece) {
+            case 0:
+                Chess.pieces[this.getColumn()][this.getRow()] = Knight.make(this.getColumn(), this.getRow(), this.isWhite());
+                this.remove();
+                Chess.pieces[this.getColumn()][this.getRow()].draw();
+                break;
+            case 1:
+                Chess.pieces[this.getColumn()][this.getRow()] = Bishop.make(this.getColumn(), this.getRow(), this.isWhite());
+                this.remove();
+                Chess.pieces[this.getColumn()][this.getRow()].draw();
+                break;
+            case 2:
+                Chess.pieces[this.getColumn()][this.getRow()] = Rook.make(this.getColumn(), this.getRow(), this.isWhite());
+                this.remove();
+                Chess.pieces[this.getColumn()][this.getRow()].draw();
+                break;
+            case 3:
+                Chess.pieces[this.getColumn()][this.getRow()] = Queen.make(this.getColumn(), this.getRow(), this.isWhite());
+                this.remove();
+                Chess.pieces[this.getColumn()][this.getRow()].draw();
+                break;
+        }
     }
 
     

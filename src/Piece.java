@@ -1,5 +1,7 @@
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Image;
 
 public class Piece {
@@ -175,6 +177,38 @@ public class Piece {
         if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) Chess.pieces[column][row].remove(); //take
         else if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() == this.isWhite()) { //same color
             this.resetPiece();
+            return;
+        }
+
+        // pawn promote
+        if(this.getName() == "Pawn" && ((Pawn)this).canPromote() && (row == 0 || row == 7)) {
+            JOptionPane theme_choice = new JOptionPane();
+            theme_choice.setSize(384, 384);
+            theme_choice.setVisible(true);
+            
+            Object[] options = {"Knight", "Bishop", "Rook", "Queen"};
+            
+            int promote = JOptionPane.showOptionDialog(Chess.frame, "Choose a figure to promote to", "Chess", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[3]);
+            if(this.isWhite() && row == 0) {
+                Chess.pieces[this.column][this.row] = null;
+                this.remove();
+                this.column = column;
+                this.row = row;
+                this.labelImage = this.getImageWithLabel();
+                this.draw();
+                Chess.pieces[column][row] = this;
+                ((Pawn)this).promote(promote);
+            }
+            if(!this.isWhite() && row == 7) {
+                Chess.pieces[this.column][this.row] = null;
+                this.remove();
+                this.column = column;
+                this.row = row;
+                this.labelImage = this.getImageWithLabel();
+                this.draw();
+                Chess.pieces[column][row] = this;
+                ((Pawn)this).promote(promote);
+            }
             return;
         }
 
