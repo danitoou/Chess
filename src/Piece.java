@@ -180,37 +180,7 @@ public class Piece {
             return;
         }
 
-        // pawn promote
-        if(this.getName() == "Pawn" && ((Pawn)this).canPromote() && (row == 0 || row == 7)) {
-            JOptionPane theme_choice = new JOptionPane();
-            theme_choice.setSize(384, 384);
-            theme_choice.setVisible(true);
-            
-            Object[] options = {"Knight", "Bishop", "Rook", "Queen"};
-            
-            int promote = JOptionPane.showOptionDialog(Chess.frame, "Choose a figure to promote to", "Chess", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[3]);
-            if(this.isWhite() && row == 0) {
-                Chess.pieces[this.column][this.row] = null;
-                this.remove();
-                this.column = column;
-                this.row = row;
-                this.labelImage = this.getImageWithLabel();
-                this.draw();
-                Chess.pieces[column][row] = this;
-                ((Pawn)this).promote(promote);
-            }
-            if(!this.isWhite() && row == 7) {
-                Chess.pieces[this.column][this.row] = null;
-                this.remove();
-                this.column = column;
-                this.row = row;
-                this.labelImage = this.getImageWithLabel();
-                this.draw();
-                Chess.pieces[column][row] = this;
-                ((Pawn)this).promote(promote);
-            }
-            return;
-        }
+        
 
 // changes piece variables and redraws the correct image
         Chess.pieces[this.column][this.row] = null;
@@ -223,6 +193,23 @@ public class Piece {
 
 
         if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false); // sets pawn firstmove after its first move
+        // pawn promote
+        if(this.getName() == "Pawn" && ((Pawn)this).canPromote() && (row == 0 || row == 7)) {
+            JOptionPane theme_choice = new JOptionPane();
+            theme_choice.setSize(384, 384);
+            theme_choice.setVisible(true);
+            
+            Object[] options = {"Knight", "Bishop", "Rook", "Queen"};
+            
+            int promote = JOptionPane.showOptionDialog(Chess.frame, "Choose a figure to promote to", "Chess", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[3]);
+            if(this.isWhite() && row == 0) {
+                ((Pawn)this).promote(promote);
+            }
+            if(!this.isWhite() && row == 7) {
+                ((Pawn)this).promote(promote);
+            }
+            return;
+        }
     }
 
     public void movePixel(int x, int y) {
