@@ -37,23 +37,26 @@ public class King extends Piece {
         return false;
     }
 
-    public boolean[][] getLegalTiles() {
-        boolean[][] arr = new boolean[8][8];
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                if(this.validMove(x, y)) arr[x][y] = true;
-            }
-        }
-        return arr;
-    }
+    // public boolean[][] getLegalTiles() {
+    //     boolean[][] arr = new boolean[8][8];
+    //     for(int x = 0; x < 8; x++) {
+    //         for(int y = 0; y < 8; y++) {
+    //             if(this.validMove(x, y)) arr[x][y] = true;
+    //         }
+    //     }
+    //     return arr;
+    // }
 
     public int legalCastle() {
         int curRow = this.getRow();
+        boolean isWhite = !this.isWhite();
         int output = 0;
+        boolean shortAttacked = Chess.isNotAttacked(4, curRow, isWhite) && Chess.isNotAttacked(5, curRow, isWhite) && Chess.isNotAttacked(6, curRow, isWhite);
+        boolean longAttacked = Chess.isNotAttacked(2, curRow, isWhite) && Chess.isNotAttacked(3, curRow, isWhite) && Chess.isNotAttacked(4, curRow, isWhite);
         //short castle
-        if(Chess.pieces[5][curRow] == null && Chess.pieces[6][curRow] == null && this.canCastle && ((Rook)Chess.pieces[7][curRow]).getCanCastle()) output += 1;
+        if(Chess.pieces[5][curRow] == null && Chess.pieces[6][curRow] == null && this.canCastle && ((Rook)Chess.pieces[7][curRow]).getCanCastle() && shortAttacked) output += 1;
         //long castle
-        if(Chess.pieces[1][curRow] == null && Chess.pieces[2][curRow] == null && Chess.pieces[3][curRow] == null && this.canCastle && ((Rook)Chess.pieces[0][curRow]).getCanCastle()) output += 2;
+        if(Chess.pieces[1][curRow] == null && Chess.pieces[2][curRow] == null && Chess.pieces[3][curRow] == null && this.canCastle && ((Rook)Chess.pieces[0][curRow]).getCanCastle() && longAttacked) output += 2;
         return output;
     }
 

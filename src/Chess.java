@@ -15,6 +15,17 @@ public class Chess extends JFrame{
     public static Piece copyPiece = currentPiece;
     public static String theme;
 
+    public static boolean isNotAttacked(int column, int row, boolean isWhite) {
+        // if square (column, row) is attacked by a isWhite piece return true
+        for(int x = 0; x < 8; x++) {
+            for(int y = 0; y < 8; y++) {
+                if(pieces[x][y] == null || pieces[x][y].isWhite() != isWhite) continue;
+                if(pieces[x][y].validMove(column, row)) return true;
+            }
+        }
+        return false;
+    }
+
 
     public static void main(String[] args) {
 
@@ -140,6 +151,10 @@ public class Chess extends JFrame{
                 if(currentPiece == null) return;
                 int curX = e.getX();
                 int curY = e.getY();
+                if(curX < 0 || curX > 1024 || curY < 0 || curY > 1024) {
+                    currentPiece.resetPiece();
+                    return;
+                }
                 if(Chess.pieces[curX/128][curY/128] != null && Chess.pieces[curX/128][curY/128].isWhite() == currentPiece.isWhite() && Chess.pieces[curX/128][curY/128].getName() != "Rook") {
                     currentPiece.move(copyPiece.getColumn(), copyPiece.getRow());
                     return;
@@ -153,7 +168,7 @@ public class Chess extends JFrame{
             }
 
             @Override
-            public void mouseExited(MouseEvent e) { 
+            public void mouseExited(MouseEvent e) {
             }
 
             @Override

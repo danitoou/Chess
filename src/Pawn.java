@@ -43,16 +43,16 @@ public class Pawn extends Piece {
         return false;
     }
 
-    public boolean[][] getLegalTiles() {
-        boolean[][] arr = new boolean[8][8];
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                if(this.validMove(x, y)) arr[x][y] = true;
-                else arr[x][y] = false;
-            }
-        }
-        return arr;
-    }
+    // public boolean[][] getLegalTiles() {
+    //     boolean[][] arr = new boolean[8][8];
+    //     for(int x = 0; x < 8; x++) {
+    //         for(int y = 0; y < 8; y++) {
+    //             if(this.validMove(x, y)) arr[x][y] = true;
+    //             else arr[x][y] = false;
+    //         }
+    //     }
+    //     return arr;
+    // }
 
     public boolean canPromote() {
         if(this.isWhite()) {
@@ -64,23 +64,32 @@ public class Pawn extends Piece {
         return false;
     }
 
-    public void promote(int piece) {
+    public void promote(int promote) {
         // 0 - knight
         // 1 - bishop
         // 2 - rook
         // 3 - queen
-        switch(piece) {
+        switch(promote) {
             case 0:
                 Chess.pieces[this.getColumn()][this.getRow()] = Knight.make(this.getColumn(), this.getRow(), this.isWhite());
-            case 1:
-                Chess.pieces[this.getColumn()][this.getRow()] = Bishop.make(this.getColumn(), this.getRow(), this.isWhite());
-            case 2:
-                Chess.pieces[this.getColumn()][this.getRow()] = Rook.make(this.getColumn(), this.getRow(), this.isWhite());
-            case 3:
-                Chess.pieces[this.getColumn()][this.getRow()] = Queen.make(this.getColumn(), this.getRow(), this.isWhite());
-            default:
                 this.remove();
                 Chess.pieces[this.getColumn()][this.getRow()].draw();
+                break;
+            case 1:
+                Chess.pieces[this.getColumn()][this.getRow()] = Bishop.make(this.getColumn(), this.getRow(), this.isWhite());
+                this.remove();
+                Chess.pieces[this.getColumn()][this.getRow()].draw();
+                break;
+            case 2:
+                Chess.pieces[this.getColumn()][this.getRow()] = Rook.make(this.getColumn(), this.getRow(), this.isWhite());
+                this.remove();
+                Chess.pieces[this.getColumn()][this.getRow()].draw();
+                break;
+            case 3:
+                Chess.pieces[this.getColumn()][this.getRow()] = Queen.make(this.getColumn(), this.getRow(), this.isWhite());
+                this.remove();
+                Chess.pieces[this.getColumn()][this.getRow()].draw();
+                break;
         }
     }
 

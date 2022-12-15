@@ -76,7 +76,7 @@ public class Piece {
         this.column = column;
     }
 
-    private void resetPiece() {
+    public void resetPiece() {
         this.remove();
         this.column = Chess.copyPiece.column;
         this.row = Chess.copyPiece.row;
@@ -201,7 +201,7 @@ public class Piece {
             
             Object[] options = {"Knight", "Bishop", "Rook", "Queen"};
             
-            int promote = JOptionPane.showOptionDialog(Chess.frame, "Choose a figure to promote to", "Chess", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[3]);
+            int promote = JOptionPane.showOptionDialog(Chess.frame, "Choose a figure to promote to", "Chess", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if(this.isWhite() && row == 0) {
                 ((Pawn)this).promote(promote);
             }
@@ -210,6 +210,81 @@ public class Piece {
             }
             return;
         }
+    }
+
+
+    // public boolean[][] getLegalTiles() {
+    //     boolean[][] arr = new boolean[8][8];
+    //     switch(this.getName()) {
+    //         case "Pawn":
+    //             for(int x = 0; x < 8; x++) {
+    //                 for(int y = 0; y < 8; y++) {
+    //                     if(((Pawn)this).validMove(x, y)) arr[x][y] = true;
+    //                     else arr[x][y] = false;
+    //                 }
+    //             }
+    //             return arr;
+    //         case "Knight":
+    //             for(int x = 0; x < 8; x++) {
+    //                 for(int y = 0; y < 8; y++) {
+    //                     if(((Knight)this).validMove(x, y)) arr[x][y] = true;
+    //                     else arr[x][y] = false;
+    //                 }
+    //             }
+    //             return arr;
+    //         case "Bishop":
+    //             for(int x = 0; x < 8; x++) {
+    //                 for(int y = 0; y < 8; y++) {
+    //                     if(((Bishop)this).validMove(x, y)) arr[x][y] = true;
+    //                     else arr[x][y] = false;
+    //                 }
+    //             }
+    //             return arr;
+    //         case "Rook":
+    //             for(int x = 0; x < 8; x++) {
+    //                 for(int y = 0; y < 8; y++) {
+    //                     if(((Rook)this).validMove(x, y)) arr[x][y] = true;
+    //                     else arr[x][y] = false;
+    //                 }
+    //             }
+    //             return arr;
+    //         case "Queen":
+    //             for(int x = 0; x < 8; x++) {
+    //                 for(int y = 0; y < 8; y++) {
+    //                     if(((Queen)this).validMove(x, y)) arr[x][y] = true;
+    //                     else arr[x][y] = false;
+    //                 }
+    //             }
+    //                 return arr;
+    //         case "King":
+    //             for(int x = 0; x < 8; x++) {
+    //                 for(int y = 0; y < 8; y++) {
+    //                     if(((King)this).validMove(x, y)) arr[x][y] = true;
+    //                     else arr[x][y] = false;
+    //                 }
+    //             }
+    //                 return arr;
+    //     }
+    //     return arr;
+        
+    // }
+
+    public boolean validMove(int column, int row) {
+        switch(this.getName()) {
+            case "Pawn":
+                return ((Pawn)this).validMove(column, row);
+            case "Knight":
+                return ((Knight)this).validMove(column, row);
+            case "Bishop":
+                return ((Bishop)this).validMove(column, row);
+            case "Rook":
+                return ((Rook)this).validMove(column, row);
+            case "Queen":
+                return ((Queen)this).validMove(column, row);
+            case "King":
+                return ((King)this).validMove(column, row);
+        }
+        return false;
     }
 
     public void movePixel(int x, int y) {

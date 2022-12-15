@@ -19,15 +19,15 @@ public class Queen extends Piece {
         return false;
     }
 
-    public boolean[][] getLegalTiles() {
-        boolean[][] arr = new boolean[8][8];
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                if(this.validMove(x, y)) arr[x][y] = true;
-            }
-        }
-        return arr;
-    }
+    // public boolean[][] getLegalTiles() {
+    //     boolean[][] arr = new boolean[8][8];
+    //     for(int x = 0; x < 8; x++) {
+    //         for(int y = 0; y < 8; y++) {
+    //             if(this.validMove(x, y)) arr[x][y] = true;
+    //         }
+    //     }
+    //     return arr;
+    // }
 
     
 }
