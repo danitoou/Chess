@@ -170,6 +170,12 @@ public class Piece {
                         }
                     }
                 }
+
+                if(!((King)this).validMove(column, row)) {
+                    this.resetPiece();
+                    return;
+                }
+
                 break;
         }
 

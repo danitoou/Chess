@@ -51,12 +51,14 @@ public class King extends Piece {
         int curRow = this.getRow();
         boolean isWhite = !this.isWhite();
         int output = 0;
-        boolean shortAttacked = Chess.isNotAttacked(4, curRow, isWhite) && Chess.isNotAttacked(5, curRow, isWhite) && Chess.isNotAttacked(6, curRow, isWhite);
-        boolean longAttacked = Chess.isNotAttacked(2, curRow, isWhite) && Chess.isNotAttacked(3, curRow, isWhite) && Chess.isNotAttacked(4, curRow, isWhite);
+        // boolean shortAttacked = Chess.isNotAttacked(4, curRow, isWhite) && Chess.isNotAttacked(5, curRow, isWhite) && Chess.isNotAttacked(6, curRow, isWhite);
+        // boolean longAttacked = Chess.isNotAttacked(2, curRow, isWhite) && Chess.isNotAttacked(3, curRow, isWhite) && Chess.isNotAttacked(4, curRow, isWhite);
+        boolean shortAttacked = Chess.checkCheck(4, curRow, isWhite) || Chess.checkCheck(5, curRow, isWhite) || Chess.checkCheck(6, curRow, isWhite);
+        boolean longAttacked = Chess.checkCheck(2, curRow, isWhite) || Chess.checkCheck(3, curRow, isWhite) || Chess.checkCheck(4, curRow, isWhite);
         //short castle
-        if(Chess.pieces[5][curRow] == null && Chess.pieces[6][curRow] == null && this.canCastle && ((Rook)Chess.pieces[7][curRow]).getCanCastle() && shortAttacked) output += 1;
+        if(Chess.pieces[5][curRow] == null && Chess.pieces[6][curRow] == null && this.canCastle && ((Rook)Chess.pieces[7][curRow]).getCanCastle() && !shortAttacked) output += 1;
         //long castle
-        if(Chess.pieces[1][curRow] == null && Chess.pieces[2][curRow] == null && Chess.pieces[3][curRow] == null && this.canCastle && ((Rook)Chess.pieces[0][curRow]).getCanCastle() && longAttacked) output += 2;
+        if(Chess.pieces[1][curRow] == null && Chess.pieces[2][curRow] == null && Chess.pieces[3][curRow] == null && this.canCastle && ((Rook)Chess.pieces[0][curRow]).getCanCastle() && !longAttacked) output += 2;
         return output;
     }
 
@@ -75,6 +77,95 @@ public class King extends Piece {
         this.remove();
         this.setLabelImage(this.getImageWithLabel());
         this.draw();
+    }
+
+    public boolean checkCheck() {
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
+        // check for knight
+        if(curRow - 2 >= 0) {
+            if(curColumn - 1 >= 0) {
+                if(Chess.pieces[curColumn-1][curRow-2].getName() == "Knight" && Chess.pieces[curColumn-1][curRow-2].isWhite() != this.isWhite()) return true;
+            }
+            if(curColumn + 1 < 8) {
+                if(Chess.pieces[curColumn+1][curRow-2].getName() == "Knight" && Chess.pieces[curColumn+1][curRow-2].isWhite() != this.isWhite()) return true;
+            }
+        }
+        if(curRow + 2 < 8) {
+            if(curColumn - 1 >= 0) {
+                if(Chess.pieces[curColumn-1][curRow+2].getName() == "Knight" && Chess.pieces[curColumn-1][curRow+2].isWhite() != this.isWhite()) return true;
+            }
+            if(curColumn + 1 < 8) {
+                if(Chess.pieces[curColumn+1][curRow+2].getName() == "Knight" && Chess.pieces[curColumn+1][curRow+2].isWhite() != this.isWhite()) return true;
+            }
+        }
+        // <-
+        for(int x = curColumn-1; x >= 0; x--) {
+            if(Chess.pieces[x][curRow] != null) {
+                if(Chess.pieces[x][curRow].validMove(curColumn, curRow)) return true;
+                else break;
+            }
+        }
+        // ->
+        for(int x = curColumn+1; x < 8; x++) {
+            if(Chess.pieces[x][curRow] != null) {
+                if(Chess.pieces[x][curRow].validMove(curColumn, curRow)) return true;
+                else break;
+            }
+        }
+        // ^
+        for(int y = curRow-1; y >= 0; y--) {
+            if(Chess.pieces[curColumn][y] != null) {
+                if(Chess.pieces[curColumn][y].validMove(curColumn, curRow)) return true;
+                else break;
+            }
+        }
+        // v
+        for(int y = curRow+1; y < 8; y++) {
+            if(Chess.pieces[curColumn][y] != null) {
+                if(Chess.pieces[curColumn][y].validMove(curColumn, curRow)) return true;
+                else break;
+            }
+        }
+        // down left
+        for(int x = curColumn-1; x >= 0; x--) {
+            int y = curRow + curColumn - x;
+            if(Chess.pieces[x][y] != null) {
+                if(Chess.pieces[x][y].validMove(curColumn, curRow)) return true;
+                else break;
+            }
+        }
+        // up right
+        for(int x = curColumn+1; x < 8; x++) {
+            int y = curRow + curColumn - x;
+            if(Chess.pieces[x][y] != null) {
+                if(Chess.pieces[x][y].validMove(curColumn, curRow)) return true;
+                else break;
+            }
+        }
+        //up left
+        int y = curRow-1;
+        for(int x = curColumn-1; x > 0; x--) {
+            if(y < 0 || y > 7) break;
+            if(Chess.pieces[x][y] != null) {
+                if(Chess.pieces[x][y].validMove(curColumn, curRow)) return true;
+                else break;
+            }
+            y--;
+        }
+        //down right
+        y = curRow+1;
+        for(int x = curColumn+1; x < 8; x++) {
+            if(y < 0 || y > 7) break;
+            if(Chess.pieces[x][y] != null) {
+                if(Chess.pieces[x][y].validMove(curColumn, curRow)) return true;
+                else break;
+            }
+            y++;
+        }
+
+
+        return false;
     }
 
     
