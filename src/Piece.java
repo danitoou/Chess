@@ -187,35 +187,40 @@ public class Piece {
             this.resetPiece();
             return;
         }
-
+        Piece p = new Pawn(0, 0, false);
         if(this.name == "King") {
-            Chess.pieces[this.column][this.row] = null;
-            Chess.pieces[column][row] = this;
+            p = Chess.pieces_copy[column][row];
+            Chess.pieces_copy[this.column][this.row] = null;
+            Chess.pieces_copy[column][row] = this;
             
             if(this.isWhite) Chess.White_King = (King)this;
             else Chess.Black_King = (King)this;
         }
 
-        Chess.pieces[this.column][this.row] = null;
-        Chess.pieces[column][row] = this;
-        if(this.isWhite && this.getName() == "King" && Chess.checkCheck(column, row, !this.isWhite())) {
+        Chess.pieces_copy[this.column][this.row] = null;
+        Chess.pieces_copy[column][row] = this;
+        if(this.getName() == "King" && Chess.checkCheck(column, row, !this.isWhite())) {
             this.resetPiece();
-            Chess.pieces[this.column][this.row] = this;
-            Chess.pieces[column][row] = null;
+            Chess.pieces_copy[this.column][this.row] = this;
+            Chess.pieces_copy[column][row] = p;
+            if(p != null) {
+                Chess.pieces[column][row] = p;
+                p.draw();
+            }
             return;
         }
         if(this.isWhite) {
             if(Chess.checkCheck(Chess.White_King.getColumn(), Chess.White_King.getRow(), false)) {
                 this.resetPiece();
-                Chess.pieces[this.column][this.row] = this;
-                Chess.pieces[column][row] = null;
+                Chess.pieces_copy[this.column][this.row] = this;
+                Chess.pieces_copy[column][row] = null;
                 return;
             }
         } else {
             if(Chess.checkCheck(Chess.Black_King.getColumn(), Chess.Black_King.getRow(), true)) {
                 this.resetPiece();
-                Chess.pieces[this.column][this.row] = this;
-                Chess.pieces[column][row] = null;
+                Chess.pieces_copy[this.column][this.row] = this;
+                Chess.pieces_copy[column][row] = null;
                 return;
             }
         }

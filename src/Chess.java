@@ -24,6 +24,7 @@ public class Chess extends JFrame{
     public static String theme;
     public static King White_King = new King(4, 7, true);
     public static King Black_King = new King(4, 0, false);
+    public static Piece[][] pieces_copy = new Piece[8][8];
     
 
     public static boolean checkCheck(int column, int row, boolean isWhite) {
@@ -33,7 +34,7 @@ public class Chess extends JFrame{
             for (int j : arr) {
                 if((column + i + row + j) % 2 != (column + row) % 2) {
                     try {
-                        Piece k = Chess.pieces[column+i][row+j]; 
+                        Piece k = Chess.pieces_copy[column+i][row+j]; 
                         if(k != null && k.getName() == "Knight" && k.isWhite() == isWhite) return true;
                     } catch(IndexOutOfBoundsException e) {
                         continue;
@@ -46,7 +47,7 @@ public class Chess extends JFrame{
         // <-
         Piece p;
         for(int x = column-1; x >= 0; x--) {
-            p = Chess.pieces[x][row];
+            p = Chess.pieces_copy[x][row];
             if(p != null) {
                 if((p.getName() == "Rook" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
@@ -54,7 +55,7 @@ public class Chess extends JFrame{
         }
         // ->
         for(int x = column+1; x < 8; x++) {
-            p = Chess.pieces[x][row];
+            p = Chess.pieces_copy[x][row];
             if(p != null) {
                 if((p.getName() == "Rook" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
@@ -62,7 +63,7 @@ public class Chess extends JFrame{
         }
         // ^
         for(int y = row-1; y >= 0; y--) {
-            p = Chess.pieces[column][y];
+            p = Chess.pieces_copy[column][y];
             if(p != null) {
                 if((p.getName() == "Rook" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
@@ -70,7 +71,7 @@ public class Chess extends JFrame{
         }
         // v
         for(int y = row+1; y < 8; y++) {
-            p = Chess.pieces[column][y];
+            p = Chess.pieces_copy[column][y];
             if(p != null) {
                 if((p.getName() == "Rook" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
@@ -80,7 +81,7 @@ public class Chess extends JFrame{
         for(int x = column-1; x >= 0; x--) {
             int y = row + column - x;
             if(y < 0 || y > 7) break;
-            p = Chess.pieces[x][y];
+            p = Chess.pieces_copy[x][y];
             if(p != null) {
                 if((p.getName() == "Bishop" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
@@ -90,7 +91,7 @@ public class Chess extends JFrame{
         for(int x = column+1; x < 8; x++) {
             int y = row + column - x;
             if(y < 0 || y > 7) break;
-            p = Chess.pieces[x][y];
+            p = Chess.pieces_copy[x][y];
             if(p != null) {
                 if((p.getName() == "Bishop" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
@@ -100,7 +101,7 @@ public class Chess extends JFrame{
         int y = row - 1;
         for(int x = column-1; x > 0; x--) {
             if(y < 0 || y > 7) break;
-            p = Chess.pieces[x][y];
+            p = Chess.pieces_copy[x][y];
             if(p != null) {
                 if((p.getName() == "Bishop" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
@@ -111,7 +112,7 @@ public class Chess extends JFrame{
         y = row + 1;
         for(int x = column+1; x < 8; x++) {
             if(y < 0 || y > 7) break;
-            p = Chess.pieces[x][y];
+            p = Chess.pieces_copy[x][y];
             if(p != null) {
                 if((p.getName() == "Bishop" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
@@ -124,12 +125,12 @@ public class Chess extends JFrame{
         else pawnRow = row-1;
 
         try {
-            p = Chess.pieces[column-1][pawnRow];
+            p = Chess.pieces_copy[column-1][pawnRow];
             if(p.getName() == "Pawn" && p.isWhite() == isWhite) return true;
         } catch (Exception e) {}
 
         try {
-            p = Chess.pieces[column+1][pawnRow];
+            p = Chess.pieces_copy[column+1][pawnRow];
             if(p.getName() == "Pawn" && p.isWhite() == isWhite) return true;
         } catch (Exception e) {}
         
@@ -212,6 +213,8 @@ public class Chess extends JFrame{
         pieces[7][7] = new Rook(7, 7, true);
         pieces[7][7].draw();
 
+        pieces_copy = pieces.clone();
+
 // board
         // JPanel[][] panel_board = new JPanel[8][8];
         // for(int x = 0; x < 8; x++) {
@@ -271,6 +274,8 @@ public class Chess extends JFrame{
                 } 
                 currentPiece.move(curX/128, curY/128);
                 currentPiece = null;
+                pieces_copy = pieces.clone();
+                frame.repaint();
                 // AudioInputStream audioInputStream;
                 // String moveSound = "src\\sounds\\move.wav";
                 
@@ -280,7 +285,6 @@ public class Chess extends JFrame{
                 //     clip.open(audioInputStream);
                 //     clip.start();
                 // } catch (Exception e2) {
-
                 //     e2.printStackTrace();
                 // }
                 
