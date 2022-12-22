@@ -14,125 +14,116 @@ public class Chess extends JFrame{
     public static Piece currentPiece;
     public static Piece copyPiece = currentPiece;
     public static String theme;
-
-    public static boolean isNotAttacked(int column, int row, boolean isWhite) {
-        // if square (column, row) is attacked by a isWhite piece return true
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                if(pieces[x][y] == null || pieces[x][y].isWhite() != isWhite) continue;
-                if(pieces[x][y].validMove(column, row)) return true;
-            }
-        }
-        return false;
-    }
+    public static King White_King = new King(4, 7, true);;
+    public static King Black_King = new King(4, 0, false);;
 
     public static boolean checkCheck(int column, int row, boolean isWhite) {
-        // int curColumn = this.getColumn();
-        // int curRow = this.getRow();
-        int curColumn = column;
-        int curRow = row;
 
         // check for knight
-        if(curRow - 2 >= 0) {
-            if(curColumn - 1 >= 0) {
-                if(Chess.pieces[curColumn-1][curRow-2] != null) {
-                    if(Chess.pieces[curColumn-1][curRow-2].getName() == "Knight" && Chess.pieces[curColumn-1][curRow-2].isWhite() == isWhite) return true;
-                }
-            }
-            if(curColumn + 1 < 8) {
-                if(Chess.pieces[curColumn+1][curRow-2] != null) {
-                    if(Chess.pieces[curColumn+1][curRow-2].getName() == "Knight" && Chess.pieces[curColumn+1][curRow-2].isWhite() == isWhite) return true;
-                }
-            }
-        }
-        if(curRow + 2 < 8) {
-            if(curColumn - 1 >= 0) {
-                if(Chess.pieces[curColumn-1][curRow+2] != null) {
-                    if(Chess.pieces[curColumn-1][curRow+2].getName() == "Knight" && Chess.pieces[curColumn-1][curRow+2].isWhite() == isWhite) return true;
-                }
-            }
-            if(curColumn + 1 < 8) {
-                if(Chess.pieces[curColumn-1][curRow+2] != null) {
-                    if(Chess.pieces[curColumn-1][curRow+2].getName() == "Knight" && Chess.pieces[curColumn+1][curRow+2].isWhite() == isWhite) return true;
+        int[] arr = {-2, -1, 1, 2};
+        for (int i : arr) {
+            for (int j : arr) {
+                if((i + j) % 2 != (column + row) % 2) {
+                    try {
+                        Piece k = Chess.pieces[column+i][row+j]; 
+                        if(k != null && k.getName() == "Knight" && k.isWhite() == isWhite) return true;
+                    } catch(IndexOutOfBoundsException e) {
+                        continue;
+                    }
+                    
                 }
             }
         }
-        //TO-DO more knight positions
+
         // <-
-        for(int x = curColumn-1; x >= 0; x--) {
-            if(Chess.pieces[x][curRow] != null) {
-                // if(Chess.pieces[x][curRow].validMove(curColumn, curRow) && Chess.pieces[x][curRow].isWhite() == isWhite) return true;
-                if((Chess.pieces[x][curRow].getName() == "Rook" || Chess.pieces[x][curRow].getName() == "Queen") && Chess.pieces[x][curRow].isWhite() == isWhite) return true;
+        Piece p;
+        for(int x = column-1; x >= 0; x--) {
+            p = Chess.pieces[x][row];
+            if(p != null) {
+                if((p.getName() == "Rook" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
             }
         }
         // ->
-        for(int x = curColumn+1; x < 8; x++) {
-            if(Chess.pieces[x][curRow] != null) {
-                // if(Chess.pieces[x][curRow].validMove(curColumn, curRow) && Chess.pieces[x][curRow].isWhite() == isWhite) return true;
-                if((Chess.pieces[x][curRow].getName() == "Rook" || Chess.pieces[x][curRow].getName() == "Queen") && Chess.pieces[x][curRow].isWhite() == isWhite) return true;
+        for(int x = column+1; x < 8; x++) {
+            p = Chess.pieces[x][row];
+            if(p != null) {
+                if((p.getName() == "Rook" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
             }
         }
         // ^
-        for(int y = curRow-1; y >= 0; y--) {
-            if(Chess.pieces[curColumn][y] != null) {
-                // if(Chess.pieces[curColumn][y].validMove(curColumn, curRow) && Chess.pieces[curColumn][y].isWhite() == isWhite) return true;
-                if((Chess.pieces[curColumn][y].getName() == "Rook" || Chess.pieces[curColumn][y].getName() == "Queen") && Chess.pieces[curColumn][y].isWhite() == isWhite) return true;
+        for(int y = row-1; y >= 0; y--) {
+            p = Chess.pieces[column][y];
+            if(p != null) {
+                if((p.getName() == "Rook" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
             }
         }
         // v
-        for(int y = curRow+1; y < 8; y++) {
-            if(Chess.pieces[curColumn][y] != null) {
-                // if(Chess.pieces[curColumn][y].validMove(curColumn, curRow) && Chess.pieces[curColumn][y].isWhite() == isWhite) return true;
-                if((Chess.pieces[curColumn][y].getName() == "Rook" || Chess.pieces[curColumn][y].getName() == "Queen") && Chess.pieces[curColumn][y].isWhite() == isWhite) return true;
+        for(int y = row+1; y < 8; y++) {
+            p = Chess.pieces[column][y];
+            if(p != null) {
+                if((p.getName() == "Rook" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
             }
         }
         // down left
-        for(int x = curColumn-1; x >= 0; x--) {
-            int y = curRow + curColumn - x;
+        for(int x = column-1; x >= 0; x--) {
+            int y = row + column - x;
             if(y < 0 || y > 7) break;
-            if(Chess.pieces[x][y] != null) {
-                // if(Chess.pieces[x][y].validMove(curColumn, curRow) && Chess.pieces[x][y].isWhite() == isWhite) return true;
-                if((Chess.pieces[x][y].getName() == "Bishop" || Chess.pieces[x][y].getName() == "Queen") && Chess.pieces[x][y].isWhite() == isWhite) return true;
+            p = Chess.pieces[x][y];
+            if(p != null) {
+                if((p.getName() == "Bishop" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
             }
         }
         // up right
-        for(int x = curColumn+1; x < 8; x++) {
-            int y = curRow + curColumn - x;
+        for(int x = column+1; x < 8; x++) {
+            int y = row + column - x;
             if(y < 0 || y > 7) break;
-            if(Chess.pieces[x][y] != null) {
-                // if(Chess.pieces[x][y].validMove(curColumn, curRow) && Chess.pieces[x][y].isWhite() == isWhite) return true;
-                if((Chess.pieces[x][y].getName() == "Bishop" || Chess.pieces[x][y].getName() == "Queen") && Chess.pieces[x][y].isWhite() == isWhite) return true;
+            p = Chess.pieces[x][y];
+            if(p != null) {
+                if((p.getName() == "Bishop" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
             }
         }
         //up left
-        int y = curRow-1;
-        for(int x = curColumn-1; x > 0; x--) {
+        int y = row - 1;
+        for(int x = column-1; x > 0; x--) {
             if(y < 0 || y > 7) break;
-            if(Chess.pieces[x][y] != null) {
-                // if(Chess.pieces[x][y].validMove(curColumn, curRow) && Chess.pieces[x][y].isWhite() == isWhite) return true;
-                if((Chess.pieces[x][y].getName() == "Bishop" || Chess.pieces[x][y].getName() == "Queen") && Chess.pieces[x][y].isWhite() == isWhite) return true;
+            p = Chess.pieces[x][y];
+            if(p != null) {
+                if((p.getName() == "Bishop" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
             }
             y--;
         }
         //down right
-        y = curRow+1;
-        for(int x = curColumn+1; x < 8; x++) {
+        y = row + 1;
+        for(int x = column+1; x < 8; x++) {
             if(y < 0 || y > 7) break;
-            if(Chess.pieces[x][y] != null) {
-                // if(Chess.pieces[x][y].validMove(curColumn, curRow) && Chess.pieces[x][y].isWhite() == isWhite) return true;
-                if((Chess.pieces[x][y].getName() == "Bishop" || Chess.pieces[x][y].getName() == "Queen") && Chess.pieces[x][y].isWhite() == isWhite) return true;
+            p = Chess.pieces[x][y];
+            if(p != null) {
+                if((p.getName() == "Bishop" || p.getName() == "Queen") && p.isWhite() == isWhite) return true;
                 else break;
             }
             y++;
         }
 
+        int pawnRow;
+        if(isWhite) pawnRow = row+1;
+        else pawnRow = row-1;
+
+        try {
+            p = Chess.pieces[column-1][pawnRow];
+            if(p.getName() == "Pawn" && p.isWhite() == isWhite) return true;
+        } catch (Exception e) {}
+
+        try {
+            p = Chess.pieces[column+1][pawnRow];
+            if(p.getName() == "Pawn" && p.isWhite() == isWhite) return true;
+        } catch (Exception e) {}
         
         return false;
     }
@@ -171,46 +162,46 @@ public class Chess extends JFrame{
 
         for(int y = 1; y < 8; y += 5) {
             for(int x = 0; x < 8; x++) {
-                if(y == 1) pieces[x][y] = Pawn.make(x, y, false);
-                else pieces[x][y] = Pawn.make(x, y, true);
+                if(y == 1) pieces[x][y] = new Pawn(x, y, false);
+                else pieces[x][y] = new Pawn(x, y, true);
                 pieces[x][y].draw();
             }
         }
 
 // black pieces
-        pieces[0][0] = Rook.make(0, 0, false);
+        pieces[0][0] = new Rook(0, 0, false);
         pieces[0][0].draw();
-        pieces[1][0] = Knight.make(1, 0, false);
+        pieces[1][0] = new Knight(1, 0, false);
         pieces[1][0].draw();
-        pieces[2][0] = Bishop.make(2, 0, false);
+        pieces[2][0] = new Bishop(2, 0, false);
         pieces[2][0].draw();
-        pieces[4][0] = King.make(4, 0, false);
+        pieces[4][0] = new King(4, 0, false);
         pieces[4][0].draw();
-        pieces[3][0] = Queen.make(3, 0, false);
+        pieces[3][0] = new Queen(3, 0, false);
         pieces[3][0].draw();
-        pieces[5][0] = Bishop.make(5, 0, false);
+        pieces[5][0] = new Bishop(5, 0, false);
         pieces[5][0].draw();
-        pieces[6][0] = Knight.make(6, 0, false);
+        pieces[6][0] = new Knight(6, 0, false);
         pieces[6][0].draw();
-        pieces[7][0] = Rook.make(7, 0, false);
+        pieces[7][0] = new Rook(7, 0, false);
         pieces[7][0].draw();
 
 // white pieces
-        pieces[0][7] = Rook.make(0, 7, true);
+        pieces[0][7] = new Rook(0, 7, true);
         pieces[0][7].draw();
-        pieces[1][7] = Knight.make(1, 7, true);
+        pieces[1][7] = new Knight(1, 7, true);
         pieces[1][7].draw();
-        pieces[2][7] = Bishop.make(2, 7, true);
+        pieces[2][7] = new Bishop(2, 7, true);
         pieces[2][7].draw();
-        pieces[4][7] = King.make(4, 7, true);
+        pieces[4][7] = new King(4, 7, true);
         pieces[4][7].draw();
-        pieces[3][7] = Queen.make(3, 7, true);
+        pieces[3][7] = new Queen(3, 7, true);
         pieces[3][7].draw();
-        pieces[5][7] = Bishop.make(5, 7, true);
+        pieces[5][7] = new Bishop(5, 7, true);
         pieces[5][7].draw();
-        pieces[6][7] = Knight.make(6, 7, true);
+        pieces[6][7] = new Knight(6, 7, true);
         pieces[6][7].draw();
-        pieces[7][7] = Rook.make(7, 7, true);
+        pieces[7][7] = new Rook(7, 7, true);
         pieces[7][7].draw();
 
 // board

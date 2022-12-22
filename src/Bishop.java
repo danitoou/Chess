@@ -1,15 +1,8 @@
-import javax.swing.ImageIcon;
 
 public class Bishop extends Piece {
 
-    public Bishop(int column, int row, boolean isWhite, ImageIcon image) {
-        super(column, row, isWhite, "Bishop", image);
-    }
-
-    public static Bishop make(int column, int row, boolean isWhite) {
-        ImageIcon image = new ImageIcon("src\\images\\" + Chess.theme + "White_Bishop.png");
-        if(!isWhite) image = new ImageIcon("src\\images\\" + Chess.theme + "Black_Bishop.png");
-        return (Bishop)new Bishop(column, row, isWhite, image);
+    public Bishop(int column, int row, boolean isWhite) {
+        super(column, row, isWhite, "Bishop");
     }
 
     private int downLeft(Bishop bishop) {

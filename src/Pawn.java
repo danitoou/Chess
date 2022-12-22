@@ -1,4 +1,3 @@
-import javax.swing.ImageIcon;
 
 public class Pawn extends Piece {
     private boolean firstMove = true;
@@ -11,14 +10,8 @@ public class Pawn extends Piece {
         return firstMove;
     }
 
-    public Pawn(int column, int row, boolean isWhite, ImageIcon image) {
-        super(column, row, isWhite, "Pawn", image);
-    }
-
-    public static Pawn make(int column, int row, boolean isWhite) {
-        ImageIcon image = new ImageIcon("src\\images\\" + Chess.theme + "White_Pawn.png");
-        if(!isWhite) image = new ImageIcon("src\\images\\" + Chess.theme + "Black_Pawn.png");
-        return (Pawn)new Pawn(column, row, isWhite, image);
+    public Pawn(int column, int row, boolean isWhite) {
+        super(column, row, isWhite, "Pawn");
     }
 
     public boolean validMove(int column, int row) {
@@ -71,22 +64,22 @@ public class Pawn extends Piece {
         // 3 - queen
         switch(promote) {
             case 0:
-                Chess.pieces[this.getColumn()][this.getRow()] = Knight.make(this.getColumn(), this.getRow(), this.isWhite());
+                Chess.pieces[this.getColumn()][this.getRow()] = new Knight(this.getColumn(), this.getRow(), this.isWhite());
                 this.remove();
                 Chess.pieces[this.getColumn()][this.getRow()].draw();
                 break;
             case 1:
-                Chess.pieces[this.getColumn()][this.getRow()] = Bishop.make(this.getColumn(), this.getRow(), this.isWhite());
+                Chess.pieces[this.getColumn()][this.getRow()] = new Bishop(this.getColumn(), this.getRow(), this.isWhite());
                 this.remove();
                 Chess.pieces[this.getColumn()][this.getRow()].draw();
                 break;
             case 2:
-                Chess.pieces[this.getColumn()][this.getRow()] = Rook.make(this.getColumn(), this.getRow(), this.isWhite());
+                Chess.pieces[this.getColumn()][this.getRow()] = new Rook(this.getColumn(), this.getRow(), this.isWhite());
                 this.remove();
                 Chess.pieces[this.getColumn()][this.getRow()].draw();
                 break;
             case 3:
-                Chess.pieces[this.getColumn()][this.getRow()] = Queen.make(this.getColumn(), this.getRow(), this.isWhite());
+                Chess.pieces[this.getColumn()][this.getRow()] = new Queen(this.getColumn(), this.getRow(), this.isWhite());
                 this.remove();
                 Chess.pieces[this.getColumn()][this.getRow()].draw();
                 break;

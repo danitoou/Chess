@@ -1,4 +1,3 @@
-import javax.swing.ImageIcon;
 
 public class Rook extends Piece {
     private boolean canCastle = true;
@@ -11,14 +10,8 @@ public class Rook extends Piece {
         return this.canCastle;
     }
 
-    public Rook(int column, int row, boolean isWhite, ImageIcon image) {
-        super(column, row, isWhite, "Rook", image);
-    }
-
-    public static Rook make(int column, int row, boolean isWhite) {
-        ImageIcon image = new ImageIcon("src\\images\\" + Chess.theme + "White_Rook.png");
-        if(!isWhite) image = new ImageIcon("src\\images\\" + Chess.theme + "Black_Rook.png");
-        return new Rook(column, row, isWhite, image);
+    public Rook(int column, int row, boolean isWhite) {
+        super(column, row, isWhite, "Rook");
     }
 
     private int left(Rook rook) {

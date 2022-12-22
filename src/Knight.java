@@ -1,15 +1,8 @@
-import javax.swing.ImageIcon;
 
 public class Knight extends Piece {
 
-    public Knight(int column, int row, boolean isWhite, ImageIcon image) {
-        super(column, row, isWhite, "Knight", image);
-    }
-
-    public static Knight make(int column, int row, boolean isWhite) {
-        ImageIcon image = new ImageIcon("src\\images\\" + Chess.theme + "White_Knight.png");
-        if(!isWhite) image = new ImageIcon("src\\images\\" + Chess.theme + "Black_Knight.png");
-        return (Knight)new Knight(column, row, isWhite, image);
+    public Knight(int column, int row, boolean isWhite) {
+        super(column, row, isWhite, "Knight");
     }
 
     public boolean validMove(int column, int row) {
