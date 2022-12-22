@@ -1,9 +1,19 @@
+import java.awt.Image;
 import java.awt.event.MouseEvent;
-import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
-import javax.swing.*;
 
 
 
@@ -14,8 +24,9 @@ public class Chess extends JFrame{
     public static Piece currentPiece;
     public static Piece copyPiece = currentPiece;
     public static String theme;
-    public static King White_King = new King(4, 7, true);;
-    public static King Black_King = new King(4, 0, false);;
+    public static King White_King = new King(4, 7, true);
+    public static King Black_King = new King(4, 0, false);
+    
 
     public static boolean checkCheck(int column, int row, boolean isWhite) {
 
@@ -130,6 +141,9 @@ public class Chess extends JFrame{
 
 
     public static void main(String[] args) {
+
+        
+        
 
         JOptionPane theme_choice = new JOptionPane();
         theme_choice.setSize(384, 384);
@@ -262,7 +276,20 @@ public class Chess extends JFrame{
                     return;
                 } 
                 currentPiece.move(curX/128, curY/128);
-                currentPiece = null; 
+                currentPiece = null;
+                AudioInputStream audioInputStream;
+                String moveSound = "src\\sounds\\move.wav";
+                
+                try {
+                    audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
+                    Clip clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+                    clip.start();
+                } catch (Exception e2) {
+
+                    e2.printStackTrace();
+                }
+                
             }
             
             @Override
