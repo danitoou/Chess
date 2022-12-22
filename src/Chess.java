@@ -1,12 +1,10 @@
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,12 +27,11 @@ public class Chess extends JFrame{
     
 
     public static boolean checkCheck(int column, int row, boolean isWhite) {
-
         // check for knight
         int[] arr = {-2, -1, 1, 2};
         for (int i : arr) {
             for (int j : arr) {
-                if((i + j) % 2 != (column + row) % 2) {
+                if((column + i + row + j) % 2 != (column + row) % 2) {
                     try {
                         Piece k = Chess.pieces[column+i][row+j]; 
                         if(k != null && k.getName() == "Knight" && k.isWhite() == isWhite) return true;
@@ -141,9 +138,6 @@ public class Chess extends JFrame{
 
 
     public static void main(String[] args) {
-
-        
-        
 
         JOptionPane theme_choice = new JOptionPane();
         theme_choice.setSize(384, 384);
@@ -277,18 +271,18 @@ public class Chess extends JFrame{
                 } 
                 currentPiece.move(curX/128, curY/128);
                 currentPiece = null;
-                AudioInputStream audioInputStream;
-                String moveSound = "src\\sounds\\move.wav";
+                // AudioInputStream audioInputStream;
+                // String moveSound = "src\\sounds\\move.wav";
                 
-                try {
-                    audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
-                    Clip clip = AudioSystem.getClip();
-                    clip.open(audioInputStream);
-                    clip.start();
-                } catch (Exception e2) {
+                // try {
+                //     audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
+                //     Clip clip = AudioSystem.getClip();
+                //     clip.open(audioInputStream);
+                //     clip.start();
+                // } catch (Exception e2) {
 
-                    e2.printStackTrace();
-                }
+                //     e2.printStackTrace();
+                // }
                 
             }
             
