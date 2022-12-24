@@ -1,6 +1,20 @@
+import java.io.File;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class King extends Piece {
     private boolean canCastle = true;
+    private boolean isChecked = false;
+
+    public void setChecked(boolean isChecked) {
+        this.isChecked = isChecked;
+    }
+
+    public boolean getChecked() {
+        return this.isChecked;
+    }
 
     public void setCanCastle(boolean canCastle) {
         this.canCastle = canCastle;
@@ -14,6 +28,7 @@ public class King extends Piece {
         super(column, row, isWhite, "King");
     }
 
+    @Override
     public boolean validMove(int column, int row) {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
@@ -28,15 +43,20 @@ public class King extends Piece {
         return false;
     }
 
-    // public boolean[][] getLegalTiles() {
-    //     boolean[][] arr = new boolean[8][8];
-    //     for(int x = 0; x < 8; x++) {
-    //         for(int y = 0; y < 8; y++) {
-    //             if(this.validMove(x, y)) arr[x][y] = true;
-    //         }
-    //     }
-    //     return arr;
-    // }
+    @Override
+    public boolean[][] getValidTiles() {
+        boolean[][] arr = new boolean[8][8];
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
+        for(int x = -1; x <= 1; x++) {
+            for(int y = -1; y <= 1; y++) {
+                if(x == 0 && y == 0) continue;
+                if(curColumn + x < 0 || curColumn + x > 7 || curRow + y < 0 || curRow + y > 7) continue;
+                arr[curColumn + x][curRow + y] = true;
+            }
+        }
+        return arr;
+    }
 
     public int legalCastle() {
         int curRow = this.getRow();
@@ -66,6 +86,17 @@ public class King extends Piece {
         this.remove();
         this.setLabelImage(this.getImageWithLabel());
         this.draw();
+        AudioInputStream audioInputStream;
+        String moveSound = "src\\sounds\\castle.wav";
+        
+        try {
+            audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
     }
 
     

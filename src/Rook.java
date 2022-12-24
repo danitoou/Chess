@@ -14,42 +14,43 @@ public class Rook extends Piece {
         super(column, row, isWhite, "Rook");
     }
 
-    private int left(Rook rook) {
-        int curColumn = rook.getColumn();
-        int curRow = rook.getRow();
+    private int left() {
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
         for(int x = curColumn-1; x >= 0; x--) {
             if(Chess.pieces[x][curRow] != null) return x; 
         }
-        return -1;
+        return 0;
     }
 
-    private int right(Rook rook) {
-        int curColumn = rook.getColumn();
-        int curRow = rook.getRow();
+    private int right() {
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
         for(int x = curColumn+1; x < 8; x++) {
             if(Chess.pieces[x][curRow] != null) return x; 
         }
-        return -1;
+        return 7;
     }
 
-    private int up(Rook rook) {
-        int curColumn = rook.getColumn();
-        int curRow = rook.getRow();
+    private int up() {
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
         for(int y = curRow-1; y >= 0; y--) {
             if(Chess.pieces[curColumn][y] != null) return y;
         }
-        return -1;
+        return 0;
     }
 
-    private int down(Rook rook) {
-        int curColumn = rook.getColumn();
-        int curRow = rook.getRow();
+    private int down() {
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
         for(int y = curRow+1; y < 8; y++) {
             if(Chess.pieces[curColumn][y] != null) return y;
         }
-        return -1;
+        return 7;
     }
 
+    @Override
     public boolean validMove(int column, int row) {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
@@ -60,13 +61,13 @@ public class Rook extends Piece {
         if(curRow == row) {
             // Left
             if(curColumn > column) {
-                int l = left(this);
-                if(l <= column || l == -1) return true;
+                int l = this.left();
+                if(l <= column) return true;
             }
             // Right
             if(curColumn < column) {
-                int r = right(this);
-                if(r >= column || r == -1) return true;
+                int r = this.right();
+                if(r >= column) return true;
             }           
         }
 
@@ -74,27 +75,33 @@ public class Rook extends Piece {
         if(curColumn == column) {
             // Up
             if(curRow > row) {
-                int u = up(this);
-                if(u <= row || u == -1) return true;
+                int u = this.up();
+                if(u <= row) return true;
             }
             //Down
             if(curRow < row) {
-                int d = down(this);
-                if(d >= row || d == -1) return true;
+                int d = this.down();
+                if(d >= row) return true;
             }
         }
         return false;
     }
 
-    // public boolean[][] getLegalTiles() {
-    //     boolean[][] arr = new boolean[8][8];
-    //     for(int x = 0; x < 8; x++) {
-    //         for(int y = 0; y < 8; y++) {
-    //             if(this.validMove(x, y)) arr[x][y] = true;
-    //         }
-    //     }
-    //     return arr;
-    // }
+    public boolean[][] getValidTiles() {
+        boolean[][] arr = new boolean[8][8];
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
+
+        for(int x = this.left(); x < curColumn; x++) arr[x][curRow] = true; //  LEFT
+
+        for(int x = this.right(); x > curColumn; x--) arr[x][curRow] = true; // RIGHT
+
+        for(int y = this.up(); y < curRow; y++) arr[curColumn][y] = true; // UP
+
+        for(int y = this.down(); y > curRow; y--) arr[curColumn][y] = true; // DOWN
+        
+        return arr;
+    }
 
     public void castle(boolean shortCastle) {
         if(shortCastle) {

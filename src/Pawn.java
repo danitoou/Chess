@@ -14,44 +14,61 @@ public class Pawn extends Piece {
         super(column, row, isWhite, "Pawn");
     }
 
-    public boolean validMove(int column, int row) {
+    private boolean whitePawn(int column, int row) {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
-        if(this.isWhite()) {
-            if(curRow-1 == row && curColumn == column && Chess.pieces[column][row] == null) return true;
-            if(curRow-2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row+1] == null && this.firstMove) return true;
-            else if(curRow-1 == row) {
-                if(curColumn-1 == column && Chess.pieces[column][row] != null) return true;
-                if(curColumn+1 == column && Chess.pieces[column][row] != null) return true;
-            }
-        }
-        if(!this.isWhite()) {
-            if(curRow+1 == row && curColumn == column && Chess.pieces[column][row] == null) return true;
-            if(curRow+2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row-1] == null && this.firstMove) return true;
-            else if(curRow+1 == row) {
-                if(curColumn-1 == column && Chess.pieces[column][row] != null) return true;
-                if(curColumn+1 == column && Chess.pieces[column][row] != null) return true;
-            }
-        }
+        if(curRow-1 == row && curColumn == column && Chess.pieces[column][row] == null) return true;
+        if(curRow-2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row+1] == null && this.firstMove) return true;
+        else if(curRow-1 == row && column > 0 && row > 0 && column < 8 && row < 8) {
+            if(curColumn-1 == column && Chess.pieces[column][row] != null) return true;
+            if(curColumn+1 == column && Chess.pieces[column][row] != null) return true;
+        } 
+        
+    
         return false;
     }
 
-    // public boolean[][] getLegalTiles() {
-    //     boolean[][] arr = new boolean[8][8];
-    //     for(int x = 0; x < 8; x++) {
-    //         for(int y = 0; y < 8; y++) {
-    //             if(this.validMove(x, y)) arr[x][y] = true;
-    //             else arr[x][y] = false;
-    //         }
-    //     }
-    //     return arr;
-    // }
+    private boolean blackPawn(int column, int row) {
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
+        try {
+            if(curRow+1 == row && curColumn == column && Chess.pieces[column][row] == null) return true;
+            if(curRow+2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row-1] == null && this.firstMove) return true;
+            else if(curRow+1 == row && column > 0 && row > 0 && column < 8 && row < 8) {
+                if(curColumn-1 == column && Chess.pieces[column][row] != null) return true;
+                if(curColumn+1 == column && Chess.pieces[column][row] != null) return true;
+            }
+        } catch (IndexOutOfBoundsException e) {}
+        
+
+        return false;
+    }
+
+    @Override
+    public boolean validMove(int column, int row) {
+        if(this.isWhite()) return this.whitePawn(column, row);
+        else return this.blackPawn(column, row);
+    }
+
+    @Override
+    public boolean[][] getValidTiles() {
+        boolean[][] arr = new boolean[8][8];
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
+        for(int x = -1; x <= 1; x++) {
+            for(int y = -1; y <= 1; y++) {
+                if(x == 0 && y == 0) continue;
+                if(this.validMove(curColumn+x, curRow+y)) arr[curColumn+x][curRow+y] = true;
+            }
+        }
+        return arr;
+    }
 
     public boolean canPromote() {
         if(this.isWhite()) {
             if(this.getRow() == 0) return true;
         }
-        if(!this.isWhite()) {
+        else {
             if(this.getRow() == 7) return true;
         }
         return false;

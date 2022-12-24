@@ -1,8 +1,12 @@
+import java.awt.Image;
+import java.io.File;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Image;
 
 public class Piece {
     private int column;
@@ -88,6 +92,8 @@ public class Piece {
 
 
     public void move(int column, int row) {
+        // checks if the piece moves like that (doesn't consider check)
+        // resets the piece if it can't move
         switch(this.getName()) {
             case "Pawn":
                 if(!((Pawn)this).validMove(column, row)) {
@@ -147,7 +153,7 @@ public class Piece {
                     return;
                 }
 
-                //castling on rook
+                // normal move for king
                 if(Chess.pieces[column][row] == null) {
                     if(!((King)this).validMove(column, row)) {
                         this.resetPiece();
@@ -182,52 +188,36 @@ public class Piece {
         }
 
 
-        if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) Chess.pieces[column][row].remove(); //take
+        boolean takes = false; // for sound
+        if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) { //takes
+            Chess.pieces[column][row].remove();
+            takes = true;
+
+        }
         else if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() == this.isWhite()) { //same color
             this.resetPiece();
             return;
         }
-        Piece p = new Pawn(0, 0, false);
-        if(this.name == "King") {
-            p = Chess.pieces_copy[column][row];
-            Chess.pieces_copy[this.column][this.row] = null;
-            Chess.pieces_copy[column][row] = this;
-            
-            if(this.isWhite) Chess.White_King = (King)this;
-            else Chess.Black_King = (King)this;
-        }
 
-        Chess.pieces_copy[this.column][this.row] = null;
-        Chess.pieces_copy[column][row] = this;
-        if(this.getName() == "King" && Chess.checkCheck(column, row, !this.isWhite())) {
-            this.resetPiece();
-            Chess.pieces_copy[this.column][this.row] = this;
-            Chess.pieces_copy[column][row] = p;
-            if(p != null) {
-                Chess.pieces[column][row] = p;
-                p.draw();
-            }
+        if(!this.legalMove(column, row)) { // check if own king is checked, resets if it is
+            // if(this.name == "King") {
+            //     this.resetPiece();
+            //     Chess.pieces_copy[this.column][this.row] = this;
+            //     Chess.pieces_copy[column][row] = Chess.p;
+            //     if(Chess.p != null) {
+            //         Chess.p.draw();
+            //     }
+            // } else this.resetChecked(Chess.p, column, row);
+            
+            this.resetChecked(Chess.p, column, row);
+        
             return;
         }
-        if(this.isWhite) {
-            if(Chess.checkCheck(Chess.White_King.getColumn(), Chess.White_King.getRow(), false)) {
-                this.resetPiece();
-                Chess.pieces_copy[this.column][this.row] = this;
-                Chess.pieces_copy[column][row] = null;
-                return;
-            }
-        } else {
-            if(Chess.checkCheck(Chess.Black_King.getColumn(), Chess.Black_King.getRow(), true)) {
-                this.resetPiece();
-                Chess.pieces_copy[this.column][this.row] = this;
-                Chess.pieces_copy[column][row] = null;
-                return;
-            }
-        }
 
-        
+
 
 // changes piece variables and redraws the correct image
+// actually moves the piece
         Chess.pieces[this.column][this.row] = null;
         this.remove();
         this.column = column;
@@ -235,12 +225,41 @@ public class Piece {
         this.labelImage = this.getImageWithLabel();
         this.draw();
         Chess.pieces[column][row] = this;
+////////////////////////////////////////////////////////
+// other king is checked
+
+        boolean black_check = Chess.checkCheck(Chess.Black_King.getColumn(), Chess.Black_King.getRow(), true);
+        boolean white_check = Chess.checkCheck(Chess.White_King.getColumn(), Chess.White_King.getRow(), false);
+    
+        if(this.isWhite) Chess.Black_King.setChecked(black_check);
+        else Chess.White_King.setChecked(white_check);
+
+// checkmate
+
+        if(black_check && Chess.checkMate(false)) System.out.println("Shah i mat bate. Beliqt pecheli");
+        else if(white_check && Chess.checkMate(true)) System.out.println("Shah i mat bate. Cherniqt pecheli");
+
+// plays sound
+        AudioInputStream audioInputStream;
+        String moveSound = "src\\sounds\\move.wav";
+        if(takes) moveSound = "src\\sounds\\capture.wav";
+        if(black_check || white_check) moveSound = "src\\sounds\\check.wav";
+        
+        try {
+            audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
 
         
 
+// sets pawn firstmove after its first move
+        if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false);
 
-        if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false); // sets pawn firstmove after its first move
-        // pawn promote
+// pawn promotion
         if(this.getName() == "Pawn" && ((Pawn)this).canPromote() && (row == 0 || row == 7)) {
             JOptionPane theme_choice = new JOptionPane();
             theme_choice.setSize(384, 384);
@@ -249,89 +268,73 @@ public class Piece {
             Object[] options = {"Knight", "Bishop", "Rook", "Queen"};
             
             int promote = JOptionPane.showOptionDialog(Chess.frame, "Choose a figure to promote to", "Chess", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if(this.isWhite() && row == 0) {
+            if(this.isWhite && row == 0) {
                 ((Pawn)this).promote(promote);
             }
-            if(!this.isWhite() && row == 7) {
+            if(!this.isWhite && row == 7) {
                 ((Pawn)this).promote(promote);
             }
             return;
         }
     }
 
+    public boolean legalMove(int column, int row) {
+        Chess.p = Chess.pieces_copy[column][row];
+        // Piece copy = Chess.pieces_copy[this.column][this.row];
+        Chess.pieces_copy[this.column][this.row] = null;
+        Chess.pieces_copy[column][row] = this;
 
-    // public boolean[][] getLegalTiles() {
-    //     boolean[][] arr = new boolean[8][8];
-    //     switch(this.getName()) {
-    //         case "Pawn":
-    //             for(int x = 0; x < 8; x++) {
-    //                 for(int y = 0; y < 8; y++) {
-    //                     if(((Pawn)this).validMove(x, y)) arr[x][y] = true;
-    //                     else arr[x][y] = false;
-    //                 }
-    //             }
-    //             return arr;
-    //         case "Knight":
-    //             for(int x = 0; x < 8; x++) {
-    //                 for(int y = 0; y < 8; y++) {
-    //                     if(((Knight)this).validMove(x, y)) arr[x][y] = true;
-    //                     else arr[x][y] = false;
-    //                 }
-    //             }
-    //             return arr;
-    //         case "Bishop":
-    //             for(int x = 0; x < 8; x++) {
-    //                 for(int y = 0; y < 8; y++) {
-    //                     if(((Bishop)this).validMove(x, y)) arr[x][y] = true;
-    //                     else arr[x][y] = false;
-    //                 }
-    //             }
-    //             return arr;
-    //         case "Rook":
-    //             for(int x = 0; x < 8; x++) {
-    //                 for(int y = 0; y < 8; y++) {
-    //                     if(((Rook)this).validMove(x, y)) arr[x][y] = true;
-    //                     else arr[x][y] = false;
-    //                 }
-    //             }
-    //             return arr;
-    //         case "Queen":
-    //             for(int x = 0; x < 8; x++) {
-    //                 for(int y = 0; y < 8; y++) {
-    //                     if(((Queen)this).validMove(x, y)) arr[x][y] = true;
-    //                     else arr[x][y] = false;
-    //                 }
-    //             }
-    //                 return arr;
-    //         case "King":
-    //             for(int x = 0; x < 8; x++) {
-    //                 for(int y = 0; y < 8; y++) {
-    //                     if(((King)this).validMove(x, y)) arr[x][y] = true;
-    //                     else arr[x][y] = false;
-    //                 }
-    //             }
-    //                 return arr;
-    //     }
-    //     return arr;
+        // if moving king sets the new "fake" king position
+        if(this.name == "King") {
+            if(this.isWhite) Chess.White_King = (King)this;
+            else Chess.Black_King = (King)this;
+        }
+
+        // if moving king checks if it's legal
+        if(this.name == "King" && Chess.checkCheck(column, row, !this.isWhite())) {
+            Chess.pieces_copy[this.column][this.row] = this;
+            Chess.pieces_copy[column][row] = Chess.p;
+            return false;
+        }
+
+        // moving anything else checks if it's legal
+        if(this.isWhite && this.name != "King") { // moving a white piece
+            if(Chess.checkCheck(Chess.White_King.getColumn(), Chess.White_King.getRow(), false)) {
+                // this.resetChecked(p, column, row);
+                Chess.pieces_copy[this.column][this.row] = this;
+                Chess.pieces_copy[column][row] = Chess.p;
+                return false;
+            }
+        } else if(this.name != "King"){ // moving a black piece
+            if(Chess.checkCheck(Chess.Black_King.getColumn(), Chess.Black_King.getRow(), true)) {
+                // this.resetChecked(p, column, row);
+                Chess.pieces_copy[this.column][this.row] = this;
+                Chess.pieces_copy[column][row] = Chess.p;
+                return false;
+            }
+        }
         
-    // }
+        Chess.pieces_copy[this.column][this.row] = this;
+        Chess.pieces_copy[column][row] = Chess.p;
+        return true;
+    }
+
+    private void resetChecked(Piece p, int column, int row) {
+        this.resetPiece();
+        Chess.pieces_copy[this.column][this.row] = this;
+        Chess.pieces_copy[column][row] = Chess.p;
+        if(p != null) {
+            p.draw();
+        }
+    }
+
+
+    public boolean[][] getValidTiles() {
+        return null;
+    }
 
     public boolean validMove(int column, int row) {
-        switch(this.getName()) {
-            case "Pawn":
-                return ((Pawn)this).validMove(column, row);
-            case "Knight":
-                return ((Knight)this).validMove(column, row);
-            case "Bishop":
-                return ((Bishop)this).validMove(column, row);
-            case "Rook":
-                return ((Rook)this).validMove(column, row);
-            case "Queen":
-                return ((Queen)this).validMove(column, row);
-            case "King":
-                return ((King)this).validMove(column, row);
-        }
-        return false;
+        return true;
     }
 
     public void movePixel(int x, int y) {

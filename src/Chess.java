@@ -1,14 +1,9 @@
 import java.awt.Image;
 import java.awt.event.MouseEvent;
-import java.io.File;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
@@ -21,11 +16,28 @@ public class Chess extends JFrame{
     public static Piece[][] pieces = new Piece[8][8];
     public static Piece currentPiece;
     public static Piece copyPiece = currentPiece;
-    public static String theme;
+    public static String theme = "Lichess\\";
     public static King White_King = new King(4, 7, true);
     public static King Black_King = new King(4, 0, false);
     public static Piece[][] pieces_copy = new Piece[8][8];
+    public static Piece p;
     
+    public static boolean checkMate(boolean isWhite) {
+        for(int x = 0; x < 8; x++) {
+            for(int y = 0; y < 8; y++) {
+                if(pieces[x][y] == null || pieces[x][y].isWhite() != isWhite) continue;
+                boolean[][] validTiles = pieces[x][y].getValidTiles();
+                if(validTiles == null) continue;
+                for(int a = 0; a < 8; a++) {
+                    for(int b = 0; b < 8; b++) {
+                        if(validTiles[a][b] && pieces[x][y].legalMove(a, b)) return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
 
     public static boolean checkCheck(int column, int row, boolean isWhite) {
         // check for knight
@@ -44,7 +56,7 @@ public class Chess extends JFrame{
             }
         }
 
-        // <-
+        // <- LEFT
         Piece p;
         for(int x = column-1; x >= 0; x--) {
             p = Chess.pieces_copy[x][row];
@@ -53,7 +65,7 @@ public class Chess extends JFrame{
                 else break;
             }
         }
-        // ->
+        // -> RIGHT
         for(int x = column+1; x < 8; x++) {
             p = Chess.pieces_copy[x][row];
             if(p != null) {
@@ -61,7 +73,7 @@ public class Chess extends JFrame{
                 else break;
             }
         }
-        // ^
+        // ^ UP
         for(int y = row-1; y >= 0; y--) {
             p = Chess.pieces_copy[column][y];
             if(p != null) {
@@ -69,7 +81,7 @@ public class Chess extends JFrame{
                 else break;
             }
         }
-        // v
+        // v DOWN
         for(int y = row+1; y < 8; y++) {
             p = Chess.pieces_copy[column][y];
             if(p != null) {
@@ -137,19 +149,21 @@ public class Chess extends JFrame{
         return false;
     }
 
+    
+
 
     public static void main(String[] args) {
 
-        JOptionPane theme_choice = new JOptionPane();
-        theme_choice.setSize(384, 384);
-        theme_choice.setVisible(true);
+        // JOptionPane theme_choice = new JOptionPane();
+        // theme_choice.setSize(384, 384);
+        // theme_choice.setVisible(true);
         
-        Object[] options = {"Chess.com", "Lichess"};
+        // Object[] options = {"Chess.com", "Lichess"};
         
-        int theme_option = JOptionPane.showOptionDialog(frame, "Choose a chess theme", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+        // int theme_option = JOptionPane.showOptionDialog(frame, "Choose a chess theme", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
 
-        if(theme_option == 0) theme = "Chesscom\\";
-        else theme = "Lichess\\";
+        // if(theme_option == 0) theme = "Chesscom\\";
+        // else theme = "Lichess\\";
         
         frame = new JFrame("Chess");
         frame.setUndecorated(true);
@@ -184,10 +198,10 @@ public class Chess extends JFrame{
         pieces[1][0].draw();
         pieces[2][0] = new Bishop(2, 0, false);
         pieces[2][0].draw();
-        pieces[4][0] = new King(4, 0, false);
-        pieces[4][0].draw();
         pieces[3][0] = new Queen(3, 0, false);
         pieces[3][0].draw();
+        pieces[4][0] = new King(4, 0, false);
+        pieces[4][0].draw();
         pieces[5][0] = new Bishop(5, 0, false);
         pieces[5][0].draw();
         pieces[6][0] = new Knight(6, 0, false);
@@ -202,10 +216,10 @@ public class Chess extends JFrame{
         pieces[1][7].draw();
         pieces[2][7] = new Bishop(2, 7, true);
         pieces[2][7].draw();
-        pieces[4][7] = new King(4, 7, true);
-        pieces[4][7].draw();
         pieces[3][7] = new Queen(3, 7, true);
         pieces[3][7].draw();
+        pieces[4][7] = new King(4, 7, true);
+        pieces[4][7].draw();
         pieces[5][7] = new Bishop(5, 7, true);
         pieces[5][7].draw();
         pieces[6][7] = new Knight(6, 7, true);
@@ -276,17 +290,6 @@ public class Chess extends JFrame{
                 currentPiece = null;
                 pieces_copy = pieces.clone();
                 frame.repaint();
-                // AudioInputStream audioInputStream;
-                // String moveSound = "src\\sounds\\move.wav";
-                
-                // try {
-                //     audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
-                //     Clip clip = AudioSystem.getClip();
-                //     clip.open(audioInputStream);
-                //     clip.start();
-                // } catch (Exception e2) {
-                //     e2.printStackTrace();
-                // }
                 
             }
             

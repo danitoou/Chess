@@ -5,9 +5,9 @@ public class Bishop extends Piece {
         super(column, row, isWhite, "Bishop");
     }
 
-    private int downLeft(Bishop bishop) {
-        int curColumn = bishop.getColumn();
-        int curRow = bishop.getRow();
+    private int downLeft() {
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
         for(int x = curColumn-1; x >= 0; x--) {
             int y = curRow + curColumn - x;
             if(y < 0 || y > 7) break;
@@ -16,9 +16,9 @@ public class Bishop extends Piece {
         return -1;
     }
 
-    private int upRight(Bishop bishop) {
-        int curColumn = bishop.getColumn();
-        int curRow = bishop.getRow();
+    private int upRight() {
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
         for(int x = curColumn+1; x < 8; x++) {
             int y = curRow + curColumn - x;
             if(y < 0 || y > 7) break;
@@ -27,9 +27,9 @@ public class Bishop extends Piece {
         return -1;
     }
 
-    private int upLeft(Bishop bishop) {
-        int curColumn = bishop.getColumn();
-        int curRow = bishop.getRow();
+    private int upLeft() {
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
         int y = curRow-1;
         for(int x = curColumn-1; x > 0; x--) {
             if(y < 0 || y > 7) break;
@@ -39,9 +39,9 @@ public class Bishop extends Piece {
         return -1;
     }
 
-    private int downRight(Bishop bishop) {
-        int curColumn = bishop.getColumn();
-        int curRow = bishop.getRow();
+    private int downRight() {
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
         int y = curRow+1;
         for(int x = curColumn+1; x < 8; x++) {
             if(y < 0 || y > 7) break;
@@ -51,6 +51,7 @@ public class Bishop extends Piece {
         return -1;
     }
 
+    @Override
     public boolean validMove(int column, int row) {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
@@ -60,12 +61,12 @@ public class Bishop extends Piece {
         if(curColumn + curRow == column + row) {
             // Down Left
             if(curColumn > column) {
-                int dl = downLeft(this);
+                int dl = this.downLeft();
                 if(dl <= column || dl == -1) return true;
             }
             // Up Right
             if(curColumn < column) {
-                int ur = upRight(this);
+                int ur = this.upRight();
                 if(ur >= column || ur == -1) return true;
             }
             
@@ -75,27 +76,57 @@ public class Bishop extends Piece {
         if(curColumn-column == curRow-row) {
             // Up Left
             if(curColumn > column) {
-                int ul = upLeft(this);
+                int ul = this.upLeft();
                 if(ul <= column || ul == -1) return true;
             }
             // Down Right
             if(curColumn < column) {
-                int dr = downRight(this);
+                int dr = this.downRight();
                 if(dr >= column || dr == -1) return true;
             }
         }
         return false;
     }
 
-    // public boolean[][] getLegalTiles() {
-    //     boolean[][] arr = new boolean[8][8];
-    //     for(int x = 0; x < 8; x++) {
-    //         for(int y = 0; y < 8; y++) {
-    //             if(this.validMove(x, y)) arr[x][y] = true;
-    //         }
-    //     }
-    //     return arr;
-    // }
+    @Override
+    public boolean[][] getValidTiles() {
+        boolean[][] arr = new boolean[8][8];
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
+
+        for(int x = curColumn-1; x >= 0; x--) { // Down Left
+            int y = curRow + curColumn - x;
+            if(y < 0 || y > 7) break;
+            arr[x][y] = true;
+            if(Chess.pieces[x][y] != null) break;
+        }
+
+        for(int x = curColumn+1; x < 8; x++) { // Up Right
+            int y = curRow + curColumn - x;
+            if(y < 0 || y > 7) break;
+            arr[x][y] = true;
+            if(Chess.pieces[x][y] != null) break;
+        }
+
+        int y = curRow-1;
+        for(int x = curColumn-1; x > 0; x--) { // Up Left
+            if(y < 0 || y > 7) break;
+            arr[x][y] = true;
+            if(Chess.pieces[x][y] != null) break;
+            y--;
+        }
+
+        y = curRow+1;
+        for(int x = curColumn+1; x < 8; x++) { // Down Right
+            if(y < 0 || y > 7) break;
+            arr[x][y] = true;
+            if(Chess.pieces[x][y] != null) break;
+            y++;
+        }
+
+
+        return arr;
+    }
 
     
 }

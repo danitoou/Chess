@@ -5,6 +5,7 @@ public class Knight extends Piece {
         super(column, row, isWhite, "Knight");
     }
 
+    @Override
     public boolean validMove(int column, int row) {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
@@ -28,15 +29,21 @@ public class Knight extends Piece {
         return false;
     }
 
-    // public boolean[][] getLegalTiles() {
-    //     boolean[][] arr = new boolean[8][8];
-    //     for(int x = 0; x < 8; x++) {
-    //         for(int y = 0; y < 8; y++) {
-    //             if(this.validMove(x, y)) arr[x][y] = true;
-    //         }
-    //     }
-    //     return arr;
-    // }
+    @Override
+    public boolean[][] getValidTiles() {
+        boolean[][] arr = new boolean[8][8];
+        int curColumn = this.getColumn();
+        int curRow = this.getRow();
+        int[] arr2 = {-2, -1, 1, 2};
+        for (int i : arr2) {
+            for (int j : arr2) {
+                if((curColumn + i + curRow + j) % 2 != (curColumn + curRow) % 2 && curColumn+i > 0 && curRow+j > 0 && curColumn+i < 8 && curRow+j < 8) {
+                    arr[curColumn+i][curRow+j] = true;
+                }
+            }
+        }
+        return arr;
+    }
 
     
 }
