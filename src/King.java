@@ -52,6 +52,7 @@ public class King extends Piece {
             for(int y = -1; y <= 1; y++) {
                 if(x == 0 && y == 0) continue;
                 if(curColumn + x < 0 || curColumn + x > 7 || curRow + y < 0 || curRow + y > 7) continue;
+                if(Chess.pieces[curColumn + x][curRow + y] != null && Chess.pieces[curColumn + x][curRow + y].isWhite() == this.isWhite()) continue;
                 arr[curColumn + x][curRow + y] = true;
             }
         }
@@ -65,9 +66,9 @@ public class King extends Piece {
         boolean shortAttacked = Chess.checkCheck(4, curRow, isWhite) || Chess.checkCheck(5, curRow, isWhite) || Chess.checkCheck(6, curRow, isWhite);
         boolean longAttacked = Chess.checkCheck(2, curRow, isWhite) || Chess.checkCheck(3, curRow, isWhite) || Chess.checkCheck(4, curRow, isWhite);
         //short castle
-        if(Chess.pieces[5][curRow] == null && Chess.pieces[6][curRow] == null && this.canCastle && ((Rook)Chess.pieces[7][curRow]).getCanCastle() && !shortAttacked) output += 1;
+        if(Chess.pieces[7][curRow] != null && Chess.pieces[5][curRow] == null && Chess.pieces[6][curRow] == null && this.canCastle && ((Rook)Chess.pieces[7][curRow]).getCanCastle() && !shortAttacked) output += 1;
         //long castle
-        if(Chess.pieces[1][curRow] == null && Chess.pieces[2][curRow] == null && Chess.pieces[3][curRow] == null && this.canCastle && ((Rook)Chess.pieces[0][curRow]).getCanCastle() && !longAttacked) output += 2;
+        if(Chess.pieces[0][curRow] != null && Chess.pieces[1][curRow] == null && Chess.pieces[2][curRow] == null && Chess.pieces[3][curRow] == null && this.canCastle && ((Rook)Chess.pieces[0][curRow]).getCanCastle() && !longAttacked) output += 2;
         return output;
     }
 

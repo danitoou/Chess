@@ -236,8 +236,16 @@ public class Piece {
 
 // checkmate
 
-        if(black_check && Chess.checkMate(false)) System.out.println("Shah i mat bate. Beliqt pecheli");
-        else if(white_check && Chess.checkMate(true)) System.out.println("Shah i mat bate. Cherniqt pecheli");
+        boolean black_mate = Chess.checkMate(false);
+        boolean white_mate = Chess.checkMate(true);
+
+        if(black_check && black_mate) System.out.println("Shah i mat bate. Beliqt pecheli");
+        else if(white_check && white_mate) System.out.println("Shah i mat bate. Cherniqt pecheli");
+
+// stalemate
+
+        if(!black_check && black_mate) System.out.println("Pat bate.");
+        else if(!white_check && white_mate) System.out.println("Pat bate.");
 
 // plays sound
         AudioInputStream audioInputStream;

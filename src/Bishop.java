@@ -97,6 +97,7 @@ public class Bishop extends Piece {
         for(int x = curColumn-1; x >= 0; x--) { // Down Left
             int y = curRow + curColumn - x;
             if(y < 0 || y > 7) break;
+            if(Chess.pieces[x][y] != null && Chess.pieces[x][y].isWhite() == this.isWhite()) break;
             arr[x][y] = true;
             if(Chess.pieces[x][y] != null) break;
         }
@@ -104,6 +105,7 @@ public class Bishop extends Piece {
         for(int x = curColumn+1; x < 8; x++) { // Up Right
             int y = curRow + curColumn - x;
             if(y < 0 || y > 7) break;
+            if(Chess.pieces[x][y] != null && Chess.pieces[x][y].isWhite() == this.isWhite()) break;
             arr[x][y] = true;
             if(Chess.pieces[x][y] != null) break;
         }
@@ -111,6 +113,7 @@ public class Bishop extends Piece {
         int y = curRow-1;
         for(int x = curColumn-1; x > 0; x--) { // Up Left
             if(y < 0 || y > 7) break;
+            if(Chess.pieces[x][y] != null && Chess.pieces[x][y].isWhite() == this.isWhite()) break;
             arr[x][y] = true;
             if(Chess.pieces[x][y] != null) break;
             y--;
@@ -119,6 +122,7 @@ public class Bishop extends Piece {
         y = curRow+1;
         for(int x = curColumn+1; x < 8; x++) { // Down Right
             if(y < 0 || y > 7) break;
+            if(Chess.pieces[x][y] != null && Chess.pieces[x][y].isWhite() == this.isWhite()) break;
             arr[x][y] = true;
             if(Chess.pieces[x][y] != null) break;
             y++;

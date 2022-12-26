@@ -30,7 +30,9 @@ public class Chess extends JFrame{
                 if(validTiles == null) continue;
                 for(int a = 0; a < 8; a++) {
                     for(int b = 0; b < 8; b++) {
-                        if(validTiles[a][b] && pieces[x][y].legalMove(a, b)) return false;
+                        if(validTiles[a][b] && pieces[x][y].legalMove(a, b)) {
+                            return false;
+                        }
                     }
                 }
             }
@@ -254,11 +256,33 @@ public class Chess extends JFrame{
         
 
         frame.repaint();
-        // JLabel[][] dots = new JLabel[8][8];
+        JLabel[][] dots = new JLabel[8][8];
         
         frame.addMouseListener(new MouseInputListener(){
             @Override
             public void mouseClicked(MouseEvent e) {
+                currentPiece = pieces[e.getX()/128][e.getY()/128];
+                for(int x = 0; x < 8; x++) {
+                    for(int y = 0; y < 8; y++) {
+                        if(dots[x][y] != null) {
+                            frame.remove(dots[x][y]);
+                            dots[x][y] = null;
+                        }
+                    }
+                }
+            
+                boolean[][] dots_arr = currentPiece.getValidTiles();
+                
+                for(int x = 0; x < 8; x++) {
+                    for(int y = 0; y < 8; y++) {
+                        if(dots_arr[x][y]) {
+                            dots[x][y] = new GreenDot(x, y).getLabelImage();
+                            frame.add(dots[x][y]);
+                        }
+                    }
+                }
+
+                frame.repaint();
             }
 
             @Override

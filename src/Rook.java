@@ -18,7 +18,10 @@ public class Rook extends Piece {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
         for(int x = curColumn-1; x >= 0; x--) {
-            if(Chess.pieces[x][curRow] != null) return x; 
+            if(Chess.pieces[x][curRow] != null) {
+                if(Chess.pieces[x][curRow].isWhite() == this.isWhite()) return x+1;
+                return x;
+            }
         }
         return 0;
     }
@@ -27,7 +30,10 @@ public class Rook extends Piece {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
         for(int x = curColumn+1; x < 8; x++) {
-            if(Chess.pieces[x][curRow] != null) return x; 
+            if(Chess.pieces[x][curRow] != null) {
+                if(Chess.pieces[x][curRow].isWhite() == this.isWhite()) return x-1;
+                return x;
+            }
         }
         return 7;
     }
@@ -36,7 +42,10 @@ public class Rook extends Piece {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
         for(int y = curRow-1; y >= 0; y--) {
-            if(Chess.pieces[curColumn][y] != null) return y;
+            if(Chess.pieces[curColumn][y] != null) {
+                if(Chess.pieces[curColumn][y].isWhite() == this.isWhite()) return y+1;
+                return y;
+            }
         }
         return 0;
     }
@@ -45,7 +54,10 @@ public class Rook extends Piece {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
         for(int y = curRow+1; y < 8; y++) {
-            if(Chess.pieces[curColumn][y] != null) return y;
+            if(Chess.pieces[curColumn][y] != null) {
+                if(Chess.pieces[curColumn][y].isWhite() == this.isWhite()) return y-1;
+                return y;
+            }
         }
         return 7;
     }

@@ -17,11 +17,13 @@ public class Pawn extends Piece {
     private boolean whitePawn(int column, int row) {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
+        // Piece p = Chess.pieces[column][row];
+
         if(curRow-1 == row && curColumn == column && Chess.pieces[column][row] == null) return true;
         if(curRow-2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row+1] == null && this.firstMove) return true;
         else if(curRow-1 == row && column > 0 && row > 0 && column < 8 && row < 8) {
-            if(curColumn-1 == column && Chess.pieces[column][row] != null) return true;
-            if(curColumn+1 == column && Chess.pieces[column][row] != null) return true;
+            if(curColumn-1 == column && Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) return true;
+            if(curColumn+1 == column && Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) return true;
         } 
         
     
@@ -31,14 +33,15 @@ public class Pawn extends Piece {
     private boolean blackPawn(int column, int row) {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
-        try {
-            if(curRow+1 == row && curColumn == column && Chess.pieces[column][row] == null) return true;
-            if(curRow+2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row-1] == null && this.firstMove) return true;
-            else if(curRow+1 == row && column > 0 && row > 0 && column < 8 && row < 8) {
-                if(curColumn-1 == column && Chess.pieces[column][row] != null) return true;
-                if(curColumn+1 == column && Chess.pieces[column][row] != null) return true;
-            }
-        } catch (IndexOutOfBoundsException e) {}
+        // Piece p = Chess.pieces[column][row];
+        
+        if(curRow+1 == row && curColumn == column && Chess.pieces[column][row] == null) return true;
+        if(curRow+2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row-1] == null && this.firstMove) return true;
+        else if(curRow+1 == row && column > 0 && row > 0 && column < 8 && row < 8) {
+            if(curColumn-1 == column && Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) return true;
+            if(curColumn+1 == column && Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) return true;
+        }
+
         
 
         return false;
