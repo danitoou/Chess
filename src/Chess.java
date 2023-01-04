@@ -21,6 +21,7 @@ public class Chess extends JFrame{
     public static King Black_King = new King(4, 0, false);
     public static Piece[][] pieces_copy = new Piece[8][8];
     public static Piece p;
+    public static String lastMove;
     
     public static boolean checkMate(boolean isWhite) {
         for(int x = 0; x < 8; x++) {
@@ -261,28 +262,28 @@ public class Chess extends JFrame{
         frame.addMouseListener(new MouseInputListener(){
             @Override
             public void mouseClicked(MouseEvent e) {
-                currentPiece = pieces[e.getX()/128][e.getY()/128];
-                for(int x = 0; x < 8; x++) {
-                    for(int y = 0; y < 8; y++) {
-                        if(dots[x][y] != null) {
-                            frame.remove(dots[x][y]);
-                            dots[x][y] = null;
-                        }
-                    }
-                }
+                // currentPiece = pieces[e.getX()/128][e.getY()/128];
+                // for(int x = 0; x < 8; x++) {
+                //     for(int y = 0; y < 8; y++) {
+                //         if(dots[x][y] != null) {
+                //             frame.remove(dots[x][y]);
+                //             dots[x][y] = null;
+                //         }
+                //     }
+                // }
             
-                boolean[][] dots_arr = currentPiece.getValidTiles();
+                // boolean[][] dots_arr = currentPiece.getValidTiles();
                 
-                for(int x = 0; x < 8; x++) {
-                    for(int y = 0; y < 8; y++) {
-                        if(dots_arr[x][y]) {
-                            dots[x][y] = new GreenDot(x, y).getLabelImage();
-                            frame.add(dots[x][y]);
-                        }
-                    }
-                }
+                // for(int x = 0; x < 8; x++) {
+                //     for(int y = 0; y < 8; y++) {
+                //         if(dots_arr[x][y]) {
+                //             dots[x][y] = new GreenDot(x, y).getLabelImage();
+                //             frame.add(dots[x][y]);
+                //         }
+                //     }
+                // }
 
-                frame.repaint();
+                // frame.repaint();
             }
 
             @Override

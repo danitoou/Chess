@@ -186,8 +186,16 @@ public class Piece {
 
                 break;
         }
-
-
+        
+        String[] prevMoveString = Chess.lastMove.split("_");
+        // String prevPiece = prevMoveString[0];
+        String tempColor = prevMoveString[1];
+        boolean prevColor = false;
+        if(tempColor == "White") prevColor = true;
+        if(this.getName() == "Pawn" && prevColor != this.isWhite() && prevMoveString.length == 3) { //en passant
+        
+        }
+        
         boolean takes = false; // for sound
         if(Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) { //takes
             Chess.pieces[column][row].remove();
@@ -210,11 +218,19 @@ public class Piece {
             // } else this.resetChecked(Chess.p, column, row);
             
             this.resetChecked(Chess.p, column, row);
+
+            
         
             return;
         }
 
+        String temp = "_Black";
+        if(this.isWhite) temp = "_White";
+        if(this.getName() == "Pawn" && Math.abs(this.row - row) == 2) {
+            temp += "_Double";
+        }
 
+        Chess.lastMove = this.getName() + temp;
 
 // changes piece variables and redraws the correct image
 // actually moves the piece
@@ -233,11 +249,14 @@ public class Piece {
     
         if(this.isWhite) Chess.Black_King.setChecked(black_check);
         else Chess.White_King.setChecked(white_check);
+        
+        // if(black_check || white_check) System.out.println("Shah bate.");
 
 // checkmate
 
         boolean black_mate = Chess.checkMate(false);
         boolean white_mate = Chess.checkMate(true);
+
 
         if(black_check && black_mate) System.out.println("Shah i mat bate. Beliqt pecheli");
         else if(white_check && white_mate) System.out.println("Shah i mat bate. Cherniqt pecheli");
@@ -248,19 +267,20 @@ public class Piece {
         else if(!white_check && white_mate) System.out.println("Pat bate.");
 
 // plays sound
-        AudioInputStream audioInputStream;
-        String moveSound = "src\\sounds\\move.wav";
-        if(takes) moveSound = "src\\sounds\\capture.wav";
-        if(black_check || white_check) moveSound = "src\\sounds\\check.wav";
+        // AudioInputStream audioInputStream;
+        // String moveSound = "src\\sounds\\move.wav";
+        // if(takes) moveSound = "src\\sounds\\capture.wav";
+        // if(black_check || white_check) moveSound = "src\\sounds\\check.wav";
         
-        try {
-            audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-        } catch (Exception e2) {
-            e2.printStackTrace();
-        }
+        // try {
+        //     audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
+        //     Clip clip = AudioSystem.getClip();
+        //     clip.open(audioInputStream);
+        //     clip.start();
+        //     clip.close();
+        // } catch (Exception e2) {
+        //     e2.printStackTrace();
+        // }
 
         
 
@@ -284,6 +304,7 @@ public class Piece {
             }
             return;
         }
+        
     }
 
     public boolean legalMove(int column, int row) {
