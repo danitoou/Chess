@@ -1,9 +1,19 @@
 
 public class Pawn extends Piece {
     private boolean firstMove = true;
+    private boolean enPassant = false;
 
     public void setFirstMove(boolean firstMove) {
         this.firstMove = firstMove;
+    }
+
+    @Override
+    public boolean getEnPassant() {
+        return enPassant;
+    }
+
+    public void setEnPassant(boolean enPassant) {
+        this.enPassant = enPassant;
     }
 
     public boolean getFirstMove() {
@@ -24,7 +34,9 @@ public class Pawn extends Piece {
         else if(curRow-1 == row && column >= 0 && row >= 0 && column < 8 && row < 8) {
             if(curColumn-1 == column && Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) return true;
             if(curColumn+1 == column && Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) return true;
-        } 
+        }
+
+        if(curRow-1 == row && Math.abs(curColumn - column) == 1  && column > 0 && column < 8 && Chess.pieces[column][curRow] != null && Chess.pieces[column][curRow].getName() == "Pawn" && Chess.pieces[column][curRow].getEnPassant()) return true;
         
     
         return false;
@@ -42,6 +54,7 @@ public class Pawn extends Piece {
             if(curColumn+1 == column && Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) return true;
         }
 
+        if(curRow+1 == row && Math.abs(curColumn - column) == 1 && column > 0 && column < 8 && Chess.pieces[column][curRow] != null && Chess.pieces[column][curRow].getName() == "Pawn" && Chess.pieces[column][curRow].getEnPassant()) return true;
         
 
         return false;

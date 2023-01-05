@@ -24,7 +24,6 @@ public class Chess extends JFrame{
     public static ImageIcon checkPicture = new ImageIcon("src\\images\\Check_Dot.png");
     public static JLabel checkDot = new JLabel();
     public static Piece previousPiece;
-    public static String lastMove;
     
     public static boolean checkMate(boolean isWhite) {
         for(int x = 0; x < 8; x++) {

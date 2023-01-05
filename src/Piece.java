@@ -186,16 +186,6 @@ public class Piece {
 
                 break;
         }
-        if(Chess.lastMove != null) {
-            String[] prevMoveString = Chess.lastMove.split("_");
-            // String prevPiece = prevMoveString[0];
-            String tempColor = prevMoveString[1];
-            boolean prevColor = false;
-            if(tempColor == "White") prevColor = true;
-            if(this.getName() == "Pawn" && prevColor != this.isWhite() && prevMoveString.length == 3) { //en passant
-            
-            }
-        }
         
         
         boolean takes = false; // for sound
@@ -226,13 +216,32 @@ public class Piece {
             return;
         }
 
-        String temp = "_Black";
-        if(this.isWhite) temp = "_White";
-        if(this.getName() == "Pawn" && Math.abs(this.row - row) == 2) {
-            temp += "_Double";
+        if(this.getName() == "Pawn") {
+            if(((Pawn)this).getFirstMove() == true) {
+                if(Math.abs(this.getRow() - row) == 2) {
+                    ((Pawn)this).setEnPassant(true);
+                    System.out.println("En Passant true");
+                } else {
+                    ((Pawn)this).setEnPassant(false);
+                    System.out.println("En Passant false");
+                }
+            } else {
+                ((Pawn)this).setEnPassant(false);
+                System.out.println("En Passant false");
+            }
+            
+            if(Math.abs(this.row - row) == 1 && Math.abs(this.column - column) == 1 && Chess.pieces[column][row] == null) {
+                if(this.row > row) {
+                    Chess.pieces[column][row+1].remove();
+                    Chess.pieces[column][row+1] = null;
+                } else {
+                    Chess.pieces[column][row-1].remove();
+                    Chess.pieces[column][row-1] = null;
+                }
+            }
         }
+        
 
-        Chess.lastMove = this.getName() + temp;
 
 // changes piece variables and redraws the correct image
 // actually moves the piece
@@ -282,24 +291,24 @@ public class Piece {
         else if(!white_check && white_mate) System.out.println("Pat bate.");
 
 // plays sound
-        AudioInputStream audioInputStream;
-        String moveSound = "src\\sounds\\move.wav";
-        if(takes) moveSound = "src\\sounds\\capture.wav";
-        if(black_check || white_check) moveSound = "src\\sounds\\check.wav";
+        // AudioInputStream audioInputStream;
+        // String moveSound = "src\\sounds\\move.wav";
+        // if(takes) moveSound = "src\\sounds\\capture.wav";
+        // if(black_check || white_check) moveSound = "src\\sounds\\check.wav";
         
-        try {
-            audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-        } catch (Exception e2) {
-            e2.printStackTrace();
-        }
+        // try {
+        //     audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
+        //     Clip clip = AudioSystem.getClip();
+        //     clip.open(audioInputStream);
+        //     clip.start();
+        // } catch (Exception e2) {
+        //     e2.printStackTrace();
+        // }
 
         
 
 // sets pawn firstmove after its first move
-        if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false);
+        if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false);      
 
 // pawn promotion
         if(this.getName() == "Pawn" && ((Pawn)this).canPromote() && (row == 0 || row == 7)) {
@@ -378,6 +387,10 @@ public class Piece {
 
     public boolean validMove(int column, int row) {
         return true;
+    }
+
+    public boolean getEnPassant() {
+        return false;
     }
 
     public void movePixel(int x, int y) {
