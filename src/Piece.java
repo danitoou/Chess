@@ -249,9 +249,9 @@ public class Piece {
         boolean black_check = Chess.checkCheck(Chess.Black_King.getColumn(), Chess.Black_King.getRow(), true);
         boolean white_check = Chess.checkCheck(Chess.White_King.getColumn(), Chess.White_King.getRow(), false);
     
-        ImageIcon checkPicture = new ImageIcon("src\\images\\Check_Dot.png");
-        JLabel checkDot = new JLabel();
-        checkDot.setIcon(new ImageIcon(checkPicture.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH)));
+        // ImageIcon checkPicture = new ImageIcon("src\\images\\Check_Dot.png");
+        // JLabel checkDot = new JLabel();
+        // checkDot.setIcon(new ImageIcon(checkPicture.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH)));
 
         if(this.isWhite) Chess.Black_King.setChecked(black_check);
         else Chess.White_King.setChecked(white_check);
@@ -259,14 +259,15 @@ public class Piece {
         // if(black_check || white_check) System.out.println("Shah bate.");
 
 
+        Chess.frame.remove(Chess.checkDot);
         if(black_check) {
-            checkDot.setBounds(Chess.Black_King.getColumn()*128, Chess.Black_King.getRow()*128, 128, 128);
-            Chess.frame.add(checkDot);
+            Chess.checkDot.setBounds(Chess.Black_King.getColumn()*128, Chess.Black_King.getRow()*128, 128, 128);
+            Chess.frame.add(Chess.checkDot);
         } else if(white_check) {
-            checkDot.setBounds(Chess.White_King.getColumn()*128, Chess.White_King.getRow()*128 + 32, 128, 128);
-            Chess.frame.add(checkDot);
-        } else Chess.frame.remove(checkDot);
-// checkmate
+            Chess.checkDot.setBounds(Chess.White_King.getColumn()*128, Chess.White_King.getRow()*128, 128, 128);
+            Chess.frame.add(Chess.checkDot);
+        } else Chess.frame.remove(Chess.checkDot);
+            // checkmate
 
         boolean black_mate = Chess.checkMate(false);
         boolean white_mate = Chess.checkMate(true);
@@ -281,20 +282,19 @@ public class Piece {
         else if(!white_check && white_mate) System.out.println("Pat bate.");
 
 // plays sound
-        // AudioInputStream audioInputStream;
-        // String moveSound = "src\\sounds\\move.wav";
-        // if(takes) moveSound = "src\\sounds\\capture.wav";
-        // if(black_check || white_check) moveSound = "src\\sounds\\check.wav";
+        AudioInputStream audioInputStream;
+        String moveSound = "src\\sounds\\move.wav";
+        if(takes) moveSound = "src\\sounds\\capture.wav";
+        if(black_check || white_check) moveSound = "src\\sounds\\check.wav";
         
-        // try {
-        //     audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
-        //     Clip clip = AudioSystem.getClip();
-        //     clip.open(audioInputStream);
-        //     clip.start();
-        //     clip.close();
-        // } catch (Exception e2) {
-        //     e2.printStackTrace();
-        // }
+        try {
+            audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
 
         
 

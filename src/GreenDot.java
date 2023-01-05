@@ -8,7 +8,21 @@ public class GreenDot {
     private ImageIcon image = new ImageIcon("src\\images\\Green_Dot.png");
     private JLabel labelImage = new JLabel();
 
+    public int getColumn() {
+        return column;
+    }
 
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
 
     public JLabel getLabelImage() {
         return labelImage;

@@ -21,6 +21,8 @@ public class Chess extends JFrame{
     public static King Black_King = new King(4, 0, false);
     public static Piece[][] pieces_copy = new Piece[8][8];
     public static Piece p;
+    public static ImageIcon checkPicture = new ImageIcon("src\\images\\Check_Dot.png");
+    public static JLabel checkDot = new JLabel();
     public static Piece previousPiece;
     public static String lastMove;
     
@@ -261,7 +263,7 @@ public class Chess extends JFrame{
         JLabel lightGreenSquare = new JLabel();
         lightGreenSquare.setIcon(new ImageIcon(lightGreenSquarePicture.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH)));
         
-        
+        checkDot.setIcon(new ImageIcon(checkPicture.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH)));
 
         frame.repaint();
         JLabel[][] dots = new JLabel[8][8];
