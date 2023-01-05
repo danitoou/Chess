@@ -231,9 +231,21 @@ public class Piece {
         boolean black_check = Chess.checkCheck(Chess.Black_King.getColumn(), Chess.Black_King.getRow(), true);
         boolean white_check = Chess.checkCheck(Chess.White_King.getColumn(), Chess.White_King.getRow(), false);
     
+        ImageIcon checkPicture = new ImageIcon("src\\images\\Check_Dot.png");
+        JLabel checkDot = new JLabel();
+        checkDot.setIcon(new ImageIcon(checkPicture.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH)));
+
         if(this.isWhite) Chess.Black_King.setChecked(black_check);
         else Chess.White_King.setChecked(white_check);
 
+
+        if(black_check) {
+            checkDot.setBounds(Chess.Black_King.getColumn()*128, Chess.Black_King.getRow()*128, 128, 128);
+            Chess.frame.add(checkDot);
+        } else if(white_check) {
+            checkDot.setBounds(Chess.White_King.getColumn()*128, Chess.White_King.getRow()*128 + 32, 128, 128);
+            Chess.frame.add(checkDot);
+        } else Chess.frame.remove(checkDot);
 // checkmate
 
         boolean black_mate = Chess.checkMate(false);

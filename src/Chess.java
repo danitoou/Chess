@@ -21,6 +21,7 @@ public class Chess extends JFrame{
     public static King Black_King = new King(4, 0, false);
     public static Piece[][] pieces_copy = new Piece[8][8];
     public static Piece p;
+    public static Piece previousPiece;
     
     public static boolean checkMate(boolean isWhite) {
         for(int x = 0; x < 8; x++) {
@@ -250,9 +251,15 @@ public class Chess extends JFrame{
         //     }
         // }
 
-        ImageIcon greenDotPicture = new ImageIcon("src\\images\\Green_Dot.png");
-        JLabel greenDot = new JLabel();
-        greenDot.setIcon(new ImageIcon(greenDotPicture.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH)));
+
+        ImageIcon darkGreenSquarePicture = new ImageIcon("src\\images\\Green_Square_Dark.png");
+        JLabel darkGreenSquare = new JLabel();
+        darkGreenSquare.setIcon(new ImageIcon(darkGreenSquarePicture.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH)));
+
+        ImageIcon lightGreenSquarePicture = new ImageIcon("src\\images\\Green_Square_Light.png");
+        JLabel lightGreenSquare = new JLabel();
+        lightGreenSquare.setIcon(new ImageIcon(lightGreenSquarePicture.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH)));
+        
         
 
         frame.repaint();
@@ -261,7 +268,9 @@ public class Chess extends JFrame{
         frame.addMouseListener(new MouseInputListener(){
             @Override
             public void mouseClicked(MouseEvent e) {
-                currentPiece = pieces[e.getX()/128][e.getY()/128];
+                int column = e.getX()/128;
+                int row = e.getY()/128;
+                currentPiece = pieces[column][row];
                 for(int x = 0; x < 8; x++) {
                     for(int y = 0; y < 8; y++) {
                         if(dots[x][y] != null) {
@@ -272,24 +281,50 @@ public class Chess extends JFrame{
                 }
             
                 boolean[][] dots_arr = currentPiece.getValidTiles();
+                if((column + row) % 2 == 1) {
+                    frame.remove(lightGreenSquare);
+                    darkGreenSquare.setBounds(column * 128, row * 128, 128, 128);
+                    frame.add(darkGreenSquare);
+                } else {
+                    frame.remove(darkGreenSquare);
+                    lightGreenSquare.setBounds(column * 128, row * 128, 128, 128);
+                    frame.add(lightGreenSquare);
+                }
+                
                 
                 for(int x = 0; x < 8; x++) {
                     for(int y = 0; y < 8; y++) {
-                        if(dots_arr[x][y]) {
+                        if(dots_arr[x][y] && currentPiece.legalMove(x, y)) {
                             dots[x][y] = new GreenDot(x, y).getLabelImage();
                             frame.add(dots[x][y]);
                         }
                     }
                 }
 
+                previousPiece = currentPiece;
                 frame.repaint();
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if(pieces[e.getX()/128][e.getY()/128] == null) return;
-                currentPiece = pieces[e.getX()/128][e.getY()/128];
+                int column = e.getX()/128;
+                int row = e.getY()/128;
+                if(pieces[column][row] == null) return;
+                currentPiece = pieces[column][row];
                 copyPiece = currentPiece;
+                if(previousPiece != currentPiece) {
+                    for(int x = 0; x < 8; x++) {
+                        for(int y = 0; y < 8; y++) {
+                            if(dots[x][y] != null) {
+                                frame.remove(dots[x][y]);
+                                dots[x][y] = null;
+                            }
+                        }
+                    }
+                    frame.remove(lightGreenSquare);
+                    frame.remove(darkGreenSquare);
+                }
+                
                 frame.repaint();
             }
 
@@ -307,7 +342,8 @@ public class Chess extends JFrame{
                     return;
                 }
                 if(Chess.pieces[curX/128][curY/128] != null && Chess.pieces[curX/128][curY/128].isWhite() == currentPiece.isWhite() && Chess.pieces[curX/128][curY/128].getName() != "Rook") {
-                    currentPiece.move(copyPiece.getColumn(), copyPiece.getRow());
+                    // currentPiece.move(copyPiece.getColumn(), copyPiece.getRow());
+                    currentPiece.resetPiece();
                     return;
                 } 
                 currentPiece.move(curX/128, curY/128);

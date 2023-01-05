@@ -37,9 +37,11 @@ public class Knight extends Piece {
         int[] arr2 = {-2, -1, 1, 2};
         for (int i : arr2) {
             for (int j : arr2) {
-                if((curColumn + i + curRow + j) % 2 != (curColumn + curRow) % 2 && curColumn+i > 0 && curRow+j > 0 &&
-                    curColumn+i < 8 && curRow+j < 8 && Chess.pieces[curColumn+i][curRow+j] != null && Chess.pieces[curColumn+i][curRow+j].isWhite() != this.isWhite()) {
-                    arr[curColumn+i][curRow+j] = true;
+                if((curColumn + i + curRow + j) % 2 != (curColumn + curRow) % 2 && curColumn+i >= 0 && curRow+j >= 0 &&
+                    curColumn+i < 8 && curRow+j < 8) {
+                    if(Chess.pieces[curColumn+i][curRow+j] != null && Chess.pieces[curColumn+i][curRow+j].isWhite() != this.isWhite()) arr[curColumn+i][curRow+j] = true;
+                    if(Chess.pieces[curColumn+i][curRow+j] == null) arr[curColumn+i][curRow+j] = true;
+                    
                 }
             }
         }

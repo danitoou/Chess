@@ -20,8 +20,8 @@ public class Pawn extends Piece {
         // Piece p = Chess.pieces[column][row];
 
         if(curRow-1 == row && curColumn == column && Chess.pieces[column][row] == null) return true;
-        if(curRow-2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row+1] == null && this.firstMove) return true;
-        else if(curRow-1 == row && column > 0 && row > 0 && column < 8 && row < 8) {
+        if(this.firstMove && curRow-2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row+1] == null) return true;
+        else if(curRow-1 == row && column >= 0 && row >= 0 && column < 8 && row < 8) {
             if(curColumn-1 == column && Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) return true;
             if(curColumn+1 == column && Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) return true;
         } 
@@ -36,8 +36,8 @@ public class Pawn extends Piece {
         // Piece p = Chess.pieces[column][row];
         
         if(curRow+1 == row && curColumn == column && Chess.pieces[column][row] == null) return true;
-        if(curRow+2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row-1] == null && this.firstMove) return true;
-        else if(curRow+1 == row && column > 0 && row > 0 && column < 8 && row < 8) {
+        if(this.firstMove && curRow+2 == row && curColumn == column && Chess.pieces[column][row] == null && Chess.pieces[column][row-1] == null) return true;
+        else if(curRow+1 == row && column >= 0 && row >= 0 && column < 8 && row < 8) {
             if(curColumn-1 == column && Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) return true;
             if(curColumn+1 == column && Chess.pieces[column][row] != null && Chess.pieces[column][row].isWhite() != this.isWhite()) return true;
         }
@@ -59,7 +59,7 @@ public class Pawn extends Piece {
         int curColumn = this.getColumn();
         int curRow = this.getRow();
         for(int x = -1; x <= 1; x++) {
-            for(int y = -1; y <= 1; y++) {
+            for(int y = -2; y <= 2; y++) {
                 if(x == 0 && y == 0) continue;
                 if(this.validMove(curColumn+x, curRow+y)) arr[curColumn+x][curRow+y] = true;
             }

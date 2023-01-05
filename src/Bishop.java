@@ -111,7 +111,7 @@ public class Bishop extends Piece {
         }
 
         int y = curRow-1;
-        for(int x = curColumn-1; x > 0; x--) { // Up Left
+        for(int x = curColumn-1; x >= 0; x--) { // Up Left
             if(y < 0 || y > 7) break;
             if(Chess.pieces[x][y] != null && Chess.pieces[x][y].isWhite() == this.isWhite()) break;
             arr[x][y] = true;

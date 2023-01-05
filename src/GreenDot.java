@@ -17,8 +17,8 @@ public class GreenDot {
     public GreenDot(int column, int row) {
         this.column = column;
         this.row = row;
-        this.labelImage.setIcon(new ImageIcon(this.image.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH)));
-        this.labelImage.setBounds(column*128, row*128, 128, 128);
+        this.labelImage.setIcon(new ImageIcon(this.image.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
+        this.labelImage.setBounds(column*128 + 44, row*128 + 44, 40, 40);
     }
 
     
