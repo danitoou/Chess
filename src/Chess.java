@@ -24,6 +24,7 @@ public class Chess extends JFrame{
     public static ImageIcon checkPicture = new ImageIcon("src\\images\\Check_Dot.png");
     public static JLabel checkDot = new JLabel();
     public static Piece previousPiece;
+
     
     public static boolean checkMate(boolean isWhite) {
         for(int x = 0; x < 8; x++) {
@@ -273,6 +274,7 @@ public class Chess extends JFrame{
                 int column = e.getX()/128;
                 int row = e.getY()/128;
                 currentPiece = pieces[column][row];
+                if(currentPiece == null) return;
                 for(int x = 0; x < 8; x++) {
                     for(int y = 0; y < 8; y++) {
                         if(dots[x][y] != null) {
