@@ -22,6 +22,7 @@ public class Chess extends JFrame{
     public static Piece[][] pieces_copy = new Piece[8][8];
     public static Piece p;
     public static Piece previousPiece;
+    public static String lastMove;
     
     public static boolean checkMate(boolean isWhite) {
         for(int x = 0; x < 8; x++) {
