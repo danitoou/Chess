@@ -95,40 +95,40 @@ public class Piece {
         // checks if the piece moves like that (doesn't consider check)
         // resets the piece if it can't move
         switch(this.getName()) {
-            case "Pawn":
-                if(!((Pawn)this).validMove(column, row)) {
-                    this.resetPiece();
-                    return;
-                }
-                break;
+            // case "Pawn":
+            //     if(!((Pawn)this).validMove(column, row)) {
+            //         this.resetPiece();
+            //         return;
+            //     }
+            //     break;
             
-            case "Knight":
-                if(!((Knight)this).validMove(column, row)) {
-                    this.resetPiece();
-                    return;
-                }
-                break;
+            // case "Knight":
+            //     if(!((Knight)this).validMove(column, row)) {
+            //         this.resetPiece();
+            //         return;
+            //     }
+            //     break;
             
-            case "Bishop":
-                if(!((Bishop)this).validMove(column, row)) {
-                    this.resetPiece();
-                    return;
-                }
-                break;
+            // case "Bishop":
+            //     if(!((Bishop)this).validMove(column, row)) {
+            //         this.resetPiece();
+            //         return;
+            //     }
+            //     break;
 
-            case "Rook":
-                if(!((Rook)this).validMove(column, row)) {
-                    this.resetPiece();
-                    return;
-                }
-                break;
+            // case "Rook":
+            //     if(!((Rook)this).validMove(column, row)) {
+            //         this.resetPiece();
+            //         return;
+            //     }
+            //     break;
 
-            case "Queen":
-                if(!((Queen)this).validMove(column, row)) {
-                    this.resetPiece();
-                    return;
-                }
-                break;
+            // case "Queen":
+            //     if(!((Queen)this).validMove(column, row)) {
+            //         this.resetPiece();
+            //         return;
+            //     }
+            //     break;
     
             case "King":
                 int legalCastle = ((King)this).legalCastle();
@@ -185,6 +185,14 @@ public class Piece {
                 }
 
                 break;
+            
+            default:
+                if(!this.validMove(column, row)) {
+                    this.resetPiece();
+                    return;
+                }
+                break;
+                
         }
         
         
@@ -220,14 +228,11 @@ public class Piece {
             if(((Pawn)this).getFirstMove() == true) {
                 if(Math.abs(this.getRow() - row) == 2) {
                     ((Pawn)this).setEnPassant(true);
-                    System.out.println("En Passant true");
                 } else {
                     ((Pawn)this).setEnPassant(false);
-                    System.out.println("En Passant false");
                 }
             } else {
                 ((Pawn)this).setEnPassant(false);
-                System.out.println("En Passant false");
             }
             
             if(Math.abs(this.row - row) == 1 && Math.abs(this.column - column) == 1 && Chess.pieces[column][row] == null) {
@@ -268,7 +273,7 @@ public class Piece {
         // if(black_check || white_check) System.out.println("Shah bate.");
 
 
-        Chess.frame.remove(Chess.checkDot);
+        // Chess.frame.remove(Chess.checkDot);
         if(black_check) {
             Chess.checkDot.setBounds(Chess.Black_King.getColumn()*128, Chess.Black_King.getRow()*128, 128, 128);
             Chess.frame.add(Chess.checkDot);
@@ -276,7 +281,8 @@ public class Piece {
             Chess.checkDot.setBounds(Chess.White_King.getColumn()*128, Chess.White_King.getRow()*128, 128, 128);
             Chess.frame.add(Chess.checkDot);
         } else Chess.frame.remove(Chess.checkDot);
-            // checkmate
+        
+// checkmate
 
         boolean black_mate = Chess.checkMate(false);
         boolean white_mate = Chess.checkMate(true);
@@ -291,19 +297,19 @@ public class Piece {
         else if(!white_check && white_mate) System.out.println("Pat bate.");
 
 // plays sound
-        // AudioInputStream audioInputStream;
-        // String moveSound = "src\\sounds\\move.wav";
-        // if(takes) moveSound = "src\\sounds\\capture.wav";
-        // if(black_check || white_check) moveSound = "src\\sounds\\check.wav";
+        AudioInputStream audioInputStream;
+        String moveSound = "src\\sounds\\move.wav";
+        if(takes) moveSound = "src\\sounds\\capture.wav";
+        if(black_check || white_check) moveSound = "src\\sounds\\check.wav";
         
-        // try {
-        //     audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
-        //     Clip clip = AudioSystem.getClip();
-        //     clip.open(audioInputStream);
-        //     clip.start();
-        // } catch (Exception e2) {
-        //     e2.printStackTrace();
-        // }
+        try {
+            audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
 
         
 
@@ -324,6 +330,35 @@ public class Piece {
             }
             if(!this.isWhite && row == 7) {
                 ((Pawn)this).promote(promote);
+            }
+
+            black_check = Chess.checkCheck(Chess.Black_King.getColumn(), Chess.Black_King.getRow(), true);
+            white_check = Chess.checkCheck(Chess.White_King.getColumn(), Chess.White_King.getRow(), false);
+
+// checkmate
+
+            black_mate = Chess.checkMate(false);
+            white_mate = Chess.checkMate(true);
+
+
+            if(black_check && black_mate) System.out.println("Shah i mat bate. Beliqt pecheli");
+            else if(white_check && white_mate) System.out.println("Shah i mat bate. Cherniqt pecheli");
+
+// stalemate
+
+            if(!black_check && black_mate) System.out.println("Pat bate.");
+            else if(!white_check && white_mate) System.out.println("Pat bate.");
+
+
+            if(takes) moveSound = "src\\sounds\\capture.wav";
+            if(black_check || white_check) moveSound = "src\\sounds\\check.wav";
+            try {
+                audioInputStream = AudioSystem.getAudioInputStream(new File(moveSound));
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } catch (Exception e2) {
+                e2.printStackTrace();
             }
             return;
         }

@@ -2,7 +2,7 @@
 public class Bishop extends Piece {
 
     public Bishop(int column, int row, boolean isWhite) {
-        super(column, row, isWhite, "Jester");
+        super(column, row, isWhite, "Bishop");
     }
 
     private int downLeft() {
