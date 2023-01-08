@@ -311,6 +311,8 @@ public class Piece {
             e2.printStackTrace();
         }
 
+        Chess.toPlay = !Chess.toPlay; // who plays next
+
         
 
 // sets pawn firstmove after its first move

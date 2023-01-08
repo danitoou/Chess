@@ -379,6 +379,7 @@ public class Chess extends JFrame{
                 int column = e.getX()/128;
                 int row = e.getY()/128;
                 if(pieces[column][row] == null) return;
+                if(pieces[column][row].isWhite() != toPlay) return;
                 currentPiece = pieces[column][row];
                 copyPiece = currentPiece;
                 // if(previousPiece != currentPiece) {
@@ -410,11 +411,13 @@ public class Chess extends JFrame{
                 int curY = e.getY();
                 if(curX < 0 || curX > 1024 || curY < 0 || curY > 1024) {
                     currentPiece.resetPiece();
+                    currentPiece = null;
                     return;
                 }
                 if(Chess.pieces[curX/128][curY/128] != null && Chess.pieces[curX/128][curY/128].isWhite() == currentPiece.isWhite() && Chess.pieces[curX/128][curY/128].getName() != "Rook") {
                     // currentPiece.move(copyPiece.getColumn(), copyPiece.getRow());
                     currentPiece.resetPiece();
+                    currentPiece = null;
                     return;
                 } 
                 // removeGreens(currentPiece.getColumn(), currentPiece.getRow());
@@ -444,6 +447,7 @@ public class Chess extends JFrame{
             public void mouseDragged(MouseEvent e) {
                 // System.out.println("Drag");
                 if(currentPiece == null) return;
+                if(currentPiece.isWhite() != toPlay) return;
                 currentPiece.movePixel(e.getX()-64, e.getY()-64);
                 // if(currentPiece != previousPiece) {
                 // drawGreens(copyPiece.getColumn(), copyPiece.getRow());
