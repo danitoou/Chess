@@ -288,13 +288,13 @@ public class Piece {
         boolean white_mate = Chess.checkMate(true);
 
 
-        if(black_check && black_mate) System.out.println("Shah i mat bate. Beliqt pecheli");
-        else if(white_check && white_mate) System.out.println("Shah i mat bate. Cherniqt pecheli");
+        // if(black_check && black_mate) JOptionPane.showMessageDialog(Chess.frame, "Checkmate! \nWhite wins!", "Chess", 1);
+        // else if(white_check && white_mate) System.out.println("Shah i mat bate. Cherniqt pecheli");
 
 // stalemate
 
-        if(!black_check && black_mate) System.out.println("Pat bate.");
-        else if(!white_check && white_mate) System.out.println("Pat bate.");
+        // if(!black_check && black_mate) System.out.println("Pat bate.");
+        // else if(!white_check && white_mate) System.out.println("Pat bate.");
 
 // plays sound
         AudioInputStream audioInputStream;
@@ -311,18 +311,24 @@ public class Piece {
             e2.printStackTrace();
         }
 
-        Chess.toPlay = !Chess.toPlay; // who plays next
+        Chess.toPlay = !Chess.toPlay; // changes who plays next
 
+// checkmate
+        if(black_check && black_mate) JOptionPane.showMessageDialog(Chess.frame, "Checkmate! \nWhite wins!", "Chess", 1);
+        else if(white_check && white_mate) JOptionPane.showMessageDialog(Chess.frame, "Checkmate! \nBlack wins!", "Chess", 1);
         
+// stalemate
+        if(!black_check && black_mate) JOptionPane.showMessageDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", 1);
+        else if(!white_check && white_mate) JOptionPane.showMessageDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", 1);
 
 // sets pawn firstmove after its first move
         if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false);      
 
 // pawn promotion
         if(this.getName() == "Pawn" && ((Pawn)this).canPromote() && (row == 0 || row == 7)) {
-            JOptionPane theme_choice = new JOptionPane();
-            theme_choice.setSize(384, 384);
-            theme_choice.setVisible(true);
+            // JOptionPane theme_choice = new JOptionPane();
+            // theme_choice.setSize(384, 384);
+            // theme_choice.setVisible(true);
             
             Object[] options = {"Knight", "Bishop", "Rook", "Queen"};
             
@@ -343,13 +349,12 @@ public class Piece {
             white_mate = Chess.checkMate(true);
 
 
-            if(black_check && black_mate) System.out.println("Shah i mat bate. Beliqt pecheli");
-            else if(white_check && white_mate) System.out.println("Shah i mat bate. Cherniqt pecheli");
-
+            if(black_check && black_mate) JOptionPane.showMessageDialog(Chess.frame, "Checkmate! \nWhite wins!", "Chess", 1);
+            else if(white_check && white_mate) JOptionPane.showMessageDialog(Chess.frame, "Checkmate! \nBlack wins!", "Chess", 1);
+        
 // stalemate
-
-            if(!black_check && black_mate) System.out.println("Pat bate.");
-            else if(!white_check && white_mate) System.out.println("Pat bate.");
+            if(!black_check && black_mate) JOptionPane.showMessageDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", 1);
+            else if(!white_check && white_mate) JOptionPane.showMessageDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", 1);
 
 
             if(takes) moveSound = "src\\sounds\\capture.wav";
