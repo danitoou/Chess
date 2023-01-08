@@ -98,6 +98,8 @@ public class King extends Piece {
         } catch (Exception e2) {
             e2.printStackTrace();
         }
+        
+        Chess.toPlay = !Chess.toPlay;
     }
 
     
