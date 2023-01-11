@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+
 public class Piece {
     private int column;
     private int row;
@@ -311,15 +312,41 @@ public class Piece {
             e2.printStackTrace();
         }
 
-        Chess.toPlay = !Chess.toPlay; // changes who plays next
+// changes who plays next
+        Chess.toPlay = !Chess.toPlay;
 
 // checkmate
-        if(black_check && black_mate) JOptionPane.showMessageDialog(Chess.frame, "Checkmate! \nWhite wins!", "Chess", 1);
-        else if(white_check && white_mate) JOptionPane.showMessageDialog(Chess.frame, "Checkmate! \nBlack wins!", "Chess", 1);
+        if(black_check && black_mate) {
+            Object[] options = {"Close", "Ok"};
+            int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Checkmate! \nWhite wins!", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+            if(what_doink == 0) {
+                System.exit(0);
+            }
+        }
+
+        else if(white_check && white_mate) {
+            Object[] options = {"Close", "Ok"};
+            int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Checkmate! \nBlack wins!", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+            if(what_doink == 0) {
+                System.exit(0);
+            }
+        }
         
 // stalemate
-        if(!black_check && black_mate) JOptionPane.showMessageDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", 1);
-        else if(!white_check && white_mate) JOptionPane.showMessageDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", 1);
+        if(!black_check && black_mate) {
+            Object[] options = {"Close", "Ok"};
+            int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+            if(what_doink == 0) {
+                System.exit(0);
+            }
+        }
+        else if(!white_check && white_mate) {
+            Object[] options = {"Close", "Ok"};
+            int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+            if(what_doink == 0) {
+                System.exit(0);
+            }
+        }
 
 // sets pawn firstmove after its first move
         if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false);      
@@ -349,8 +376,20 @@ public class Piece {
             white_mate = Chess.checkMate(true);
 
 
-            if(black_check && black_mate) JOptionPane.showMessageDialog(Chess.frame, "Checkmate! \nWhite wins!", "Chess", 1);
-            else if(white_check && white_mate) JOptionPane.showMessageDialog(Chess.frame, "Checkmate! \nBlack wins!", "Chess", 1);
+            if(black_check && black_mate) {
+                Object[] options2 = {"Close", "Ok"};
+                int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options2, options2[1]);
+                if(what_doink == 0) {
+                    System.exit(0);
+                }
+            }
+            else if(white_check && white_mate) {
+                Object[] options2 = {"Close", "Ok"};
+                int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options2, options2[1]);
+                if(what_doink == 0) {
+                    System.exit(0);
+                }
+            }
         
 // stalemate
             if(!black_check && black_mate) JOptionPane.showMessageDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", 1);
@@ -378,20 +417,20 @@ public class Piece {
         Chess.pieces_copy[this.column][this.row] = null;
         Chess.pieces_copy[column][row] = this;
 
-        // if moving king sets the new "fake" king position
+// if moving king sets the new "fake" king position
         if(this.name == "King") {
             if(this.isWhite) Chess.White_King = (King)this;
             else Chess.Black_King = (King)this;
         }
 
-        // if moving king checks if it's legal
+// if moving king checks if it's legal
         if(this.name == "King" && Chess.checkCheck(column, row, !this.isWhite())) {
             Chess.pieces_copy[this.column][this.row] = this;
             Chess.pieces_copy[column][row] = Chess.p;
             return false;
         }
 
-        // moving anything else checks if it's legal
+// moving anything else checks if it's legal
         if(this.isWhite && this.name != "King") { // moving a white piece
             if(Chess.checkCheck(Chess.White_King.getColumn(), Chess.White_King.getRow(), false)) {
                 // this.resetChecked(p, column, row);

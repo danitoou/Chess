@@ -335,9 +335,9 @@ public class Chess extends JFrame{
         frame.addMouseListener(new MouseInputListener(){
             @Override
             public void mouseClicked(MouseEvent e) {
-                int column = e.getX()/128;
-                int row = e.getY()/128;
-                currentPiece = pieces[column][row];
+                // int column = e.getX()/128;
+                // int row = e.getY()/128;
+                // currentPiece = pieces[column][row];
                 // if(currentPiece == null) return;
                 // for(int x = 0; x < 8; x++) {
                 //     for(int y = 0; y < 8; y++) {
