@@ -1,5 +1,6 @@
 import java.awt.Image;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -19,7 +20,7 @@ public class Chess extends JFrame{
     public static String theme = "Lichess\\";
     public static King White_King = new King(4, 7, true);
     public static King Black_King = new King(4, 0, false);
-    public static Piece[][] pieces_copy = new Piece[8][8];
+    public static Piece[][] pieces_copy = new Piece[8][8]; 
     public static Piece p;
     public static ImageIcon checkPicture = new ImageIcon("src\\images\\Check_Dot.png");
     public static JLabel checkDot = new JLabel();
@@ -34,6 +35,28 @@ public class Chess extends JFrame{
     public static JLabel lightGreenSquare = new JLabel();
     
     public static JLabel[][] dots = new JLabel[8][8];
+
+    public static Piece[][] boardFromFEN(String fen) {
+        Piece[][] board = new Piece[8][8];
+
+        String[] rows = fen.split("/");
+        String[] nums = {"1", "2", "3", "4", "5", "6", "7", "8"};
+        int curRow = 0;
+        for (String row : rows) {
+            for(int i = 0; i < row.length(); i++) {
+                if(Arrays.stream(nums).anyMatch(String.format("%d", i)::equals)) {
+                    for(int j = i;  j > 0; j--) {
+
+                    }
+                }
+            }
+        }
+
+
+
+
+        return null;
+    }
     
     public static boolean checkMate(boolean isWhite) {
         for(int x = 0; x < 8; x++) {
