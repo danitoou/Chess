@@ -87,6 +87,11 @@ public class King extends Piece {
         this.remove();
         this.setLabelImage(this.getImageWithLabel());
         this.draw();
+        if(this.isWhite()) {
+            Chess.White_King = this; 
+        } else {
+            Chess.Black_King = this;
+        }
         AudioInputStream audioInputStream;
         String moveSound = "src\\sounds\\castle.wav";
         

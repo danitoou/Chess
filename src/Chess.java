@@ -36,6 +36,75 @@ public class Chess extends JFrame{
     
     public static JLabel[][] dots = new JLabel[8][8];
 
+    public static void resetBoard() {
+
+        White_King = new King(4, 7, true);
+        Black_King = new King(4, 0, false);
+        toPlay = true;
+        currentPiece = null;
+        copyPiece = null;
+        previousPiece = null;
+
+// board wipe
+        for(int x = 0; x < 8; x++) {
+            for(int y = 0; y < 8; y++) {
+                if(pieces[x][y] != null) {
+                    pieces[x][y].remove();
+                }
+                pieces[x][y] = null;
+            }
+        }
+
+
+// pawns
+        for(int y = 1; y < 8; y += 5) {
+            for(int x = 0; x < 8; x++) {
+                if(y == 1) pieces[x][y] = new Pawn(x, y, false);
+                else pieces[x][y] = new Pawn(x, y, true);
+                pieces[x][y].draw();
+            }
+        }
+
+// black pieces
+        pieces[0][0] = new Rook(0, 0, false);
+        pieces[0][0].draw();
+        pieces[1][0] = new Knight(1, 0, false);
+        pieces[1][0].draw();
+        pieces[2][0] = new Bishop(2, 0, false);
+        pieces[2][0].draw();
+        pieces[3][0] = new Queen(3, 0, false);
+        pieces[3][0].draw();
+        pieces[4][0] = new King(4, 0, false);
+        pieces[4][0].draw();
+        pieces[5][0] = new Bishop(5, 0, false);
+        pieces[5][0].draw();
+        pieces[6][0] = new Knight(6, 0, false);
+        pieces[6][0].draw();
+        pieces[7][0] = new Rook(7, 0, false);
+        pieces[7][0].draw();
+
+// white pieces
+        pieces[0][7] = new Rook(0, 7, true);
+        pieces[0][7].draw();
+        pieces[1][7] = new Knight(1, 7, true);
+        pieces[1][7].draw();
+        pieces[2][7] = new Bishop(2, 7, true);
+        pieces[2][7].draw();
+        pieces[3][7] = new Queen(3, 7, true);
+        pieces[3][7].draw();
+        pieces[4][7] = new King(4, 7, true);
+        pieces[4][7].draw();
+        pieces[5][7] = new Bishop(5, 7, true);
+        pieces[5][7].draw();
+        pieces[6][7] = new Knight(6, 7, true);
+        pieces[6][7].draw();
+        pieces[7][7] = new Rook(7, 7, true);
+        pieces[7][7].draw();
+
+        pieces_copy = pieces.clone();
+        frame.repaint();
+    }
+
     public static Piece[][] boardFromFEN(String fen) {
         Piece[][] board = new Piece[8][8];
 
@@ -319,6 +388,37 @@ public class Chess extends JFrame{
         pieces[6][7].draw();
         pieces[7][7] = new Rook(7, 7, true);
         pieces[7][7].draw();
+
+            // pieces[6][0] = new King(6, 0, false);
+            // pieces[0][1] = new Bishop(0, 1, true);
+            // pieces[4][1] = new Bishop(4, 1, false);
+            // pieces[6][1] = new Pawn(6, 1, false);
+            // pieces[4][2] = new Pawn(4, 2, false);
+            // pieces[7][2] = new Pawn(7, 2, false);
+            // pieces[4][3] = new Pawn(4, 3, false);
+            // pieces[0][4] = new Pawn(0, 4, true);
+            // pieces[4][4] = new Knight(4, 4, true);
+            // pieces[3][5] = new Rook(3, 5, false);
+            // pieces[5][5] = new Knight(5, 5, true);
+            // pieces[7][5] = new Pawn(7, 5, true);
+            // pieces[1][6] = new Pawn(1, 6, true);
+            // pieces[5][4] = new Knight(5, 4, false);
+            // pieces[5][6] = new Pawn(5, 6, true);
+            // pieces[6][6] = new Pawn(6, 6, true);
+            // pieces[0][7] = new Rook(0, 7, true);
+            // pieces[6][7] = new King(6, 7, true);
+            // White_King = new King(6, 7, true);
+            // Black_King = new King(6, 0, false);
+            // toPlay = false;
+
+            // for(int x = 0; x < 8; x++) {
+            //     for(int y = 0; y < 8; y++) {
+            //         if(pieces[x][y] != null) {
+            //             pieces[x][y].draw();
+            //         }
+            //     }
+            // }
+            
 
         pieces_copy = pieces.clone();
 

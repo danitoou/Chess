@@ -317,34 +317,42 @@ public class Piece {
 
 // checkmate
         if(black_check && black_mate) {
-            Object[] options = {"Close", "Ok"};
-            int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Checkmate! \nWhite wins!", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+            Object[] options = {"Exit", "Restart", "Ok"};
+            int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Checkmate! \nWhite wins!", "Chess", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[2]);
             if(what_doink == 0) {
                 System.exit(0);
+            } else if(what_doink == 1) {
+                Chess.resetBoard();
             }
         }
 
         else if(white_check && white_mate) {
-            Object[] options = {"Close", "Ok"};
-            int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Checkmate! \nBlack wins!", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+            Object[] options = {"Exit", "Restart", "Ok"};
+            int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Checkmate! \nBlack wins!", "Chess", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[2]);
             if(what_doink == 0) {
                 System.exit(0);
+            } else if(what_doink == 1) {
+                Chess.resetBoard();
             }
         }
         
 // stalemate
         if(!black_check && black_mate) {
-            Object[] options = {"Close", "Ok"};
-            int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+            Object[] options = {"Exit", "Restart", "Ok"};
+            int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[2]);
             if(what_doink == 0) {
                 System.exit(0);
+            } else if(what_doink == 1) {
+                Chess.resetBoard();
             }
         }
         else if(!white_check && white_mate) {
-            Object[] options = {"Close", "Ok"};
-            int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+            Object[] options = {"Exit", "Restart", "Ok"};
+            int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[2]);
             if(what_doink == 0) {
                 System.exit(0);
+            } else if(what_doink == 1) {
+                Chess.resetBoard();
             }
         }
 
@@ -377,23 +385,43 @@ public class Piece {
 
 
             if(black_check && black_mate) {
-                Object[] options2 = {"Close", "Ok"};
-                int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options2, options2[1]);
+                Object[] options2 = {"Exit", "Restart", "Ok"};
+                int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Checkmate! \nWhite wins!", "Chess", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options2, options2[2]);
                 if(what_doink == 0) {
                     System.exit(0);
+                } else if(what_doink == 1) {
+                    Chess.resetBoard();
                 }
             }
             else if(white_check && white_mate) {
-                Object[] options2 = {"Close", "Ok"};
-                int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options2, options2[1]);
+                Object[] options2 = {"Exit", "Restart", "Ok"};
+                int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Checkmate! \nBlack wins!", "Chess", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options2, options2[2]);
                 if(what_doink == 0) {
                     System.exit(0);
+                } else if(what_doink == 1) {
+                    Chess.resetBoard();
                 }
             }
         
 // stalemate
-            if(!black_check && black_mate) JOptionPane.showMessageDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", 1);
-            else if(!white_check && white_mate) JOptionPane.showMessageDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", 1);
+            if(!black_check && black_mate) {
+                Object[] options2 = {"Exit", "Restart", "Ok"};
+                int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options2, options2[2]);
+                if(what_doink == 0) {
+                    System.exit(0);
+                } else if(what_doink == 1) {
+                    Chess.resetBoard();
+                }
+            }
+            else if(!white_check && white_mate) {
+                Object[] options2 = {"Exit", "Restart", "Ok"};
+                int what_doink = JOptionPane.showOptionDialog(Chess.frame, "Stalemate! It's a draw!", "Chess", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options2, options2[2]);
+                if(what_doink == 0) {
+                    System.exit(0);
+                } else if(what_doink == 1) {
+                    Chess.resetBoard();
+                }
+            }
 
 
             if(takes) moveSound = "src\\sounds\\capture.wav";
