@@ -441,7 +441,7 @@ public class Piece {
 
     public boolean legalMove(int column, int row) {
         Chess.p = Chess.pieces_copy[column][row];
-        // Piece copy = Chess.pieces_copy[this.column][this.row];
+        //Piece copy = Chess.pieces_copy[this.column][this.row];
         Chess.pieces_copy[this.column][this.row] = null;
         Chess.pieces_copy[column][row] = this;
 

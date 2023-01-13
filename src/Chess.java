@@ -105,20 +105,35 @@ public class Chess extends JFrame{
         frame.repaint();
     }
 
+    public static boolean arrayContains(char[] arr, char num) {
+        for(int j = 0; j < arr.length; j++) {
+            if(num == arr[j]) return true;
+        }
+        return false;
+    }
     public static Piece[][] boardFromFEN(String fen) {
         Piece[][] board = new Piece[8][8];
 
         String[] rows = fen.split("/");
-        String[] nums = {"1", "2", "3", "4", "5", "6", "7", "8"};
+        char[] nums = {'1', '2', '3', '4', '5', '6', '7', '8'};
         int curRow = 0;
+        int curColumn = 0;
         for (String row : rows) {
+            curColumn = 0;
             for(int i = 0; i < row.length(); i++) {
-                if(Arrays.stream(nums).anyMatch(String.format("%d", i)::equals)) {
-                    for(int j = i;  j > 0; j--) {
+                // if(Arrays.stream(nums).anyMatch(row.charAt(i)::equals)) {
+                //     for(int j = i;  j > 0; j--) {
 
+                //     }
+                // }
+                if(arrayContains(nums, row.charAt(i))) {
+                    for(int j = row.charAt(i); j > 0; j--) {
+                        curColumn++;
                     }
                 }
+                
             }
+            curRow++;
         }
 
 
