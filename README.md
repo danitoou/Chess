@@ -1,18 +1,10 @@
-## Getting Started
+jar файлът работи само ако е в правилната папка
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
-
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+Планове:
+- да се добавят зелени кръгчета за възможните ходове на фигура
+- да се добави и маркиране на последния игран ход
+- да се добавят и още звуци, например за начало/край на играта
+- да се добави таймер, опции за време и вид на играта
+- да се добави следене на позицията чрез FEN (Forsyth-Edwards Notation)
+- чрез FEN може да се добави и играене срещу компютър (Stockfish)
+- също може и да се записва играта в отделно файлче, за да може да се разглежда после
