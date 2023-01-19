@@ -156,7 +156,7 @@ public class Piece {
 
                 // normal move for king
                 if(Chess.pieces[column][row] == null) {
-                    if(!((King)this).validMove(column, row)) {
+                    if(!((King)this).validMove(column, row) || Chess.checkCheck(column, row, !this.isWhite())) {
                         this.resetPiece();
                         return;
                     } else {

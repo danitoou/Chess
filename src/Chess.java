@@ -253,6 +253,18 @@ public class Chess extends JFrame{
             }
             y++;
         }
+        // check for other king
+
+        int[] king_arr = {-1, 0, 1};
+        for (int i : king_arr) {
+            for (int j : king_arr) {
+                if(i == 0 && j == 0) continue;
+                if(column + i < 0 || column + i > 7 || row + j < 0 || row + j > 7) continue;
+                if(Chess.pieces_copy[column + i][row + j] != null && Chess.pieces_copy[column + i][row + j].isWhite() == isWhite && Chess.pieces_copy[column + i][row + j].getName() == "King") {
+                    return true;
+                }
+            }
+        }
 
         int pawnRow;
         if(isWhite) pawnRow = row+1;
