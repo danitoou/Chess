@@ -360,18 +360,18 @@ public class Piece {
         if(this.getName() == "Pawn" && ((Pawn)this).getFirstMove() == true) ((Pawn)this).setFirstMove(false);      
 
 // pawn promotion
-        if(this.getName() == "Pawn" && ((Pawn)this).canPromote() && (row == 0 || row == 7)) {
+        if(this.getName() == "Pawn" && ((Pawn)this).canPromote()) {
             // JOptionPane theme_choice = new JOptionPane();
             // theme_choice.setSize(384, 384);
             // theme_choice.setVisible(true);
             
             Object[] options = {"Knight", "Bishop", "Rook", "Queen"};
             
-            int promote = JOptionPane.showOptionDialog(Chess.frame, "Choose a figure to promote to", "Chess", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if(this.isWhite && row == 0) {
+            int promote = JOptionPane.showOptionDialog(Chess.frame, "Choose a figure to promote to", "Chess", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[3]);
+            if(this.isWhite) {
                 ((Pawn)this).promote(promote);
             }
-            if(!this.isWhite && row == 7) {
+            if(!this.isWhite) {
                 ((Pawn)this).promote(promote);
             }
 
