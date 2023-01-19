@@ -365,9 +365,9 @@ public class Piece {
             // theme_choice.setSize(384, 384);
             // theme_choice.setVisible(true);
             
-            Object[] options = {"Knight", "Bishop", "Rook", "Queen"};
+            Object[] options_prom = {"Knight", "Bishop", "Rook", "Queen"};
             
-            int promote = JOptionPane.showOptionDialog(Chess.frame, "Choose a figure to promote to", "Chess", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[3]);
+            int promote = JOptionPane.showOptionDialog(Chess.frame, "Choose a figure to promote to", "Chess", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options_prom, options_prom[3]);
             if(this.isWhite) {
                 ((Pawn)this).promote(promote);
             }
