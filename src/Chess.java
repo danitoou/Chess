@@ -352,7 +352,7 @@ public class Chess extends JFrame{
         frame.setLayout(null);
 
 // board
-        ImageIcon boardImage = new ImageIcon("src\\images\\" + theme + "Board.png");
+        ImageIcon boardImage = new ImageIcon("res\\images\\" + theme + "Board.png");
         JLabel board = new JLabel();
         board.setIcon(new ImageIcon(boardImage.getImage().getScaledInstance(1024, 1024, Image.SCALE_SMOOTH)));
         board.setBounds(0, 0, 1024, 1024);
