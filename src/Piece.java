@@ -250,7 +250,8 @@ public class Piece {
         }
         
 // logging move
-        Logger.info("{} moved to {}, {}", Chess.currentPiece, column, row);
+        // Logger.info("{} moved to {}, {}", this, column, row);
+        Logger.info(this.moveToString(column, row));
 
 // changes piece variables and redraws the correct image
 // actually moves the piece
@@ -505,15 +506,44 @@ public class Piece {
         return false;
     }
 
+    private String moveToString(int column, int row) {
+        String move = this.toString();
+        move += (char)(97+column);
+        move += 8 - row;
+        return move;
+    }
+    
+
     public void movePixel(int x, int y) {
         this.labelImage.setLocation(x, y);
         this.draw();
     }
 
+    @Override
     public String toString() {
-        if(isWhite) return String.format("%s (%d, %d) %s", name, column, row, "White");
-        else return String.format("%s (%d, %d) %s", name, column, row, "Black");
-        
+        String output = "";
+        switch(this.getName()) {
+            case "Knight":
+                output += "N";
+                break;
+            case "Bishop":
+                output += "B";
+                break;
+            case "Rook":
+                output += "R";
+                break;
+            case "Queen":
+                output += "Q";
+                break;
+            case "King":
+                output += "K";
+                break;
+        }
+        output += (char)(97+column);
+        output += 8 - row;
+        // if(isWhite) return String.format("%s (%d, %d) %s", name, column, row, "White");
+        // else return String.format("%s (%d, %d) %s", name, column, row, "Black");
+        return output;
     }
 
     

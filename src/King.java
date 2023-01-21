@@ -4,6 +4,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import org.tinylog.Logger;
+
 public class King extends Piece {
     private boolean canCastle = true;
     private boolean isChecked = false;
@@ -77,11 +79,13 @@ public class King extends Piece {
             this.setColumn(6);
             Chess.pieces[4][this.getRow()] = null;
             Chess.pieces[6][this.getRow()] = this;
+            Logger.info("O-O");
         }
         else {
             this.setColumn(2);
             Chess.pieces[4][this.getRow()] = null;
             Chess.pieces[2][this.getRow()] = this;
+            Logger.info("O-O-O");
         }
         this.setCanCastle(false);
         this.remove();
