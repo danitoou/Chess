@@ -8,6 +8,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import org.tinylog.Logger;
+
 
 public class Piece {
     private int column;
@@ -247,7 +249,8 @@ public class Piece {
             }
         }
         
-
+// logging move
+        Logger.info("{} moved to {}, {}", Chess.currentPiece, column, row);
 
 // changes piece variables and redraws the correct image
 // actually moves the piece

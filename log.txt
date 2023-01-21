@@ -1,0 +1,12 @@
+2023-01-21 19:56:05 [AWT-EventQueue-0] Piece.move()
+INFO: Pawn (3, 6) White moved to 3, 4
+2023-01-21 19:56:06 [AWT-EventQueue-0] Piece.move()
+INFO: Pawn (3, 1) Black moved to 3, 3
+2023-01-21 19:56:07 [AWT-EventQueue-0] Piece.move()
+INFO: Knight (6, 7) White moved to 5, 5
+2023-01-21 19:56:08 [AWT-EventQueue-0] Piece.move()
+INFO: Bishop (2, 0) Black moved to 5, 3
+2023-01-21 19:56:09 [AWT-EventQueue-0] Piece.move()
+INFO: Queen (3, 7) White moved to 3, 5
+2023-01-21 19:56:10 [AWT-EventQueue-0] Piece.move()
+INFO: Bishop (5, 3) Black moved to 3, 5
