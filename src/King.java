@@ -1,4 +1,8 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -80,13 +84,67 @@ public class King extends Piece {
             Chess.pieces[4][this.getRow()] = null;
             Chess.pieces[6][this.getRow()] = this;
             Logger.info("O-O");
+            Chess.boardStockfish += String.format(" e%dg%d", 8-(char)this.getRow(), 8-(char)this.getRow());
         }
         else {
             this.setColumn(2);
             Chess.pieces[4][this.getRow()] = null;
             Chess.pieces[2][this.getRow()] = this;
             Logger.info("O-O-O");
+            Chess.boardStockfish += String.format(" e%dc%d", 8-(char)this.getRow(), 8-(char)this.getRow());
         }
+        ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
+        pb.directory(new File("stockfish"));
+        Thread t2 = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                
+                try {
+                    Process proc = pb.start();
+                    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
+                    BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+                    out.write(Chess.boardStockfish);
+                    out.newLine();
+                    out.write("go movetime 1000");
+                    out.newLine();
+                    out.flush();
+                    String text;
+                    while((text = in.readLine()) != null) {
+                        System.out.println(text);
+                        Chess.bestMove = text;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } 
+            }
+            
+        });
+        t2.setPriority(Thread.MIN_PRIORITY);
+        t2.start();
+
+        // ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
+        // pb.directory(new File("stockfish"));
+        Thread t3 = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                System.out.println(Chess.boardStockfish);
+                String[] nextMove = Chess.stringToMove(Chess.bestMove).split(" ");
+                Chess.pieces[Integer.parseInt(nextMove[0])][8-Integer.parseInt(nextMove[1])].move(Integer.parseInt(nextMove[2]), 8-Integer.parseInt(nextMove[3]));
+            }
+            
+        });
+        t3.setPriority(Thread.MIN_PRIORITY);
+        t3.start();
+        
         this.setCanCastle(false);
         this.remove();
         this.setLabelImage(this.getImageWithLabel());

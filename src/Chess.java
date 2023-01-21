@@ -1,5 +1,15 @@
 import java.awt.Image;
 import java.awt.event.MouseEvent;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.lang.Process;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon;
@@ -8,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
-
 
 
 public class Chess extends JFrame{
@@ -26,6 +35,9 @@ public class Chess extends JFrame{
     public static JLabel checkDot = new JLabel();
     public static Piece previousPiece;
     public static boolean toPlay = true;
+    public static String boardStockfish = "position startpos";
+    public static String bestMove;
+    public static Thread t1;
 
 
     public static ImageIcon darkGreenSquarePicture = new ImageIcon("src\\images\\Green_Square_Dark.png");
@@ -141,6 +153,18 @@ public class Chess extends JFrame{
 
         return null;
     }
+
+    public static String stringToMove(String move) {
+        String[] move_split = move.split(" ");
+        char[] chars = move_split[1].toCharArray();
+        // String[] strings = move2.split("");
+        System.out.println((int)chars[0]-97);
+        System.out.println(chars[1]);
+        System.out.println((int)chars[2]-97);
+        System.out.println(chars[3]);
+     //    Piece p = Chess.pieces[((int)chars[0])-97][chars[1]];
+        return String.format("%d %c %d %c", (int)chars[0]-97, chars[1], (int)chars[2]-97, chars[3]);
+     }
     
     public static boolean checkMate(boolean isWhite) {
         for(int x = 0; x < 8; x++) {
@@ -362,6 +386,41 @@ public class Chess extends JFrame{
 
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
+
+        
+        ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
+        pb.directory(new File("stockfish"));
+        t1 = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                
+                try {
+                    Process proc = pb.start();
+                    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
+                    BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+                    out.write("position startpos");
+                    out.newLine();
+                    out.write("go movetime 1000");
+                    out.newLine();
+                    out.flush();
+                    String text;
+                    while((text = in.readLine()) != null) {
+                        System.out.println(text);
+                        bestMove = text;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } 
+                // t1.interrupt();
+            }
+            
+        });
+        t1.setPriority(Thread.MIN_PRIORITY);
+        t1.start();
+        
+        
 
 // board
         ImageIcon boardImage = new ImageIcon("res\\images\\" + theme + "Board.png");
