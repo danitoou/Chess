@@ -255,63 +255,65 @@ public class Piece {
         
 // logging move
         // Logger.info("{} moved to {}, {}", this, column, row);
-        Logger.info(this.moveToString(column, row));
+        // Logger.info(this.moveToString(column, row));
+        Logger.info(this.logPGN(column, row, takes));
 
 
         if(Chess.boardStockfish == "position startpos") Chess.boardStockfish += " moves";
         Chess.boardStockfish += " " + this.moveToString(column, row);
+        System.out.println(Chess.boardStockfish);
 
-        ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
-        pb.directory(new File("stockfish"));
-        Thread t2 = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                
-                try {
-                    Process proc = pb.start();
-                    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
-                    BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-
-                    out.write(Chess.boardStockfish);
-                    out.newLine();
-                    out.write("go movetime 1000");
-                    out.newLine();
-                    out.flush();
-                    String text;
-                    while((text = in.readLine()) != null) {
-                        System.out.println(text);
-                        Chess.bestMove = text;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } 
-            }
-            
-        });
-        t2.setPriority(Thread.MIN_PRIORITY);
-        t2.start();
-
-        // ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
-        // pb.directory(new File("stockfish"));
-        Thread t3 = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+        if(Chess.toPlay && Chess.stockfishOn) {
+            ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
+            pb.directory(new File("stockfish"));
+            Thread t2 = new Thread(new Runnable() {
+    
+                @Override
+                public void run() {
+                    
+                    try {
+                        Process proc = pb.start();
+                        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
+                        BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+    
+                        out.write(Chess.boardStockfish);
+                        out.newLine();
+                        out.write("go movetime 1000");
+                        out.newLine();
+                        out.flush();
+                        String text;
+                        while((text = in.readLine()) != null) {
+                            System.out.println(text);
+                            Chess.bestMove = text;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } 
                 }
-                String[] nextMove = Chess.stringToMove(Chess.bestMove).split(" ");
-                Chess.pieces[Integer.parseInt(nextMove[0])][8-Integer.parseInt(nextMove[1])].move(Integer.parseInt(nextMove[2]), 8-Integer.parseInt(nextMove[3]));
-            }
-            
-        });
-        t3.setPriority(Thread.MIN_PRIORITY);
-        t3.start();
-
+                
+            });
+            t2.setPriority(Thread.MIN_PRIORITY);
+            t2.start();
+    
+            Thread t3 = new Thread(new Runnable() {
+    
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    String[] nextMove = Chess.stringToMove(Chess.bestMove).split(" ");
+                    Chess.pieces[Integer.parseInt(nextMove[0])][8-Integer.parseInt(nextMove[1])].move(Integer.parseInt(nextMove[2]), 8-Integer.parseInt(nextMove[3]));
+                }
+                
+            });
+            t3.setPriority(Thread.MIN_PRIORITY);
+            t3.start();
+        }
+        
+        Chess.moveCount++;
 // changes piece variables and redraws the correct image
 // actually moves the piece
         Chess.pieces[this.column][this.row] = null;
@@ -570,6 +572,32 @@ public class Piece {
         move += (char)(97+column);
         move += 8 - row;
         return move;
+    }
+
+    private String logPGN(int column, int row, boolean takes) {
+        String output = "";
+        switch(this.getName()) {
+            case "Knight":
+                output += "N";
+                break;
+            case "Bishop":
+                output += "B";
+                break;
+            case "Rook":
+                output += "R";
+                break;
+            case "Queen":
+                output += "Q";
+                break;
+            case "King":
+                output += "K";
+                break;
+        }
+        output += this.toString();
+        if(takes) output += "x";
+        output += (char)(97+column);
+        output += 8 - row;
+        return output;
     }
 
     public void movePixel(int x, int y) {

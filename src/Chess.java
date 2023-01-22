@@ -38,6 +38,8 @@ public class Chess extends JFrame{
     public static String boardStockfish = "position startpos";
     public static String bestMove;
     public static Thread t1;
+    public static boolean stockfishOn = true;
+    public static int moveCount = 0;
 
 
     public static ImageIcon darkGreenSquarePicture = new ImageIcon("src\\images\\Green_Square_Dark.png");
@@ -257,7 +259,7 @@ public class Chess extends JFrame{
         }
         //up left
         int y = row - 1;
-        for(int x = column-1; x > 0; x--) {
+        for(int x = column-1; x >= 0; x--) {
             if(y < 0 || y > 7) break;
             p = Chess.pieces_copy[x][y];
             if(p != null) {
@@ -387,38 +389,40 @@ public class Chess extends JFrame{
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
 
-        
-        ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
-        pb.directory(new File("stockfish"));
-        t1 = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
+        if(Chess.stockfishOn) {
+            ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
+            pb.directory(new File("stockfish"));
+            t1 = new Thread(new Runnable() {
+    
+                @Override
+                public void run() {
+                    
+                    try {
+                        Process proc = pb.start();
+                        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
+                        BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+    
+                        out.write("position startpos");
+                        out.newLine();
+                        out.write("go movetime 1000");
+                        out.newLine();
+                        out.flush();
+                        String text;
+                        while((text = in.readLine()) != null) {
+                            System.out.println(text);
+                            bestMove = text;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } 
+                    // t1.interrupt();
+                }
                 
-                try {
-                    Process proc = pb.start();
-                    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
-                    BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-
-                    out.write("position startpos");
-                    out.newLine();
-                    out.write("go movetime 1000");
-                    out.newLine();
-                    out.flush();
-                    String text;
-                    while((text = in.readLine()) != null) {
-                        System.out.println(text);
-                        bestMove = text;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } 
-                // t1.interrupt();
-            }
-            
-        });
-        t1.setPriority(Thread.MIN_PRIORITY);
-        t1.start();
+            });
+            t1.setPriority(Thread.MIN_PRIORITY);
+            t1.start();
+        }
+        
         
         
 
