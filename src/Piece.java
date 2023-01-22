@@ -300,7 +300,7 @@ public class Piece {
                 @Override
                 public void run() {
                     try {
-                        Thread.sleep(Chess.stockfishTime+500);
+                        Thread.sleep(Chess.stockfishTime+1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
