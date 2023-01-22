@@ -39,6 +39,8 @@ public class Chess extends JFrame{
     public static String bestMove;
     public static Thread t1;
     public static boolean stockfishOn = true;
+    public static boolean stockfishColor = true;
+    public static int stockfishTime = 3000;
     public static int moveCount = 0;
 
 
@@ -160,10 +162,10 @@ public class Chess extends JFrame{
         String[] move_split = move.split(" ");
         char[] chars = move_split[1].toCharArray();
         // String[] strings = move2.split("");
-        System.out.println((int)chars[0]-97);
-        System.out.println(chars[1]);
-        System.out.println((int)chars[2]-97);
-        System.out.println(chars[3]);
+        // System.out.println((int)chars[0]-97);
+        // System.out.println(chars[1]);
+        // System.out.println((int)chars[2]-97);
+        // System.out.println(chars[3]);
      //    Piece p = Chess.pieces[((int)chars[0])-97][chars[1]];
         return String.format("%d %c %d %c", (int)chars[0]-97, chars[1], (int)chars[2]-97, chars[3]);
      }
@@ -387,42 +389,7 @@ public class Chess extends JFrame{
         frame.setSize(1024, 1024);
 
         frame.setLocationRelativeTo(null);
-        frame.setLayout(null);
-
-        if(Chess.stockfishOn) {
-            ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
-            pb.directory(new File("stockfish"));
-            t1 = new Thread(new Runnable() {
-    
-                @Override
-                public void run() {
-                    
-                    try {
-                        Process proc = pb.start();
-                        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
-                        BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-    
-                        out.write("position startpos");
-                        out.newLine();
-                        out.write("go movetime 1000");
-                        out.newLine();
-                        out.flush();
-                        String text;
-                        while((text = in.readLine()) != null) {
-                            System.out.println(text);
-                            bestMove = text;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } 
-                    // t1.interrupt();
-                }
-                
-            });
-            t1.setPriority(Thread.MIN_PRIORITY);
-            t1.start();
-        }
-        
+        frame.setLayout(null);   
         
         
 
@@ -511,6 +478,58 @@ public class Chess extends JFrame{
             
 
         pieces_copy = pieces.clone();
+
+        if(Chess.toPlay == Chess.stockfishColor && Chess.stockfishOn) {
+            ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
+            pb.directory(new File("stockfish"));
+            t1 = new Thread(new Runnable() {
+    
+                @Override
+                public void run() {
+                    
+                    try {
+                        Process proc = pb.start();
+                        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
+                        BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+    
+                        out.write("position startpos");
+                        out.newLine();
+                        out.write(String.format("go movetime %d", stockfishTime));
+                        out.newLine();
+                        out.flush();
+                        String text;
+                        while((text = in.readLine()) != null) {
+                            // System.out.println(text);
+                            bestMove = text;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } 
+                    // t1.interrupt();
+                }
+                
+            });
+            t1.setPriority(Thread.MIN_PRIORITY);
+            t1.start();
+
+            // Thread t4 = new Thread(new Runnable() {
+    
+            //     @Override
+            //     public void run() {
+            //         try {
+            //             Thread.sleep(Chess.stockfishTime+500);
+            //         } catch (InterruptedException e) {
+            //             e.printStackTrace();
+            //         }
+            //         String[] nextMove = Chess.stringToMove(Chess.bestMove).split(" ");
+            //         Chess.pieces[Integer.parseInt(nextMove[0])][8-Integer.parseInt(nextMove[1])].move(Integer.parseInt(nextMove[2]), 8-Integer.parseInt(nextMove[3]));
+            //     }
+                
+            // });
+            // t4.setPriority(Thread.MIN_PRIORITY);
+            // t4.start();
+            Chess.pieces[4][6].move(4, 4);
+        }
 
 // board
         // JPanel[][] panel_board = new JPanel[8][8];

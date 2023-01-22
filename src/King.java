@@ -93,7 +93,7 @@ public class King extends Piece {
             Logger.info("O-O-O");
             Chess.boardStockfish += String.format(" e%dc%d", 8-(char)this.getRow(), 8-(char)this.getRow());
         }
-        if(Chess.toPlay) {
+        if(Chess.toPlay != Chess.stockfishColor && Chess.stockfishOn) {
             ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
             pb.directory(new File("stockfish"));
             Thread t2 = new Thread(new Runnable() {
@@ -108,12 +108,12 @@ public class King extends Piece {
     
                         out.write(Chess.boardStockfish);
                         out.newLine();
-                        out.write("go movetime 1000");
+                        out.write(String.format("go movetime %d", Chess.stockfishTime));
                         out.newLine();
                         out.flush();
                         String text;
                         while((text = in.readLine()) != null) {
-                            System.out.println(text);
+                            // System.out.println(text);
                             Chess.bestMove = text;
                         }
                     } catch (Exception e) {
@@ -130,7 +130,7 @@ public class King extends Piece {
                 @Override
                 public void run() {
                     try {
-                        Thread.sleep(1500);
+                        Thread.sleep(Chess.stockfishTime+500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

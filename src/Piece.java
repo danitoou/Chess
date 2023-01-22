@@ -261,9 +261,9 @@ public class Piece {
 
         if(Chess.boardStockfish == "position startpos") Chess.boardStockfish += " moves";
         Chess.boardStockfish += " " + this.moveToString(column, row);
-        System.out.println(Chess.boardStockfish);
+        // System.out.println(Chess.boardStockfish);
 
-        if(Chess.toPlay && Chess.stockfishOn) {
+        if(Chess.toPlay != Chess.stockfishColor && Chess.stockfishOn) {
             ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
             pb.directory(new File("stockfish"));
             Thread t2 = new Thread(new Runnable() {
@@ -278,12 +278,12 @@ public class Piece {
     
                         out.write(Chess.boardStockfish);
                         out.newLine();
-                        out.write("go movetime 1000");
+                        out.write(String.format("go movetime %d", Chess.stockfishTime));
                         out.newLine();
                         out.flush();
                         String text;
                         while((text = in.readLine()) != null) {
-                            System.out.println(text);
+                            // System.out.println(text);
                             Chess.bestMove = text;
                         }
                     } catch (Exception e) {
@@ -300,7 +300,7 @@ public class Piece {
                 @Override
                 public void run() {
                     try {
-                        Thread.sleep(1500);
+                        Thread.sleep(Chess.stockfishTime+500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
