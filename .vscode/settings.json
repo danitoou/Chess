@@ -8,7 +8,9 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "d:\\Downloads\\tinylog-2.5.0\\tinylog-api-2.5.0.jar",
-        "d:\\Downloads\\tinylog-2.5.0\\tinylog-impl-2.5.0.jar"
+        "d:\\Downloads\\tinylog-2.5.0\\tinylog-impl-2.5.0.jar",
+        "tinylog-2.6.0/tinylog-api-2.6.0.jar",
+        "tinylog-2.6.0/tinylog-impl-2.6.0.jar"
     ],
     "java.debug.settings.onBuildFailureProceed": true
 }
