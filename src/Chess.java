@@ -451,35 +451,6 @@ public class Chess extends JFrame{
         pieces[7][7] = new Rook(7, 7, true);
         pieces[7][7].draw();
 
-            // pieces[6][0] = new King(6, 0, false);
-            // pieces[0][1] = new Bishop(0, 1, true);
-            // pieces[4][1] = new Bishop(4, 1, false);
-            // pieces[6][1] = new Pawn(6, 1, false);
-            // pieces[4][2] = new Pawn(4, 2, false);
-            // pieces[7][2] = new Pawn(7, 2, false);
-            // pieces[4][3] = new Pawn(4, 3, false);
-            // pieces[0][4] = new Pawn(0, 4, true);
-            // pieces[4][4] = new Knight(4, 4, true);
-            // pieces[3][5] = new Rook(3, 5, false);
-            // pieces[5][5] = new Knight(5, 5, true);
-            // pieces[7][5] = new Pawn(7, 5, true);
-            // pieces[1][6] = new Pawn(1, 6, true);
-            // pieces[5][4] = new Knight(5, 4, false);
-            // pieces[5][6] = new Pawn(5, 6, true);
-            // pieces[6][6] = new Pawn(6, 6, true);
-            // pieces[0][7] = new Rook(0, 7, true);
-            // pieces[6][7] = new King(6, 7, true);
-            // White_King = new King(6, 7, true);
-            // Black_King = new King(6, 0, false);
-            // toPlay = false;
-
-            // for(int x = 0; x < 8; x++) {
-            //     for(int y = 0; y < 8; y++) {
-            //         if(pieces[x][y] != null) {
-            //             pieces[x][y].draw();
-            //         }
-            //     }
-            // }
             
 
         pieces_copy = pieces.clone();
@@ -488,6 +459,7 @@ public class Chess extends JFrame{
         if(Chess.toPlay == Chess.stockfishColor && Chess.stockfishOn) {
             ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
             pb.directory(new File("stockfish"));
+// finds best first move
             t1 = new Thread(new Runnable() {
     
                 @Override
@@ -512,6 +484,7 @@ public class Chess extends JFrame{
                                 }
                                 System.out.println("Pak kyp");
                             } catch (Exception e) {
+                                System.out.println("Pak kyp");
                             }
                             // Thread.sleep(1500);
                             String[] nextMove = Chess.stringToMove(Chess.bestMove).split(" ");
@@ -544,48 +517,8 @@ public class Chess extends JFrame{
             // });
             // t4.setPriority(Thread.MIN_PRIORITY);
             // t4.start();
-            Chess.pieces[4][6].move(4, 4);
+            Chess.pieces[4][6].move(4, 4); // plays e2e4 anyways
         }
-
-        // ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
-        // pb.directory(new File("stockfish"));
-        // Thread temp = new Thread(new Runnable() {
-    
-        //     @Override
-        //     public void run() {
-        //         while(!Thread.currentThread().isInterrupted()) {
-        //             // if(Chess.toPlay != Chess.stockfishColor) continue;
-        //                 try {
-        //                     Process proc = pb.start();
-        //                     BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
-        //                     BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-
-        //                     proc.waitFor(1000, TimeUnit.MILLISECONDS);
-        //                     System.out.println("ooo kype");
-        
-        //                     out.write(Chess.boardStockfish);
-        //                     out.newLine();
-        //                     out.write(String.format("go movetime %d", stockfishTime));
-        //                     out.newLine();
-        //                     out.flush();
-        //                     String text;
-        //                     while((text = in.readLine()) != null) {
-        //                         // System.out.println(text);
-        //                         bestMove = text;
-        //                     }
-                            
-        //                     String[] nextMove = Chess.stringToMove(Chess.bestMove).split(" ");
-        //                     Chess.pieces[Integer.parseInt(nextMove[0])][8-Integer.parseInt(nextMove[1])].move(Integer.parseInt(nextMove[2]), 8-Integer.parseInt(nextMove[3]));
-        //                     System.out.println("zdr");
-        //                 } catch (Exception e) {
-        //                     e.printStackTrace();
-        //                 }
-        //         }
-                
-        //     }
-            
-        // });
-        // temp.start();
 
 // board
         // JPanel[][] panel_board = new JPanel[8][8];
@@ -623,43 +556,6 @@ public class Chess extends JFrame{
         frame.addMouseListener(new MouseInputListener(){
             @Override
             public void mouseClicked(MouseEvent e) {
-                // int column = e.getX()/128;
-                // int row = e.getY()/128;
-                // currentPiece = pieces[column][row];
-                // if(currentPiece == null) return;
-                // for(int x = 0; x < 8; x++) {
-                //     for(int y = 0; y < 8; y++) {
-                //         if(dots[x][y] != null) {
-                //             frame.remove(dots[x][y]);
-                //             dots[x][y] = null;
-                //         }
-                //     }
-                // }
-            
-                // boolean[][] dots_arr = currentPiece.getValidTiles();
-                // if((column + row) % 2 == 1) {
-                //     frame.remove(lightGreenSquare);
-                //     darkGreenSquare.setBounds(column * 128, row * 128, 128, 128);
-                //     frame.add(darkGreenSquare);
-                // } else {
-                //     frame.remove(darkGreenSquare);
-                //     lightGreenSquare.setBounds(column * 128, row * 128, 128, 128);
-                //     frame.add(lightGreenSquare);
-                // }
-                
-                
-                // for(int x = 0; x < 8; x++) {
-                //     for(int y = 0; y < 8; y++) {
-                //         if(dots_arr[x][y] && currentPiece.legalMove(x, y)) {
-                //             dots[x][y] = new GreenDot(x, y).getLabelImage();
-                //             frame.add(dots[x][y]);
-                //         }
-                //     }
-                // }
-
-                // previousPiece = currentPiece;
-                // frame.repaint();
-                // drawGreens(column, row);
             }
 
             @Override
@@ -670,20 +566,7 @@ public class Chess extends JFrame{
                 if(pieces[column][row].isWhite() != toPlay) return;
                 currentPiece = pieces[column][row];
                 copyPiece = currentPiece;
-                // if(previousPiece != currentPiece) {
-                //     for(int x = 0; x < 8; x++) {
-                //         for(int y = 0; y < 8; y++) {
-                //             if(dots[x][y] != null) {
-                //                 frame.remove(dots[x][y]);
-                //                 dots[x][y] = null;
-                //             }
-                //         }
-                //     }
-                //     frame.remove(lightGreenSquare);
-                //     frame.remove(darkGreenSquare);
-                // }
 
-                // drawGreens(column, row);
                 
                 frame.repaint();
             }

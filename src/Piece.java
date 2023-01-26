@@ -101,42 +101,7 @@ public class Piece {
     public void move(int column, int row) {
         // checks if the piece moves like that (doesn't consider check)
         // resets the piece if it can't move
-        switch(this.getName()) {
-            // case "Pawn":
-            //     if(!((Pawn)this).validMove(column, row)) {
-            //         this.resetPiece();
-            //         return;
-            //     }
-            //     break;
-            
-            // case "Knight":
-            //     if(!((Knight)this).validMove(column, row)) {
-            //         this.resetPiece();
-            //         return;
-            //     }
-            //     break;
-            
-            // case "Bishop":
-            //     if(!((Bishop)this).validMove(column, row)) {
-            //         this.resetPiece();
-            //         return;
-            //     }
-            //     break;
-
-            // case "Rook":
-            //     if(!((Rook)this).validMove(column, row)) {
-            //         this.resetPiece();
-            //         return;
-            //     }
-            //     break;
-
-            // case "Queen":
-            //     if(!((Queen)this).validMove(column, row)) {
-            //         this.resetPiece();
-            //         return;
-            //     }
-            //     break;
-    
+        switch(this.getName()) {    
             case "King":
                 int legalCastle = ((King)this).legalCastle();
 
@@ -254,8 +219,6 @@ public class Piece {
         }
         
 // logging move
-        // Logger.info("{} moved to {}, {}", this, column, row);
-        // Logger.info(this.moveToString(column, row));
         Logger.info(this.logPGN(column, row, takes));
 
 
@@ -266,6 +229,7 @@ public class Piece {
         if(Chess.toPlay != Chess.stockfishColor && Chess.stockfishOn) {
             ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
             pb.directory(new File("stockfish"));
+// finds best move
             Thread t2 = new Thread(new Runnable() {
     
                 @Override
@@ -278,8 +242,8 @@ public class Piece {
     
                         out.write(Chess.boardStockfish);
                         out.newLine();
-                        out.write(String.format("go movetime %d", Chess.stockfishTime));
-                        out.newLine();
+                        out.write(String.format("go movetime %d\n", Chess.stockfishTime));
+                        // out.newLine();
                         out.flush();
                         String text;
                         while((text = in.readLine()) != null) {
@@ -299,7 +263,7 @@ public class Piece {
             //     Chess.stockfish.run();
             //     Chess.stockfishMove.run();
             // }
-    
+// plays best move
             Thread t3 = new Thread(new Runnable() {
     
                 @Override
