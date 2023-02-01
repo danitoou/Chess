@@ -93,56 +93,56 @@ public class King extends Piece {
             Logger.info("O-O-O");
             Chess.boardStockfish += String.format(" e%dc%d", 8-(char)this.getRow(), 8-(char)this.getRow());
         }
-        if(Chess.toPlay != Chess.stockfishColor && Chess.stockfishOn) {
-            ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
-            pb.directory(new File("stockfish"));
-            Thread t2 = new Thread(new Runnable() {
+        // if(Chess.toPlay != Chess.stockfishColor && Chess.stockfishOn) {
+        //     ProcessBuilder pb = new ProcessBuilder("stockfish\\stockfish-15.exe");
+        //     pb.directory(new File("stockfish"));
+        //     Thread t2 = new Thread(new Runnable() {
     
-                @Override
-                public void run() {
+        //         @Override
+        //         public void run() {
                     
-                    try {
-                        Process proc = pb.start();
-                        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
-                        BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        //             try {
+        //                 Process proc = pb.start();
+        //                 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
+        //                 BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
     
-                        out.write(Chess.boardStockfish);
-                        out.newLine();
-                        out.write(String.format("go movetime %d", Chess.stockfishTime));
-                        out.newLine();
-                        out.flush();
-                        String text;
-                        while((text = in.readLine()) != null) {
-                            // System.out.println(text);
-                            Chess.bestMove = text;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } 
-                }
+        //                 out.write(Chess.boardStockfish);
+        //                 out.newLine();
+        //                 out.write(String.format("go movetime %d", Chess.stockfishTime));
+        //                 out.newLine();
+        //                 out.flush();
+        //                 String text;
+        //                 while((text = in.readLine()) != null) {
+        //                     // System.out.println(text);
+        //                     Chess.bestMove = text;
+        //                 }
+        //             } catch (Exception e) {
+        //                 e.printStackTrace();
+        //             } 
+        //         }
                 
-            });
-            t2.setPriority(Thread.MIN_PRIORITY);
-            t2.start();
+        //     });
+        //     t2.setPriority(Thread.MIN_PRIORITY);
+        //     t2.start();
     
-            Thread t3 = new Thread(new Runnable() {
+        //     Thread t3 = new Thread(new Runnable() {
     
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(Chess.stockfishTime+500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println(Chess.boardStockfish);
-                    String[] nextMove = Chess.stringToMove(Chess.bestMove).split(" ");
-                    Chess.pieces[Integer.parseInt(nextMove[0])][8-Integer.parseInt(nextMove[1])].move(Integer.parseInt(nextMove[2]), 8-Integer.parseInt(nextMove[3]));
-                }
+        //         @Override
+        //         public void run() {
+        //             try {
+        //                 Thread.sleep(Chess.stockfishTime+500);
+        //             } catch (InterruptedException e) {
+        //                 e.printStackTrace();
+        //             }
+        //             System.out.println(Chess.boardStockfish);
+        //             String[] nextMove = Chess.stringToMove(Chess.bestMove).split(" ");
+        //             Chess.pieces[Integer.parseInt(nextMove[0])][8-Integer.parseInt(nextMove[1])].move(Integer.parseInt(nextMove[2]), 8-Integer.parseInt(nextMove[3]));
+        //         }
                 
-            });
-            t3.setPriority(Thread.MIN_PRIORITY);
-            t3.start();
-        }
+        //     });
+        //     t3.setPriority(Thread.MIN_PRIORITY);
+        //     t3.start();
+        // }
         
         Chess.moveCount++;
         this.setCanCastle(false);
