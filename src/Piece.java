@@ -51,8 +51,8 @@ public class Piece {
     }
     public JLabel getImageWithLabel() {
         JLabel picture = new JLabel();
-        picture.setIcon(new ImageIcon(this.image.getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH)));
-        picture.setBounds(column*128, row*128, 128, 128);
+        picture.setIcon(new ImageIcon(this.image.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH)));
+        picture.setBounds(column*64, row*64, 64, 64);
         return picture;
     }
     public JLabel getLabelImage() {

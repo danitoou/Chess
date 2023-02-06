@@ -40,12 +40,12 @@ public class Chess extends JFrame{
     public static String bestMove;
     public static Thread t1;
     public static boolean stockfishOn = true;
-    public static boolean stockfishColor = true;
+    public static boolean stockfishColor = false;
     public static int stockfishTime = 3000;
     public static int moveCount = 0;
+    public static int size = 512;
     // public static StockfishSearch stockfish = new StockfishSearch();
     // public static StockfishMove stockfishMove = new StockfishMove();
-
 
     public static ImageIcon darkGreenSquarePicture = new ImageIcon("src\\images\\Green_Square_Dark.png");
     public static JLabel darkGreenSquare = new JLabel();
@@ -391,7 +391,7 @@ public class Chess extends JFrame{
         frame.setUndecorated(true);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(1024, 1024);
+        frame.setSize(512, 512);
 
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);   
@@ -401,8 +401,8 @@ public class Chess extends JFrame{
 // board
         ImageIcon boardImage = new ImageIcon("res\\images\\" + theme + "Board.png");
         JLabel board = new JLabel();
-        board.setIcon(new ImageIcon(boardImage.getImage().getScaledInstance(1024, 1024, Image.SCALE_SMOOTH)));
-        board.setBounds(0, 0, 1024, 1024);
+        board.setIcon(new ImageIcon(boardImage.getImage().getScaledInstance(512, 512, Image.SCALE_SMOOTH)));
+        board.setBounds(0, 0, 512, 512);
         frame.setContentPane(board);
         
         
@@ -559,8 +559,8 @@ public class Chess extends JFrame{
 
             @Override
             public void mousePressed(MouseEvent e) {
-                int column = e.getX()/128;
-                int row = e.getY()/128;
+                int column = e.getX()/(size/8);
+                int row = e.getY()/(size/8);
                 if(pieces[column][row] == null) return;
                 if(pieces[column][row].isWhite() != toPlay) return;
                 currentPiece = pieces[column][row];
@@ -579,19 +579,19 @@ public class Chess extends JFrame{
                 if(currentPiece == null) return;
                 int curX = e.getX();
                 int curY = e.getY();
-                if(curX < 0 || curX > 1024 || curY < 0 || curY > 1024) {
+                if(curX < 0 || curX > size || curY < 0 || curY > size) {
                     currentPiece.resetPiece();
                     currentPiece = null;
                     return;
                 }
-                if(Chess.pieces[curX/128][curY/128] != null && Chess.pieces[curX/128][curY/128].isWhite() == currentPiece.isWhite() && Chess.pieces[curX/128][curY/128].getName() != "Rook") {
+                if(Chess.pieces[curX/(size/8)][curY/(size/8)] != null && Chess.pieces[curX/(size/8)][curY/(size/8)].isWhite() == currentPiece.isWhite() && Chess.pieces[curX/(size/8)][curY/(size/8)].getName() != "Rook") {
                     // currentPiece.move(copyPiece.getColumn(), copyPiece.getRow());
                     currentPiece.resetPiece();
                     currentPiece = null;
                     return;
                 } 
                 // removeGreens(currentPiece.getColumn(), currentPiece.getRow());
-                currentPiece.move(curX/128, curY/128);
+                currentPiece.move(curX/(size/8), curY/(size/8));
                 // drawGreens(currentPiece.getColumn(), currentPiece.getRow());
                 currentPiece = null;
                 pieces_copy = pieces.clone();
@@ -618,7 +618,7 @@ public class Chess extends JFrame{
                 // System.out.println("Drag");
                 if(currentPiece == null) return;
                 if(currentPiece.isWhite() != toPlay) return;
-                currentPiece.movePixel(e.getX()-64, e.getY()-64);
+                currentPiece.movePixel(e.getX()-(size/16), e.getY()-(size/16));
                 // if(currentPiece != previousPiece) {
                 // drawGreens(copyPiece.getColumn(), copyPiece.getRow());
                 // }
