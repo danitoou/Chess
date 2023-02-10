@@ -41,8 +41,8 @@ public class Chess extends JFrame{
     public static Thread t1;
     public static boolean stockfishOn = true;
     public static boolean stockfishColor = false;
-    public static int stockfishTime = 3000;
-    public static int moveCount = 0;
+    public static int stockfishTime = 1;
+    public static double moveCount = 0.1;
     public static int size = 512;
     // public static StockfishSearch stockfish = new StockfishSearch();
     // public static StockfishMove stockfishMove = new StockfishMove();
@@ -391,7 +391,7 @@ public class Chess extends JFrame{
         frame.setUndecorated(true);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(512, 512);
+        frame.setSize(size, size);
 
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);   
@@ -401,8 +401,8 @@ public class Chess extends JFrame{
 // board
         ImageIcon boardImage = new ImageIcon("res\\images\\" + theme + "Board.png");
         JLabel board = new JLabel();
-        board.setIcon(new ImageIcon(boardImage.getImage().getScaledInstance(512, 512, Image.SCALE_SMOOTH)));
-        board.setBounds(0, 0, 512, 512);
+        board.setIcon(new ImageIcon(boardImage.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH)));
+        board.setBounds(0, 0, size, size);
         frame.setContentPane(board);
         
         
@@ -505,7 +505,7 @@ public class Chess extends JFrame{
                     while(true) {
                         try {
                             bestMove = in.readLine();
-                            // System.out.println(bestMove);
+                            System.out.println(bestMove);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -562,7 +562,7 @@ public class Chess extends JFrame{
                 int column = e.getX()/(size/8);
                 int row = e.getY()/(size/8);
                 if(pieces[column][row] == null) return;
-                if(pieces[column][row].isWhite() != toPlay) return;
+                if(pieces[column][row].isWhite() != toPlay || (pieces[column][row].isWhite() == stockfishColor && stockfishOn)) return;
                 currentPiece = pieces[column][row];
                 copyPiece = currentPiece;
 
