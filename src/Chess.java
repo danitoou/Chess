@@ -41,8 +41,8 @@ public class Chess extends JFrame{
     public static Thread t1;
     public static boolean stockfishOn = true;
     public static boolean stockfishColor = false;
-    public static int stockfishTime = 1;
-    public static double moveCount = 0.1;
+    public static int stockfishTime = 1000;
+    public static int moveCount = 1;
     public static int size = 512;
     // public static StockfishSearch stockfish = new StockfishSearch();
     // public static StockfishMove stockfishMove = new StockfishMove();
