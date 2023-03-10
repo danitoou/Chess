@@ -1,17 +1,11 @@
 import java.awt.Image;
 import java.awt.event.MouseEvent;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.lang.Process;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -19,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
+
+import org.tinylog.Logger;
 
 
 public class Chess extends JFrame{
@@ -65,6 +61,7 @@ public class Chess extends JFrame{
         previousPiece = null;
         moveCount = 0;
         boardStockfish = "position startpos";
+        Logger.info("----------");
 
 // board wipe
         for(int x = 0; x < 8; x++) {
@@ -505,7 +502,7 @@ public class Chess extends JFrame{
                     while(true) {
                         try {
                             bestMove = in.readLine();
-                            System.out.println(bestMove);
+                            // System.out.println(bestMove);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
